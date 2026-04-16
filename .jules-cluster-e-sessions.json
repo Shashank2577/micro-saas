@@ -1,0 +1,18 @@
+{
+  "cluster": "E",
+  "theme": "Creator & Media Intelligence",
+  "dispatched_at": "2026-04-16",
+  "apps": {
+    "e1": {"id": "contentos", "sessionId": "702884044000508353", "port": 8130, "status": "running"},
+    "e2": {"id": "brandvoice", "sessionId": "4505720500122786990", "port": 8131, "status": "running"},
+    "e3": {"id": "videonarrator", "sessionId": "13882137444449305913", "port": 8132, "status": "running"},
+    "e4": {"id": "seointelligence", "sessionId": "8819174169243680979", "port": 8133, "status": "running"},
+    "e5": {"id": "ghostwriter", "sessionId": "1426445268679873553", "port": 8134, "status": "running"},
+    "e6": {"id": "socialintelligence", "sessionId": "1239505572246393993", "port": 8135, "status": "running"},
+    "e7": {"id": "creatoranalytics", "sessionId": "1685178805975000268", "port": 8136, "status": "running"},
+    "e8": {"id": "copyoptimizer", "sessionId": "6860208834653470720", "port": 8137, "status": "running"},
+    "e9": {"id": "localizationos", "sessionId": "14264148859996365504", "port": 8138, "status": "running"},
+    "e10": {"id": "podcastos", "sessionId": null, "port": 8139, "status": "pending", "note": "rate-limited, dispatch when slots free"},
+    "e11": {"id": "visualcontext", "sessionId": null, "port": 8140, "status": "pending", "note": "rate-limited, dispatch when slots free"}
+  }
+}
