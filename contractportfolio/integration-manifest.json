@@ -1,0 +1,16 @@
+{
+  "app": "contractportfolio",
+  "displayName": "ContractPortfolio",
+  "version": "0.0.1",
+  "baseUrl": "https://api-contractportfolio.YOURDOMAIN.com",
+  "emits": ["contract.expiring-soon", "renewal.alert-triggered"],
+  "consumes": ["document.uploaded"],
+  "capabilities": [
+    {
+      "name": "extract-terms",
+      "input": "contractId",
+      "output": "extractedTerms"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}
