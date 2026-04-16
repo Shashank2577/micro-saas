@@ -27,25 +27,25 @@ echo ""
 echo "📦 Dispatching 5 apps to Jules (5 concurrent max)..."
 echo ""
 
-APP_1_SESSION=$(jules new --repo "${REPO}" \
-  "Build IncidentBrain - AI Incident Root Cause Analysis Platform. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: incident ingestion, Datadog integration, AI analysis via LiteLLM Claude Sonnet 4.6, postmorter generator." \
-  --json 2>/dev/null | jq -r '.sessionId // empty')
+APP_1_OUTPUT=$(jules new --repo "${REPO}" \
+  "Build IncidentBrain - AI Incident Root Cause Analysis Platform. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: incident ingestion, Datadog integration, AI analysis via LiteLLM Claude Sonnet 4.6, postmorter generator.")
+APP_1_SESSION=$(echo "$APP_1_OUTPUT" | grep "ID:" | awk '{print $2}')
 
-APP_2_SESSION=$(jules new --repo "${REPO}" \
-  "Build DependencyRadar - Open Source Dependency Monitoring Platform. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: GitHub webhook, Maven/npm parsing, NVD vulnerability lookup, dependency health dashboard." \
-  --json 2>/dev/null | jq -r '.sessionId // empty')
+APP_2_OUTPUT=$(jules new --repo "${REPO}" \
+  "Build DependencyRadar - Open Source Dependency Monitoring Platform. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: GitHub webhook, Maven/npm parsing, NVD vulnerability lookup, dependency health dashboard.")
+APP_2_SESSION=$(echo "$APP_2_OUTPUT" | grep "ID:" | awk '{print $2}')
 
-APP_3_SESSION=$(jules new --repo "${REPO}" \
-  "Build DeploySignal - Deployment Analytics and Risk Assessment Platform. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: GitHub Actions webhook, risk scoring algorithm, DORA metrics dashboard." \
-  --json 2>/dev/null | jq -r '.sessionId // empty')
+APP_3_OUTPUT=$(jules new --repo "${REPO}" \
+  "Build DeploySignal - Deployment Analytics and Risk Assessment Platform. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: GitHub Actions webhook, risk scoring algorithm, DORA metrics dashboard.")
+APP_3_SESSION=$(echo "$APP_3_OUTPUT" | grep "ID:" | awk '{print $2}')
 
-APP_4_SESSION=$(jules new --repo "${REPO}" \
-  "Build APIEvolver - API Contract Management with Backward Compatibility Checking. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: OpenAPI spec upload, spec diff algorithm, breaking change detector, consumer registration." \
-  --json 2>/dev/null | jq -r '.sessionId // empty')
+APP_4_OUTPUT=$(jules new --repo "${REPO}" \
+  "Build APIEvolver - API Contract Management with Backward Compatibility Checking. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: OpenAPI spec upload, spec diff algorithm, breaking change detector, consumer registration.")
+APP_4_SESSION=$(echo "$APP_4_OUTPUT" | grep "ID:" | awk '{print $2}')
 
-APP_5_SESSION=$(jules new --repo "${REPO}" \
-  "Build SecurityPulse - Code Security Scanner with Policy Enforcement. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: manual scan trigger, Semgrep + TruffleHog integration, policy engine, security dashboard." \
-  --json 2>/dev/null | jq -r '.sessionId // empty')
+APP_5_OUTPUT=$(jules new --repo "${REPO}" \
+  "Build SecurityPulse - Code Security Scanner with Policy Enforcement. See spec in docs/superpowers/specs/cluster-a-detailed-specs.md. Use cc-starter framework. Bootstrap with tools/scaffold-app.sh. Focus on MVP: manual scan trigger, Semgrep + TruffleHog integration, policy engine, security dashboard.")
+APP_5_SESSION=$(echo "$APP_5_OUTPUT" | grep "ID:" | awk '{print $2}')
 
 echo "✅ Dispatched 5 Jules sessions"
 echo ""
