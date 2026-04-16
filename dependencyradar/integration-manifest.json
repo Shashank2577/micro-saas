@@ -1,0 +1,14 @@
+{
+  "app": "dependencyradar",
+  "displayName": "DependencyRadar",
+  "version": "0.0.1",
+  "baseUrl": "https://api-dependencyradar.YOURDOMAIN.com",
+  "emits": ["vulnerability-detected", "dependency-outdated", "upgrade-available"],
+  "consumes": ["code.pushed", "pr.merged"],
+  "capabilities": [
+    {"name": "scan-dependencies", "input": "repoUrl", "output": "dependencyReport"},
+    {"name": "check-upgrade", "input": "packageName+version", "output": "impactAnalysis"},
+    {"name": "create-upgrade-pr", "input": "packageName+newVersion", "output": "prUrl"}
+  ],
+  "healthEndpoint": "/actuator/health"
+}

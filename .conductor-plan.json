@@ -1,0 +1,170 @@
+{
+  "project": "micro-saas-ecosystem-foundation",
+  "repo": "Shashank2577/micro-saas",
+  "plan_file": "docs/superpowers/plans/2026-04-15-ecosystem-foundation.md",
+  "created_at": "2026-04-15",
+  "total_tasks": 10,
+  "notes": "Foundation plan is at docs/superpowers/plans/2026-04-15-ecosystem-foundation.md. Jules tasks read that file directly from the repo. Gemini tasks reference it via @ syntax. Phase 0 gate must complete before dispatching any tasks.",
+
+  "phases": [
+    {
+      "phase": 0,
+      "name": "Gate — Create GitHub repo and push",
+      "type": "gate",
+      "run_manually": true,
+      "commands": [
+        "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas",
+        "gh repo create Shashank2577/micro-saas --private --source=. --remote=origin --push"
+      ],
+      "confirm_before_phase": 1
+    },
+
+    {
+      "phase": 1,
+      "name": "Foundation Setup — parallel, no deps",
+      "dispatch": "parallel",
+      "tasks": [
+        {
+          "id": "t1",
+          "title": "Install cc-starter into local Maven + init repo files",
+          "agent": "gemini",
+          "review_priority": "low",
+          "depends_on": [],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. The full plan is in the file above. Execute ONLY Task 1 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Steps: (1) Run 'cd /Users/shashanksaxena/Documents/Personal/Code/cross-cutting && mvn install -DskipTests -q' — verify BUILD SUCCESS. (2) Create .gitignore with the exact content shown in Task 1 Step 4. (3) Create README.md with the exact content shown in Task 1 Step 5. (4) Run 'cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && git add .gitignore README.md && git commit -m \\\"chore: initialise micro-saas ecosystem repo\\\"'. Verify: ls ~/.m2/repository/com/crosscutting/cc-starter/ shows 0.0.1-SNAPSHOT. Do NOT create any Java, SQL, or Docker files yet. Do NOT touch any files other than .gitignore and README.md.\"",
+          "acceptance": "~/.m2/repository/com/crosscutting/cc-starter/0.0.1-SNAPSHOT/ exists"
+        },
+        {
+          "id": "t2",
+          "title": "Create cc-platform local dev environment (Docker Compose)",
+          "agent": "gemini",
+          "review_priority": "low",
+          "depends_on": [],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. Execute ONLY Task 2 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Steps: (1) mkdir -p infra/keycloak infra/postgres. (2) Create infra/docker-compose.yml with exact content from Task 2 Step 2. (3) Create infra/postgres/init.sql with exact content from Task 2 Step 3. (4) Copy realm-export.json: cp /Users/shashanksaxena/Documents/Personal/Code/cross-cutting/cc-platform/keycloak/realm-export.json infra/keycloak/realm-export.json. (5) Create infra/litellm-config.yaml with exact content from Task 2 Step 5. (6) Run 'cd infra && docker compose up -d && sleep 10 && docker compose ps'. (7) Verify schemas: run 'docker compose exec postgres psql -U cc -d cc -c \\\"\\\\dn\\\"' — expect cc, tenant, audit schemas. (8) Run 'cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && git add infra/ && git commit -m \\\"chore: add cc-platform local dev environment\\\"'. Do NOT create any Java or Maven files. Do NOT modify anything outside infra/.\"",
+          "acceptance": "docker compose ps shows 5 services Up; \\dt tenant.* shows schemas"
+        },
+        {
+          "id": "t10",
+          "title": "Create scaffold-app.sh and register-app.sh tools",
+          "agent": "gemini",
+          "review_priority": "low",
+          "depends_on": [],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. Execute ONLY Task 10 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Steps: (1) mkdir -p tools. (2) Create tools/scaffold-app.sh with EXACT content from Task 10 Step 2. (3) Create tools/register-app.sh with EXACT content from Task 10 Step 3. (4) chmod +x tools/scaffold-app.sh tools/register-app.sh. (5) Verify: bash -n tools/scaffold-app.sh && echo 'Syntax OK'. (6) Run 'git add tools/ && git commit -m \\\"feat(tools): scaffold-app.sh and register-app.sh\\\"'. Do NOT create any Java, Maven, or Docker files.\"",
+          "acceptance": "bash -n tools/scaffold-app.sh outputs 'Syntax OK'"
+        }
+      ]
+    },
+
+    {
+      "phase": 2,
+      "name": "Maven Skeleton — after t1",
+      "dispatch": "sequential",
+      "tasks": [
+        {
+          "id": "t3",
+          "title": "Nexus Hub Maven project skeleton (pom.xml, Application.java, application.yml)",
+          "agent": "gemini",
+          "review_priority": "medium",
+          "depends_on": ["t1"],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. Execute ONLY Task 3 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Steps: (1) mkdir -p nexus-hub/backend/src/main/java/com/microsaas/nexushub nexus-hub/backend/src/main/resources/db/migration nexus-hub/backend/src/test/java/com/microsaas/nexushub. (2) Create nexus-hub/backend/pom.xml with EXACT content from Task 3 Step 2. (3) Create nexus-hub/backend/src/main/java/com/microsaas/nexushub/NexusHubApplication.java with EXACT content from Task 3 Step 3. (4) Create nexus-hub/backend/src/main/resources/application.yml with EXACT content from Task 3 Step 4. (5) Run 'cd nexus-hub/backend && mvn dependency:resolve -q' — expect BUILD SUCCESS. (6) Run 'cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && git add nexus-hub/backend/pom.xml nexus-hub/backend/src/main/java nexus-hub/backend/src/main/resources/application.yml && git commit -m \\\"feat(nexus-hub): maven skeleton with cc-starter dependency\\\"'. cc-starter 0.0.1-SNAPSHOT is already in ~/.m2. Do NOT create SQL migration files or test files yet.\"",
+          "acceptance": "mvn dependency:resolve succeeds; NexusHubApplication.java exists"
+        }
+      ]
+    },
+
+    {
+      "phase": 3,
+      "name": "Migrations + Frontend — parallel after t3",
+      "dispatch": "parallel",
+      "tasks": [
+        {
+          "id": "t4",
+          "title": "Database migrations V1–V5",
+          "agent": "gemini",
+          "review_priority": "medium",
+          "depends_on": ["t3"],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. Execute ONLY Task 4 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Docker Compose infra is already running at localhost:5432 (postgres user: cc, password: cc, db: cc). Steps: (1) Create all 5 SQL migration files in nexus-hub/backend/src/main/resources/db/migration/ with EXACT content from Task 4 Steps 1-5. (2) Apply migrations: cd nexus-hub/backend && mvn flyway:migrate -Dflyway.url=jdbc:postgresql://localhost:5432/cc -Dflyway.user=cc -Dflyway.password=cc -Dflyway.schemas=tenant -Dflyway.defaultSchema=tenant. Expect 'Successfully applied 5 migrations'. (3) Verify: docker compose -f /Users/shashanksaxena/Documents/Personal/Code/micro-saas/infra/docker-compose.yml exec postgres psql -U cc -d cc -c '\\dt tenant.*' — expect ecosystem_apps, ecosystem_events, event_subscriptions, workflow_runs, workflows. (4) git add nexus-hub/backend/src/main/resources/db/ && git commit -m 'feat(nexus-hub): database migrations V1-V5'. Do NOT create any Java source files.\"",
+          "acceptance": "flyway:migrate reports 5 applied; \\dt tenant.* shows 5 tables"
+        },
+        {
+          "id": "t9",
+          "title": "Nexus Hub Next.js frontend dashboard",
+          "agent": "gemini",
+          "review_priority": "low",
+          "depends_on": ["t3"],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. Execute ONLY Task 9 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Steps: (1) cd nexus-hub && npx create-next-app@14 frontend --typescript --tailwind --app --no-src-dir --no-git --import-alias '@/*' (accept all defaults). (2) cd nexus-hub/frontend && npm install lucide-react (do NOT install @crosscutting/react — it is not on npm yet). (3) Create src/lib/api.ts with EXACT content from Task 9 Step 3. (4) Create src/components/AppCard.tsx with EXACT content from Task 9 Step 4. (5) Replace src/app/page.tsx with EXACT content from Task 9 Step 5. (6) Run npm run build — expect successful build. (7) cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && git add nexus-hub/frontend/ && git commit -m 'feat(nexus-hub): Next.js dashboard'. Do NOT modify any Java or Maven files.\"",
+          "acceptance": "npm run build succeeds; AppCard.tsx and api.ts exist"
+        }
+      ]
+    },
+
+    {
+      "phase": 4,
+      "name": "App Registry + Event Bus — parallel Jules tasks after t4",
+      "dispatch": "parallel",
+      "tasks": [
+        {
+          "id": "t5",
+          "title": "App Registry — EcosystemApp entity, service, controller, TDD",
+          "agent": "jules",
+          "review_priority": "high",
+          "depends_on": ["t4"],
+          "jules_session_prompt": "You are implementing the Nexus Hub app registry for the micro-saas ecosystem. The repo is Shashank2577/micro-saas. The complete implementation plan is in docs/superpowers/plans/2026-04-15-ecosystem-foundation.md. Read it, then implement exactly Task 5: App Registry. This includes: (1) NexusHubTestBase.java at nexus-hub/backend/src/test/java/com/microsaas/nexushub/NexusHubTestBase.java, (2) test-init.sql at nexus-hub/backend/src/test/resources/db/test-init.sql, (3) EcosystemAppServiceTest.java at nexus-hub/backend/src/test/java/com/microsaas/nexushub/app/EcosystemAppServiceTest.java, (4) EcosystemApp.java entity, (5) AppRegistrationRequest.java DTO, (6) EcosystemAppRepository.java, (7) EcosystemAppService.java, (8) EcosystemAppController.java. TDD order: write test first, confirm compilation error, implement code, confirm tests pass. Run 'mvn test -Dtest=EcosystemAppServiceTest' — all 4 tests must pass before committing. Commit message: 'feat(nexus-hub): app registry — register, list, deregister, heartbeat'. IMPORTANT: Do NOT modify pom.xml, application.yml, or any migration files. Do NOT create event or workflow classes.",
+          "acceptance": "Tests run: 4, Failures: 0, Errors: 0"
+        },
+        {
+          "id": "t6",
+          "title": "Event Bus — EcosystemEvent, EventSubscription, EventBusService, TDD",
+          "agent": "jules",
+          "review_priority": "high",
+          "depends_on": ["t4"],
+          "jules_session_prompt": "You are implementing the Nexus Hub event bus for the micro-saas ecosystem. The repo is Shashank2577/micro-saas. The complete implementation plan is in docs/superpowers/plans/2026-04-15-ecosystem-foundation.md. Read it, then implement exactly Task 6: Event Bus AND Task 8 Step 1 (NexusHubConfig.java with RestTemplate bean). This includes: (1) EventBusServiceTest.java, (2) EcosystemEvent.java entity, (3) EcosystemEventRepository.java, (4) EventSubscription.java entity with matches() method, (5) EventSubscriptionRepository.java, (6) PublishEventRequest.java DTO, (7) SubscribeRequest.java DTO, (8) NexusHubConfig.java at nexus-hub/backend/src/main/java/com/microsaas/nexushub/config/NexusHubConfig.java (registers RestTemplate bean), (9) EventBusService.java, (10) EventBusController.java. TDD order per the plan. Run 'mvn test -Dtest=EventBusServiceTest' — all 4 tests must pass. Commit message: 'feat(nexus-hub): event bus — publish, subscribe, fan-out with wildcard patterns'. IMPORTANT: Do NOT modify EcosystemAppService, EcosystemApp, or migration files. Do NOT create workflow classes yet.",
+          "acceptance": "Tests run: 4, Failures: 0, Errors: 0"
+        }
+      ]
+    },
+
+    {
+      "phase": 5,
+      "name": "Workflow Engine — Jules after t5+t6",
+      "dispatch": "sequential",
+      "tasks": [
+        {
+          "id": "t7",
+          "title": "Workflow Engine — Workflow, WorkflowRun, WorkflowExecutor, TDD",
+          "agent": "jules",
+          "review_priority": "high",
+          "depends_on": ["t5", "t6"],
+          "jules_session_prompt": "You are implementing the Nexus Hub workflow engine for the micro-saas ecosystem. The repo is Shashank2577/micro-saas. The complete implementation plan is in docs/superpowers/plans/2026-04-15-ecosystem-foundation.md. Read it, then implement exactly Task 7: Workflow Engine. This includes: (1) WorkflowExecutorTest.java, (2) Workflow.java entity, (3) WorkflowRun.java entity, (4) WorkflowRepository.java, (5) WorkflowRunRepository.java, (6) CreateWorkflowRequest.java DTO, (7) WorkflowExecutor.java (the core logic — implements findMatchingWorkflows and execute), (8) WorkflowService.java, (9) WorkflowController.java. TDD order per the plan. Run 'mvn test -Dtest=WorkflowExecutorTest' — all 4 tests must pass. Run 'mvn test' — ALL tests (App Registry + Event Bus + Workflow) must pass. Commit message: 'feat(nexus-hub): workflow engine — create, trigger on events, execute steps'. IMPORTANT: Do NOT modify EventBusService yet (wiring comes in the next task). Do NOT modify migration files.",
+          "acceptance": "All tests pass — Tests run: 12, Failures: 0, Errors: 0"
+        }
+      ]
+    },
+
+    {
+      "phase": 6,
+      "name": "Wire + Full Smoke Test — Gemini after t7",
+      "dispatch": "sequential",
+      "tasks": [
+        {
+          "id": "t8",
+          "title": "Wire EventBusService to WorkflowExecutor + smoke test",
+          "agent": "gemini",
+          "review_priority": "medium",
+          "depends_on": ["t7"],
+          "gemini_command": "cd /Users/shashanksaxena/Documents/Personal/Code/micro-saas && gemini --yolo -p \"@docs/superpowers/plans/2026-04-15-ecosystem-foundation.md You are implementing the micro-saas ecosystem foundation. Execute ONLY Task 8 exactly as written. Working directory: /Users/shashanksaxena/Documents/Personal/Code/micro-saas. Steps: (1) Modify nexus-hub/backend/src/main/java/com/microsaas/nexushub/event/EventBusService.java — add WorkflowExecutor injection and update fanOutAsync exactly as shown in Task 8 Step 1. (2) Run 'cd nexus-hub/backend && mvn test -q' — all tests must pass. (3) Start the app: 'cd nexus-hub/backend && mvn spring-boot:run &' then sleep 15. (4) Smoke test register: curl -s -X POST http://localhost:8090/api/v1/apps/register -H 'Content-Type: application/json' -H 'X-Tenant-ID: 00000000-0000-0000-0000-000000000001' -d '{\\\"name\\\":\\\"incidentbrain\\\",\\\"displayName\\\":\\\"IncidentBrain\\\",\\\"baseUrl\\\":\\\"https://api-incidentbrain.example.com\\\",\\\"manifest\\\":{}}' | python3 -m json.tool — expect JSON with id field. (5) Smoke test event: curl -s -X POST http://localhost:8090/api/v1/events -H 'Content-Type: application/json' -H 'X-Tenant-ID: 00000000-0000-0000-0000-000000000001' -d '{\\\"sourceApp\\\":\\\"incidentbrain\\\",\\\"eventType\\\":\\\"incident.opened\\\",\\\"payload\\\":{\\\"incidentId\\\":\\\"abc123\\\"}}' | python3 -m json.tool. (6) pkill -f 'spring-boot:run'. (7) git add nexus-hub/backend/src/main/java/com/microsaas/nexushub/event/EventBusService.java && git commit -m 'feat(nexus-hub): wire event bus to workflow executor'. (8) git push origin main. Do NOT modify any other Java files.\"",
+          "acceptance": "All mvn tests pass; smoke test returns JSON with id field; git push succeeds"
+        }
+      ]
+    }
+  ],
+
+  "review_strategy": {
+    "codex_review": ["t5", "t6", "t7"],
+    "claude_review": "all",
+    "review_focus": {
+      "t5": "Entity annotations correct (tenant schema), repository methods match usage in service, service transaction boundaries correct, controller uses TenantContext.require()",
+      "t6": "EventSubscription.matches() wildcard logic correct, fanOutAsync is truly async (@Async annotation present), RestTemplate bean registered in config, error handling in deliverToSubscriber swallows exceptions correctly",
+      "t7": "WorkflowExecutor.matchesTrigger() handles both exact and wildcard patterns correctly, execute() saves run before executing steps so partial runs are visible, RunStatus transitions are correct"
+    }
+  }
+}

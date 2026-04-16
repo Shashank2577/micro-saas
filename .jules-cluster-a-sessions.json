@@ -1,0 +1,7 @@
+{
+  "app1": {"id": "incidentbrain", "sessionId": "18314896421085716101"},
+  "app2": {"id": "dependencyradar", "sessionId": "7699317107907297286"},
+  "app3": {"id": "deploysignal", "sessionId": "8899602923700512698"},
+  "app4": {"id": "apievolver", "sessionId": "16261315446456135669"},
+  "app5": {"id": "securitypulse", "sessionId": "9398726948166921744", "previousSessionId": "15138368998465602231", "note": "re-dispatched after failure"}
+}

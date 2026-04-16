@@ -1,0 +1,33 @@
+{
+  "app": "apievolver",
+  "displayName": "APIEvolver",
+  "version": "0.0.1",
+  "baseUrl": "https://api-apievolver.YOURDOMAIN.com",
+  "emits": [
+    "api-spec-uploaded",
+    "breaking-change-detected",
+    "api-deprecated"
+  ],
+  "consumes": [
+    "service.registered",
+    "api-spec-scanned"
+  ],
+  "capabilities": [
+    {
+      "name": "diff-specs",
+      "input": "oldSpec+newSpec",
+      "output": "diffReport"
+    },
+    {
+      "name": "detect-breaking",
+      "input": "specDiff",
+      "output": "breakingChanges[]"
+    },
+    {
+      "name": "notify-consumers",
+      "input": "serviceId+change",
+      "output": "notificationStatus"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}

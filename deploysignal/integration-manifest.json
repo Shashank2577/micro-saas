@@ -1,0 +1,10 @@
+{
+  "app": "deploysignal",
+  "displayName": "DeploySignal",
+  "version": "0.0.1",
+  "baseUrl": "https://api-deploysignal.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
