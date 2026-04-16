@@ -1,0 +1,10 @@
+{
+  "app": "jobcraftai",
+  "displayName": "JobCraftAI",
+  "version": "0.0.1",
+  "baseUrl": "https://api-jobcraftai.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

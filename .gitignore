@@ -14,3 +14,4 @@ pom_patch*.xml
 pom_diff*.patch
 cross-cutting/
 package-lock.json
+.omc/
