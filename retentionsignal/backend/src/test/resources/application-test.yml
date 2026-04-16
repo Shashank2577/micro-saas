@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: retentionsignal-test
+  datasource:
+    url: jdbc:tc:postgresql:16:///testdb
+    username: test
+    password: test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: retentionsignal
+  flyway:
+    enabled: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+cc:
+  tenancy:
+    mode: header
+    header-name: X-Tenant-ID

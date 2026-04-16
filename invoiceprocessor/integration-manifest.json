@@ -1,0 +1,19 @@
+{
+  "app": "invoiceprocessor",
+  "displayName": "InvoiceProcessor",
+  "version": "0.0.1",
+  "baseUrl": "https://api-invoiceprocessor.YOURDOMAIN.com",
+  "emits": [
+    "invoice.received",
+    "invoice.extracted",
+    "invoice.matched",
+    "invoice.approved",
+    "po.created"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "Invoice Extraction",
+    "PO Matching"
+  ],
+  "healthEndpoint": "/actuator/health"
+}

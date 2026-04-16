@@ -1,0 +1,16 @@
+{
+  "app": "hiresignal",
+  "displayName": "HireSignal",
+  "version": "0.0.1",
+  "baseUrl": "https://api-hiresignal.YOURDOMAIN.com",
+  "emits": [
+    {
+      "name": "candidate.hired",
+      "description": "Emitted when a candidate is hired",
+      "schema": {}
+    }
+  ],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

@@ -1,0 +1,14 @@
+{
+  "app": "interviewos",
+  "displayName": "InterviewOS",
+  "version": "0.0.1",
+  "baseUrl": "https://api-interviewos.YOURDOMAIN.com",
+  "emits": [
+    "interview.completed"
+  ],
+  "consumes": [
+    "candidate.hired"
+  ],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

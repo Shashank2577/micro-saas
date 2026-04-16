@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cc
+    username: cc
+    password: cc
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: interviewos
+  flyway:
+    enabled: false
+
+cc:
+  tenancy:
+    mode: header
+    header-name: X-Tenant-ID
