@@ -1,0 +1,18 @@
+{
+  "project": "AI-Native Spec Factory",
+  "sessionId": "6576525673114422472",
+  "trackingUrl": "https://jules.google.com",
+  "dispatchedAt": "2026-04-16T10:35:00Z",
+  "specFile": "docs/superpowers/specs/2026-04-16-spec-factory-design.md",
+  "planFile": ".jules-plan-spec-factory.json",
+  "components": [
+    "Spec Generator CLI",
+    "Spec Validator CLI",
+    "Enhanced Jules Orchestrator",
+    "Test Runner CLI",
+    "Shared Infrastructure"
+  ],
+  "techStack": "Node.js, oclif, axios, chalk, ora",
+  "expectedDuration": "4-6 hours",
+  "status": "IN_PROGRESS"
+}
