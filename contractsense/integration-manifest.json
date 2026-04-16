@@ -1,0 +1,20 @@
+{
+  "app": "contractsense",
+  "displayName": "ContractSense",
+  "version": "0.0.1",
+  "emits": [
+    "contract.analyzed",
+    "risk.flagged"
+  ],
+  "consumes": [
+    "document.uploaded"
+  ],
+  "capabilities": [
+    {
+      "name": "analyze-contract",
+      "input": "contractId",
+      "output": "riskAssessment"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}

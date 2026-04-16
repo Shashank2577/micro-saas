@@ -1,0 +1,10 @@
+{
+  "app": "runwaymodeler",
+  "displayName": "RunwayModeler",
+  "version": "0.0.1",
+  "baseUrl": "https://api-runwaymodeler.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
