@@ -20,6 +20,32 @@ if [[ "${1:-}" == "--sample" ]]; then DRY_RUN=1; SAMPLE_APP="${2:-datastorytelle
 # LIMIT=N → dispatch only the first N apps (of 11). Example: LIMIT=8 to send F1-F8 only.
 LIMIT="${LIMIT:-0}"
 DISPATCH_COUNT=0
+# Skip apps that already have a non-null sessionId in the tracker.
+# Set SKIP_ALREADY_DISPATCHED=0 to redispatch everything (dangerous: duplicates + quota burn).
+SKIP_ALREADY_DISPATCHED="${SKIP_ALREADY_DISPATCHED:-1}"
+TRACKER="${REPO_ROOT}/.jules-cluster-f-sessions.json"
+
+# Returns 0 (true) if this app already has a sessionId in the tracker.
+already_dispatched() {
+  local app_id="$1"
+  [[ "$SKIP_ALREADY_DISPATCHED" != "1" ]] && return 1
+  [[ ! -f "$TRACKER" ]] && return 1
+  # Match lines like:  "id": "datastoryteller", "sessionId": "91526..."
+  # (permissive to handle either ordering of fields within an app object)
+  python3 - "$TRACKER" "$app_id" <<'PY' 2>/dev/null
+import json, sys
+try:
+    with open(sys.argv[1]) as f:
+        data = json.load(f)
+    target = sys.argv[2]
+    for key, obj in (data.get("apps") or {}).items():
+        if obj.get("id") == target and obj.get("sessionId"):
+            sys.exit(0)
+    sys.exit(1)
+except Exception:
+    sys.exit(1)
+PY
+}
 UNIVERSAL_HEADER="You are building a production-grade micro-SaaS app. Read ${SPEC} (the Cluster F detailed spec) in full, especially the global conventions at top and the per-app section. This is a 2-hour session — fill it. Scaffold with ./tools/scaffold-app.sh first. Follow cc-starter patterns used in incidentbrain/, contractsense/, cashflowai/, hiresignal/, contentos/ (reference implementations). Build deep: backend + frontend + Flyway migrations + OpenAPI + tests + README + Dockerfile + integration-manifest.json. Do NOT stop at MVP — complete every REST endpoint, every domain entity, every frontend page, every acceptance criterion listed in the spec (both the 10 universal and the app-specific ACs)."
 
 # Source env
@@ -108,6 +134,12 @@ dispatch_one() {
   local key_modules="$1"; shift
   local critical_acs="$1"; shift
 
+  # Skip if already dispatched (has a sessionId in the tracker).
+  if already_dispatched "$app"; then
+    echo "✅ Already dispatched: ${display} — skipping."
+    return 0
+  fi
+
   # Enforce LIMIT (only count real dispatch slots; dry-run is unaffected).
   DISPATCH_COUNT=$((DISPATCH_COUNT + 1))
   if [[ "$LIMIT" != "0" && "$DISPATCH_COUNT" -gt "$LIMIT" ]]; then
@@ -154,6 +186,24 @@ ${body}"
     echo "  ✅ session=$sid"
   fi
   echo "${app}=${sid}" >> "$REPO_ROOT/.jules-cluster-f-dispatch.log"
+
+  # Update the tracker JSON so a follow-up run's SKIP_ALREADY_DISPATCHED guard works.
+  if [[ -f "$TRACKER" && "$sid" != "UNPARSED" && -n "$sid" ]]; then
+    python3 - "$TRACKER" "$app" "$sid" <<'PY' 2>/dev/null || true
+import json, sys
+path, app_id, sid = sys.argv[1], sys.argv[2], sys.argv[3]
+with open(path) as f:
+    data = json.load(f)
+for key, obj in (data.get("apps") or {}).items():
+    if obj.get("id") == app_id:
+        obj["sessionId"] = sid
+        obj["status"] = "running"
+        break
+with open(path, "w") as f:
+    json.dump(data, f, indent=2)
+PY
+  fi
+
   # Tiny delay between dispatches (rate-limit hygiene).
   sleep 3
 }
