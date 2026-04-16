@@ -1,0 +1,8 @@
+-- Create schemas used by cc-starter
+CREATE SCHEMA IF NOT EXISTS cc;
+CREATE SCHEMA IF NOT EXISTS tenant;
+CREATE SCHEMA IF NOT EXISTS audit;
+
+-- Enable pgvector
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
