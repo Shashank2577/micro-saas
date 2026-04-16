@@ -10,8 +10,8 @@
     "c5": {"id": "invoiceprocessor", "sessionId": "3436366580810519382", "port": 8114, "status": "applied"},
     "c6": {"id": "runwaymodeler", "sessionId": "763752230666719289", "port": 8115, "status": "applied"},
     "c7": {"id": "procurebot", "sessionId": "13673998368950139521", "port": 8116, "status": "applied"},
-    "c8": {"id": "budgetpilot", "sessionId": "5219023816222946482", "port": 8117, "status": "running"},
+    "c8": {"id": "budgetpilot", "sessionId": "5219023816222946482", "port": 8117, "status": "applied"},
     "c9": {"id": "taxdataorganizer", "sessionId": "2375205918353396575", "port": 8118, "status": "applied"},
-    "c10": {"id": "equityintelligence", "sessionId": "5363224123213352182", "port": 8119, "status": "running"}
+    "c10": {"id": "equityintelligence", "sessionId": "5363224123213352182", "port": 8119, "status": "applied"}
   }
 }
