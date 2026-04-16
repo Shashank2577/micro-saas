@@ -1,0 +1,10 @@
+{
+  "app": "localizationos",
+  "displayName": "LocalizationOS",
+  "version": "0.0.1",
+  "baseUrl": "https://api-localizationos.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
