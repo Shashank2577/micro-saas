@@ -1,0 +1,16 @@
+{
+  "app": "ndaflow",
+  "displayName": "NDAFlow",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8097",
+  "emits": ["nda.executed", "nda.expiring-soon"],
+  "consumes": [],
+  "capabilities": [
+    {
+      "name": "generate-nda",
+      "input": "counterparty+type",
+      "output": "ndaDocument"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}

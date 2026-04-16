@@ -1,0 +1,10 @@
+{
+  "app": "procurebot",
+  "displayName": "ProcureBot",
+  "version": "0.0.1",
+  "baseUrl": "https://api-procurebot.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

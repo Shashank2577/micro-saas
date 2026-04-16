@@ -1,0 +1,20 @@
+{
+  "app": "auditready",
+  "displayName": "AuditReady",
+  "version": "0.0.1",
+  "emits": [
+    "audit.score-calculated",
+    "evidence.collected"
+  ],
+  "consumes": [
+    "policy.published",
+    "compliance.gap-detected"
+  ],
+  "capabilities": [
+    {
+      "name": "calculate-readiness",
+      "input": "frameworkId",
+      "output": "readinessScore"
+    }
+  ]
+}

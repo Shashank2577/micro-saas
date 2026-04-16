@@ -1,0 +1,10 @@
+{
+  "app": "financenarrator",
+  "displayName": "FinanceNarrator",
+  "version": "0.0.1",
+  "baseUrl": "https://api-financenarrator.YOURDOMAIN.com",
+  "emits": ["narrative.generated"],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
