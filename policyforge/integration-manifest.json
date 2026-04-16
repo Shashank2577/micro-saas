@@ -1,0 +1,16 @@
+{
+  "app": "policyforge",
+  "displayName": "PolicyForge",
+  "version": "0.0.1",
+  "baseUrl": "https://api-policyforge.YOURDOMAIN.com",
+  "emits": ["policy.published", "policy.acknowledged"],
+  "consumes": ["audit.finding-created"],
+  "capabilities": [
+    {
+      "name": "create-policy",
+      "input": "policyDraft",
+      "output": "policyId"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}
