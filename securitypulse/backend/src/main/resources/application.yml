@@ -1,0 +1,22 @@
+server:
+  port: 8095
+
+spring:
+  application:
+    name: securitypulse
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cc?currentSchema=securitypulse
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    default-schema: securitypulse
+    create-schemas: true

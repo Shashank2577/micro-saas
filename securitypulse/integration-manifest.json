@@ -1,0 +1,9 @@
+{
+  "emits": ["security-scan-completed", "vulnerability-found", "policy-violation"],
+  "consumes": ["pr.opened", "pr.merged"],
+  "capabilities": [
+    {"name": "scan-pr", "input": "prUrl", "output": "scanResults"},
+    {"name": "enforce-policy", "input": "scanResults", "output": "policyDecision"},
+    {"name": "triage-findings", "input": "findings", "output": "triagedReport"}
+  ]
+}
