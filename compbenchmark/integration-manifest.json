@@ -1,0 +1,10 @@
+{
+  "app": "compbenchmark",
+  "displayName": "CompBenchmark",
+  "version": "0.0.1",
+  "baseUrl": "https://api-compbenchmark.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

@@ -1,0 +1,10 @@
+{
+  "app": "seointelligence",
+  "displayName": "SEO Intelligence",
+  "version": "0.0.1",
+  "baseUrl": "https://api-seointelligence.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
