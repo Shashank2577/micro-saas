@@ -1,0 +1,14 @@
+{
+  "app": "licenseguard",
+  "displayName": "LicenseGuard",
+  "version": "0.0.1",
+  "emits": ["license.violation-detected", "sbom.generated"],
+  "consumes": ["code.pushed", "pr.merged"],
+  "capabilities": [
+    {
+      "name": "scan-repo",
+      "input": "repoUrl",
+      "output": "violationReport"
+    }
+  ]
+}
