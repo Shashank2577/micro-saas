@@ -1,0 +1,21 @@
+{
+  "app": "regulatoryfiling",
+  "displayName": "RegulatoryFiling",
+  "version": "0.0.1",
+  "baseUrl": "https://api-regulatoryfiling.YOURDOMAIN.com",
+  "emits": [
+    "filing.submitted",
+    "filing.overdue"
+  ],
+  "consumes": [
+    "regulation.changed"
+  ],
+  "capabilities": [
+    {
+      "name": "track-filing",
+      "input": "obligationDetails",
+      "output": "filingStatus"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}
