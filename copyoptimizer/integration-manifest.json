@@ -1,0 +1,10 @@
+{
+  "app": "copyoptimizer",
+  "displayName": "Copy Optimizer",
+  "version": "0.0.1",
+  "baseUrl": "https://api-copyoptimizer.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

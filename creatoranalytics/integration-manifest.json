@@ -1,0 +1,10 @@
+{
+  "app": "creatoranalytics",
+  "displayName": "AI content performance analytics tied to business outcomes",
+  "version": "0.0.1",
+  "baseUrl": "https://api-creatoranalytics.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

@@ -1,0 +1,10 @@
+{
+  "app": "ghostwriter",
+  "displayName": "GhostWriter",
+  "version": "0.0.1",
+  "baseUrl": "https://api-ghostwriter.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
