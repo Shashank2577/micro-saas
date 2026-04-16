@@ -1,0 +1,17 @@
+{
+  "cluster": "B",
+  "theme": "Legal & Compliance Intelligence",
+  "dispatched_at": "2026-04-16",
+  "apps": {
+    "b1": {"id": "contractsense", "sessionId": "12645172995574072143", "port": 8091, "status": "running"},
+    "b2": {"id": "complianceradar", "sessionId": "9917741720826600706", "port": 8092, "status": "running"},
+    "b3": {"id": "policyforge", "sessionId": "14694155663417768684", "port": 8093, "status": "running"},
+    "b4": {"id": "auditready", "sessionId": "7025581726079747681", "port": 8094, "status": "running"},
+    "b5": {"id": "licenseguard", "sessionId": "2030956657592463658", "port": 8096, "status": "running"},
+    "b6": {"id": "ndaflow", "sessionId": "5086010572182344849", "port": 8097, "status": "running"},
+    "b7": {"id": "regulatoryfiling", "sessionId": "12411298052239876057", "port": 8098, "status": "running"},
+    "b8": {"id": "contractportfolio", "sessionId": "4382636369267276158", "port": 8099, "status": "running"},
+    "b9": {"id": "dataprivacyai", "sessionId": "1317285269197740533", "port": 8100, "status": "running"},
+    "b10": {"id": "legalresearch", "sessionId": "12804695625144369182", "port": 8101, "status": "running"}
+  }
+}
