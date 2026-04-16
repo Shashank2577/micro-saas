@@ -1,0 +1,10 @@
+{
+  "app": "expenseintelligence",
+  "displayName": "Expense Intelligence",
+  "version": "0.0.1",
+  "baseUrl": "https://api-expenseintelligence.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

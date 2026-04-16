@@ -1,0 +1,10 @@
+{
+  "app": "cashflowai",
+  "displayName": "CashflowAI",
+  "version": "0.0.1",
+  "baseUrl": "https://api-cashflowai.YOURDOMAIN.com",
+  "emits": ["cashflow.shortfall-predicted"],
+  "consumes": ["invoice.paid"],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

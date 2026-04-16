@@ -1,0 +1,16 @@
+{
+  "app": "dataprivacyai",
+  "displayName": "DataPrivacyAI",
+  "version": "0.0.1",
+  "baseUrl": "https://api-dataprivacyai.YOURDOMAIN.com",
+  "emits": ["privacy.risk-detected", "dsr.completed"],
+  "consumes": ["user.data-requested"],
+  "capabilities": [
+    {
+      "name": "assess-privacy-risks",
+      "input": "dataFlowId",
+      "output": "riskList"
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}
