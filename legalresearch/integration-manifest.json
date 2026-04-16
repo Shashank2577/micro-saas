@@ -1,0 +1,8 @@
+{
+  "app": "legalresearch",
+  "displayName": "LegalResearch",
+  "version": "0.0.1",
+  "emits": ["memo.completed"],
+  "consumes": [],
+  "capabilities": [{"name": "research-query", "input": "legalQuestion", "output": "researchMemo"}]
+}
