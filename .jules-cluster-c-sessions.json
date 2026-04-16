@@ -1,0 +1,17 @@
+{
+  "cluster": "C",
+  "theme": "Finance & Operations Intelligence",
+  "dispatched_at": "2026-04-16",
+  "apps": {
+    "c1": {"id": "cashflowai", "sessionId": "11946847677209280241", "port": 8110, "status": "applied"},
+    "c2": {"id": "financenarrator", "sessionId": "5750479063489618897", "port": 8111, "status": "applied"},
+    "c3": {"id": "expenseintelligence", "sessionId": "7055198501957219582", "port": 8112, "status": "applied"},
+    "c4": {"id": "vendoriq", "sessionId": "13595033234807933206", "port": 8113, "status": "applied"},
+    "c5": {"id": "invoiceprocessor", "sessionId": "3436366580810519382", "port": 8114, "status": "applied"},
+    "c6": {"id": "runwaymodeler", "sessionId": "763752230666719289", "port": 8115, "status": "applied"},
+    "c7": {"id": "procurebot", "sessionId": "13673998368950139521", "port": 8116, "status": "applied"},
+    "c8": {"id": "budgetpilot", "sessionId": "5219023816222946482", "port": 8117, "status": "running"},
+    "c9": {"id": "taxdataorganizer", "sessionId": "2375205918353396575", "port": 8118, "status": "applied"},
+    "c10": {"id": "equityintelligence", "sessionId": "5363224123213352182", "port": 8119, "status": "running"}
+  }
+}
