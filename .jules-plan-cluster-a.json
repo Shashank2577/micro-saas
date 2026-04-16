@@ -1,0 +1,54 @@
+{
+  "repo": "Shashank2577/micro-saas",
+  "branch": "main",
+  "spec_file": "docs/superpowers/specs/cluster-a-detailed-specs.md",
+  "created_at": "2026-04-16T02:00:00Z",
+  "total_tasks": 5,
+  "batches": [
+    {
+      "batch": 1,
+      "name": "Cluster A Wave 1 - Developer Apps",
+      "rationale": "All 5 apps in Cluster A are independent - separate codebases, no shared dependencies. Can build in parallel.",
+      "tasks": [
+        {
+          "id": "incidentbrain",
+          "title": "Build IncidentBrain - AI Incident Root Cause Analysis",
+          "prompt": "Build IncidentBrain, an AI-powered incident root cause analysis platform.\n\nCONTEXT:\n- This is part of a 91-app micro-SaaS ecosystem on shared cc-starter foundation\n- Tech stack: Spring Boot 3.3.5 + cc-starter (provides tenancy, auth, RBAC, audit, search, AI, webhooks), PostgreSQL 16 + pgvector, Redis 7, Keycloak, LiteLLM\n- Foundation repo: https://github.com/Shashank2577/micro-saas (already has Nexus Hub orchestrator)\n- Use scaffold-app.sh pattern from tools/ to bootstrap app structure\n- Must integrate with Nexus Hub for app registration and event bus\n\nREQUIREMENTS from spec:\n1. Incident ingestion: Webhook endpoints for incident creation (Datadog/PagerDuty format)\n2. Context aggregation: Fetch correlated logs, metrics, traces, git history\n3. AI Analysis: Use Claude Sonnet 4.6 via LiteLLM for root cause hypothesis\n4. Similarity search: Vector search over historical incidents (pgvector)\n5. Postmorter generator: Auto-generate markdown postmortem draft\n\nMVP Scope:\n- Manual incident creation form\n- Datadog integration for logs/metrics (API fetch)\n- GitHub integration for recent commits\n- AI root cause analysis (Claude via LiteLLM)\n- Simple incident timeline UI\n\nDATA MODEL:\n- Incident entity: id, title, severity, status, rootCauseHypothesis, confidenceScore, timelineEvents[], similarIncidents[], postmortemDraft\n- TimelineEvent: timestamp, source, type, summary, metadata\n- RootCauseCandidate: description, confidence, evidence[], aiReasoning\n\nINTEGRATION MANIFEST:\n- emits: incident.opened, incident.root-cause-identified, incident.resolved\n- consumes: deploy.completed, error-rate-spike, alert-fired\n- capabilities: analyze-incident, find-similar, generate-postmortem\n\nIMPLEMENTATION STEPS:\n1. Use scaffold-app.sh to bootstrap: ./tools/scaffold-app.sh incidentbrain \"IncidentBrain\" 8091\n2. Create entities in src/main/java/com/microsaas/incidentbrain/\n3. Create REST controllers with OpenAPI docs\n4. Implement AI analysis service using LiteLLM (Claude Sonnet 4.6)\n5. Create integration-manifest.json\n6. Build simple Next.js frontend with incident list/timeline\n7. Test with Nexus Hub registration\n\nKeep code clean, follow Spring Boot best practices, use cc-starter modules for tenancy/auth/audit.",
+          "depends_on": []
+        },
+        {
+          "id": "dependencyradar",
+          "title": "Build DependencyRadar - Open Source Dependency Monitoring",
+          "prompt": "Build DependencyRadar, an open source dependency monitoring platform with upgrade intelligence.\n\nCONTEXT:\n- Part of 91-app micro-SaaS ecosystem on shared cc-starter foundation\n- Tech stack: Spring Boot 3.3.5 + cc-starter, PostgreSQL, Redis, Keycloak, LiteLLM\n- Foundation repo: https://github.com/Shashank2577/micro-saas\n- Must integrate with Nexus Hub for event bus\n\nREQUIREMENTS from spec:\n1. Repo scanning: GitHub webhook on push to parse dependency files (pom.xml, package.json)\n2. Vulnerability feed: Cross-reference with NVD and GitHub Security Advisories\n3. Dependency graph: Build transitive dependency tree\n4. Impact analyzer: For upgrade candidate, run test suite in sandbox\n5. Auto-PR: Create pull request with upgrade if tests pass\n\nMVP Scope:\n- GitHub webhook on push\n- Maven + npm dependency parsing\n- NVD vulnerability lookup\n- Manual 'test upgrade' button (runs tests in background)\n- Dependency health dashboard\n\nDATA MODEL:\n- Dependency: repoId, name, currentVersion, latestVersion, vulnerabilities[], outdated, deprecated\n- Vulnerability: cveId, severity, description, affectedVersions, patchedVersions\n- UpgradeCandidate: dependencyId, newVersion, testResults[], prUrl\n\nINTEGRATION MANIFEST:\n- emits: vulnerability-detected, dependency-outdated, upgrade-available\n- consumes: code.pushed, pr.merged\n- capabilities: scan-dependencies, check-upgrade, create-upgrade-pr\n\nIMPLEMENTATION STEPS:\n1. Scaffold: ./tools/scaffold-app.sh dependencyradar \"DependencyRadar\" 8092\n2. Create GitHub webhook controller for push events\n3. Parse pom.xml/package.json with Maven/ npm APIs\n4. Implement NVD API client for vulnerability lookup\n5. Create dependency health dashboard UI\n6. Manual test upgrade feature (background job with tests)\n7. Register with Nexus Hub",
+          "depends_on": []
+        },
+        {
+          "id": "deploysignal",
+          "title": "Build DeploySignal - Deployment Analytics and Risk Assessment",
+          "prompt": "Build DeploySignal, a deployment analytics platform with risk assessment.\n\nCONTEXT:\n- Part of 91-app micro-SaaS ecosystem on cc-starter foundation\n- Tech stack: Spring Boot 3.3.5 + cc-starter, TimescaleDB (or Postgres + Timescale extension), Redis, Keycloak\n- Foundation repo: https://github.com/Shashank2577/micro-saas\n\nREQUIREMENTS from spec:\n1. Deploy ingestion: Webhook from CI/CD (GitHub Actions, Vercel, CircleCI)\n2. Risk scoring: Algorithm weighting commit count, test failures, deployer tenure, time/day\n3. DORA dashboard: Deployment frequency, lead time, change failure rate, time to restore\n4. Anomaly detection: Spike in error rate after deploy\n\nMVP Scope:\n- GitHub Actions webhook ingestion\n- Basic risk scoring (files changed count, test pass/fail)\n- Deploy history table\n- Simple DORA metrics (deploy freq, change fail rate)\n\nDATA MODEL:\n- Deployment: id, sha, branch, status, startedAt, completedAt, riskScore, filesChanged[], testResults, rollback\n- RiskFactor: type, weight, description\n\nINTEGRATION MANIFEST:\n- emits: deploy.started, deploy.completed, deploy.failed, deploy.rolled-back\n- consumes: incident.opened, error-rate-spike, test.failed\n- capabilities: calculate-risk, track-dora\n\nIMPLEMENTATION STEPS:\n1. Scaffold: ./tools/scaffold-app.sh deploysignal \"DeploySignal\" 8093\n2. Create GitHub Actions webhook controller\n3. Implement risk scoring algorithm\n4. Create DORA metrics calculation queries\n5. Build deploy calendar UI\n6. Register with Nexus Hub",
+          "depends_on": []
+        },
+        {
+          "id": "apievolver",
+          "title": "Build APIEvolver - API Contract Management with Backward Compatibility",
+          "prompt": "Build APIEvolver, an API contract management platform with backward compatibility checking.\n\nCONTEXT:\n- Part of 91-app micro-SaaS ecosystem on cc-starter foundation\n- Tech stack: Spring Boot 3.3.5 + cc-starter, PostgreSQL, Redis, Keycloak\n- Foundation repo: https://github.com/Shashank2577/micro-saas\n\nREQUIREMENTS from spec:\n1. Spec registry: Upload OpenAPI/GraphQL specs for each service version\n2. Spec diff: Compare v1 vs v2, list changed endpoints\n3. Breaking change detector: Rules engine for breaking changes\n4. Dependency graph: Service A depends on Service B's API\n5. Change notification: Notify consumers on API changes\n\nMVP Scope:\n- Manual OpenAPI spec upload (JSON file)\n- Spec diff between two versions\n- Manual breaking change rules (simple regex/list)\n- Manual consumer registration\n\nDATA MODEL:\n- ApiSpec: serviceId, version, specType, specUrl, contentHash, uploadedAt\n- ApiChange: specId, oldVersion, newVersion, changes[], breakingChanges[]\n- ApiDependency: consumerServiceId, providerServiceId, usedEndpoints[]\n\nINTEGRATION MANIFEST:\n- emits: api-spec-uploaded, breaking-change-detected, api-deprecated\n- consumes: service.registered, api-spec-scanned\n- capabilities: diff-specs, detect-breaking, notify-consumers\n\nIMPLEMENTATION STEPS:\n1. Scaffold: ./tools/scaffold-app.sh apievolver \"APIEvolver\" 8094\n2. Create OpenAPI spec upload endpoint\n3. Implement spec diff algorithm (swagger-parser library)\n4. Build breaking change detector rules engine\n5. Create spec visualization UI (side-by-side diff)\n6. Register with Nexus Hub",
+          "depends_on": []
+        },
+        {
+          "id": "securitypulse",
+          "title": "Build SecurityPulse - Code Security Scanner with Policy Enforcement",
+          "prompt": "Build SecurityPulse, a unified code security scanner with policy enforcement.\n\nCONTEXT:\n- Part of 91-app micro-SaaS ecosystem on cc-starter foundation\n- Tech stack: Spring Boot 3.3.5 + cc-starter, PostgreSQL, Redis, Keycloak, LiteLLM\n- Foundation repo: https://github.com/Shashank2577/micro-saas\n\nREQUIREMENTS from spec:\n1. PR scanning: GitHub Actions app that scans on every PR\n2. Tool orchestration: Run Semgrep (SAST), TruffleHog (secrets), custom patterns\n3. Policy engine: Rule-based (block PR on secret, warn on high SAST)\n4. AI triage: Claude Sonnet 4.6 groups findings, filters FPs, suggests fixes\n5. Issue tracker: Track findings over time\n\nMVP Scope:\n- Manual scan (paste branch name/SHA)\n- Semgrep + TruffleHog integration\n- Basic policy engine (block on secrets, warn on high severity)\n- Findings table\n\nDATA MODEL:\n- SecurityScan: prId, sha, branch, status, findings[], policyDecision\n- Finding: tool, severity, type, filePath, line, description, aiSuggestion\n- Policy: name, rules[], action\n\nINTEGRATION MANIFEST:\n- emits: security-scan-completed, vulnerability-found, policy-violation\n- consumes: pr.opened, pr.merged\n- capabilities: scan-pr, enforce-policy, triage-findings\n\nIMPLEMENTATION STEPS:\n1. Scaffold: ./tools/scaffold-app.sh securitypulse \"SecurityPulse\" 8095\n2. Integrate Semgrep CLI and TruffleHog CLI\n3. Create manual scan endpoint (branch + SHA)\n4. Implement policy engine with rule evaluation\n5. Build security dashboard UI\n6. Register with Nexus Hub\n\nKeep it simple for MVP, no GitHub Actions app yet (manual scan trigger).",
+          "depends_on": []
+        }
+      ]
+    }
+  ],
+  "orchestration": {
+    "concurrency": 5,
+    "poll_interval_minutes": 30,
+    "on_completion": {
+      "merge_strategy": "auto_merge_passed",
+      "notify": ["summary"]
+    }
+  }
+}
