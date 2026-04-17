@@ -1,0 +1,21 @@
+{
+  "app": "supportintelligence",
+  "displayName": "SupportIntelligence",
+  "version": "0.0.1",
+  "baseUrl": "https://api-supportintelligence.YOURDOMAIN.com",
+  "emits": [
+    "ticket.created",
+    "ticket.escalated",
+    "ticket.resolved"
+  ],
+  "consumes": [
+    "product.updated",
+    "feature.released"
+  ],
+  "capabilities": [
+    "suggest-response",
+    "detect-escalation",
+    "mine-ticket-patterns"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
