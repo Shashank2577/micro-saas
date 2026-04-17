@@ -1,6 +1,6 @@
 package com.microsaas.brandvoice.repository;
 
-import com.microsaas.brandvoice.model.BrandProfile;
+import com.microsaas.brandvoice.entity.BrandProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
