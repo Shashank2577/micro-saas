@@ -2,20 +2,27 @@ package com.microsaas.peopleanalytics;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import com.crosscutting.starter.ai.AiService;
+import com.crosscutting.starter.webhooks.WebhookService;
+import io.minio.MinioClient;
 
-@SpringBootTest(properties = {
-    "spring.flyway.enabled=false",
-    "spring.jpa.hibernate.ddl-auto=update",
-    "spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=PostgreSQL",
-    "spring.datasource.driverClassName=org.h2.Driver",
-    "spring.datasource.username=sa",
-    "spring.datasource.password=password",
-    "spring.jpa.database-platform=org.hibernate.dialect.H2Dialect",
-    "cc.ai.provider=litellm"
-})
+@SpringBootTest
+@ActiveProfiles("test")
 class PeopleAnalyticsApplicationTests {
+
+    @MockBean
+    private AiService aiService;
+
+    @MockBean
+    private MinioClient minioClient;
+
+    @MockBean
+    private WebhookService webhookService;
 
     @Test
     void contextLoads() {
     }
+
 }

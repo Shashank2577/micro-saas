@@ -1,10 +1,22 @@
 {
   "app": "peopleanalytics",
-  "displayName": "People Analytics",
+  "displayName": "PeopleAnalytics",
   "version": "0.0.1",
-  "baseUrl": "http://localhost:8127",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
+  "baseUrl": "https://api-peopleanalytics.YOURDOMAIN.com",
+  "emits": [
+    "MetricAggregationCompleted",
+    "EngagementScoringCompleted",
+    "RetentionPredictionCompleted",
+    "CacheInvalidated"
+  ],
+  "consumes": [
+    "MetricIngestionRequested",
+    "PulseSurveySubmitted"
+  ],
+  "capabilities": [
+    "ai-predictive-scoring",
+    "ai-summary-generation",
+    "pgmq-async-processing"
+  ],
   "healthEndpoint": "/actuator/health"
 }
