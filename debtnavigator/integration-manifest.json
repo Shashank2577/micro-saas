@@ -1,0 +1,10 @@
+{
+  "app": "debtnavigator",
+  "displayName": "DebtNavigator",
+  "version": "0.0.1",
+  "baseUrl": "https://api-debtnavigator.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
