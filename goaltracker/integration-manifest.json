@@ -1,0 +1,25 @@
+{
+  "app": "goaltracker",
+  "displayName": "GoalTracker",
+  "version": "0.0.1",
+  "baseUrl": "https://api-goaltracker.YOURDOMAIN.com",
+  "emits": [
+    "goaltracker.goal.created",
+    "goaltracker.savings_plan.generated",
+    "goaltracker.transfer.executed",
+    "goaltracker.progress.updated",
+    "goaltracker.milestone.celebration",
+    "goaltracker.motivation.nudge"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "goal-creation",
+    "savings-calculation",
+    "progress-tracking",
+    "transfer-automation",
+    "investment-recommendation",
+    "motivation-insights",
+    "goal-sharing"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
