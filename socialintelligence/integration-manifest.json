@@ -1,0 +1,10 @@
+{
+  "app": "socialintelligence",
+  "displayName": "Social Intelligence",
+  "version": "0.0.1",
+  "baseUrl": "https://api-socialintelligence.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

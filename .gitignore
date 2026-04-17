@@ -6,3 +6,7 @@ target/
 *.log
 node_modules/
 dist/
+socialintelligence/frontend/.next/
+socialintelligence/frontend/.next/
+socialintelligence/frontend/node_modules/
+socialintelligence/backend/.omc/
