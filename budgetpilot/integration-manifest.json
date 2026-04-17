@@ -1,0 +1,10 @@
+{
+  "app": "budgetpilot",
+  "displayName": "BudgetPilot",
+  "version": "0.0.1",
+  "baseUrl": "https://api-budgetpilot.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

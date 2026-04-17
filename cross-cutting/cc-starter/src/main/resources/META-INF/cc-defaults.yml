@@ -1,0 +1,21 @@
+spring:
+  flyway:
+    locations: classpath:db/migration/cc,classpath:db/migration/app
+    schemas: cc,audit,tenant
+
+logging:
+  pattern:
+    level: "%5p [%X{correlationId}] [%X{tenantId}] [%X{userId}]"
+
+cc:
+  tenancy:
+    mode: multi
+  security:
+    cors-origins: http://localhost:3000
+  audit:
+    system-audit-enabled: true
+    auth-event-sync-enabled: true
+    log-request-body: true
+    log-response-body: false
+    sensitive-fields: password,secret,token,apiKey,authorization
+    exclude-paths: /actuator/**,/cc/health

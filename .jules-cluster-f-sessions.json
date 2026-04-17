@@ -1,0 +1,18 @@
+{
+  "cluster": "F",
+  "theme": "Data & Analytics Intelligence",
+  "dispatched_at": "2026-04-16",
+  "apps": {
+    "f1": {"id": "datastoryteller",   "sessionId": "9152635207659069836",  "port": 8150, "status": "running"},
+    "f2": {"id": "pipelineguardian",  "sessionId": "17711200407472489331", "port": 8151, "status": "running"},
+    "f3": {"id": "metricshub",        "sessionId": "17520825871574249836", "port": 8152, "status": "running"},
+    "f4": {"id": "datacatalogai",     "sessionId": "14420438184579717671", "port": 8153, "status": "running"},
+    "f5": {"id": "experimentengine",  "sessionId": "1427608245461437508",  "port": 8154, "status": "running"},
+    "f6": {"id": "customersignal",    "sessionId": null,                    "port": 8155, "status": "blocked: FAILED_PRECONDITION (retry when quota frees)"},
+    "f7": {"id": "forecastai",        "sessionId": null,                    "port": 8156, "status": "blocked: FAILED_PRECONDITION (retry when quota frees)"},
+    "f8": {"id": "alertintelligence", "sessionId": null,                    "port": 8157, "status": "blocked: FAILED_PRECONDITION (retry when quota frees)"},
+    "f9": {"id": "dataqualityai",     "sessionId": null,                    "port": 8158, "status": "pending (LIMIT=8 deferred)"},
+    "f10":{"id": "reportautomator",   "sessionId": null,                    "port": 8159, "status": "pending (LIMIT=8 deferred)"},
+    "f11":{"id": "ethicsmonitor",     "sessionId": null,                    "port": 8160, "status": "pending (LIMIT=8 deferred)"}
+  }
+}

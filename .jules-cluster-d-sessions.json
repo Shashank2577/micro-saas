@@ -1,0 +1,15 @@
+{
+  "cluster": "D",
+  "theme": "HR & Talent Intelligence",
+  "dispatched_at": "2026-04-16",
+  "apps": {
+    "d1": {"id": "hiresignal", "sessionId": "15158962448092807957", "port": 8120, "status": "applied"},
+    "d2": {"id": "interviewos", "sessionId": "9175540433459007697", "port": 8121, "status": "applied"},
+    "d3": {"id": "performancenarrative", "sessionId": "6728221473305140694", "port": 8122, "status": "applied"},
+    "d4": {"id": "retentionsignal", "sessionId": "2124888026431247896", "port": 8123, "status": "applied"},
+    "d5": {"id": "compbenchmark", "sessionId": "2752173484471744718", "port": 8124, "status": "applied"},
+    "d6": {"id": "onboardflow", "sessionId": "15402016304233889435", "port": 8125, "status": "applied"},
+    "d7": {"id": "jobcraftai", "sessionId": "12057597833201239757", "port": 8126, "status": "applied"},
+    "d8": {"id": "peopleanalytics", "sessionId": "6543753190612673271", "port": 8127, "status": "applied"}
+  }
+}

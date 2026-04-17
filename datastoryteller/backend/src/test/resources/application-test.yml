@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: test
+    password: test
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: false
+  ai:
+    openai:
+      api-key: test-key
+      base-url: http://localhost:4000

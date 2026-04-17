@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  datastoryteller:
+    build:
+      context: ../datastoryteller
+      dockerfile: Dockerfile
+    ports:
+      - "8150:8150"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ecosystem
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_AI_OPENAI_BASE_URL=http://litellm:4000
+    depends_on:
+      - postgres
+      - litellm
+
+  experimentengine-backend:
+    build:
+      context: ../experimentengine
+      dockerfile: Dockerfile
+    ports:
+      - "8154:8154"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/experimentengine
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres

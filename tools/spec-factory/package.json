@@ -1,0 +1,43 @@
+{
+  "name": "spec-factory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc -b",
+    "start": "node ./bin/run.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@oclif/core": "^4.10.5",
+    "@oclif/plugin-help": "^6.2.44",
+    "axios": "^1.15.0",
+    "chalk": "^4.1.2",
+    "ora": "^5.4.1",
+    "winston": "^3.19.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^25.6.0",
+    "jest": "^30.3.0",
+    "ts-jest": "^29.4.9",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  },
+  "oclif": {
+    "bin": "spec-factory",
+    "dirname": "spec-factory",
+    "commands": "./dist/commands",
+    "plugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "bin": {
+    "spec-factory": "./bin/run.js"
+  }
+}

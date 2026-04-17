@@ -1,0 +1,11 @@
+{
+  "app":"experimentengine","displayName":"ExperimentEngine","version":"0.0.1",
+  "baseUrl":"http://localhost:8154","healthEndpoint":"/actuator/health",
+  "emits":["experiment.started","experiment.significant","experiment.concluded","rollout.activated", "experiment.guardrail-violated"],
+  "consumes":["metric.defined","feature-flag.updated"],
+  "capabilities":[
+    {"name":"assign","input":"unitId+experimentId","output":"variant"},
+    {"name":"track-event","input":"event","output":"ack"},
+    {"name":"get-results","input":"experimentId","output":"analysis"}
+  ]
+}

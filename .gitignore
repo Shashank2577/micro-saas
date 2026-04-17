@@ -6,3 +6,38 @@ target/
 *.log
 node_modules/
 dist/
+<<<<<<< HEAD
+.next/
+.m2/
+*.orig
+*.rej
+pom_patch*.xml
+pom_diff*.patch
+package-lock.json
+.omc/
+.DS_Store
+.env
+.env.*
+.jules-env
+.jules-cluster-*-dispatch.log
+.jules-plan-*.json
+=======
+
+# Next.js build output
+.next
+out
+build
+
+# node modules
+node_modules/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Java / Maven build output
+target/
+.omc/
+>>>>>>> bd22c14 (WIP: scaffold seointelligence app)

@@ -1,0 +1,16 @@
+package com.crosscutting.starter.notifications;
+
+import lombok.*;
+import java.io.Serializable;
+import java.util.UUID;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+public class NotificationPreferenceId implements Serializable {
+    private UUID userId;
+    private String channel;
+    private String category;
+}

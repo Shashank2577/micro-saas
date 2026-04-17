@@ -1,0 +1,14 @@
+{
+  "app":"datastoryteller",
+  "displayName":"DataStoryTeller",
+  "version":"0.0.1",
+  "baseUrl":"http://localhost:8150",
+  "healthEndpoint":"/actuator/health",
+  "emits":["narrative.generated","narrative.published","insight.detected","delivery.dispatched"],
+  "consumes":["metric.updated","dashboard.refreshed","anomaly.detected"],
+  "capabilities":[
+    {"name":"generate-narrative","input":"datasetId+timeRange","output":"markdownReport"},
+    {"name":"explain-metric","input":"metricName+values","output":"prose"},
+    {"name":"summarize-dashboard","input":"dashboardId","output":"executiveSummary"}
+  ]
+}

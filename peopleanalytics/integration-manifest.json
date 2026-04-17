@@ -1,0 +1,10 @@
+{
+  "app": "peopleanalytics",
+  "displayName": "People Analytics",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8127",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

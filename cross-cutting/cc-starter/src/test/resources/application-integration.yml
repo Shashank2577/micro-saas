@@ -1,0 +1,30 @@
+spring:
+  # Datasource and Redis are configured via @DynamicPropertySource
+  flyway:
+    locations: classpath:db/migration/cc
+    schemas: cc,audit,tenant
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: cc
+
+  # Disable OAuth2 resource server (no Keycloak in test)
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration
+
+# Disable modules that need external services
+cc:
+  tenancy:
+    mode: multi
+  audit:
+    system-audit-enabled: false
+  storage:
+    enabled: false
+
+logging:
+  level:
+    org.testcontainers: INFO
+    org.flywaydb: DEBUG

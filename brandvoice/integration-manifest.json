@@ -1,0 +1,10 @@
+{
+  "app": "brandvoice",
+  "displayName": "BrandVoice",
+  "version": "0.0.1",
+  "baseUrl": "https://api-brandvoice.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
