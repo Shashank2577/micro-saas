@@ -1,0 +1,10 @@
+{
+  "app": "onboardflow",
+  "displayName": "OnboardFlow",
+  "version": "0.0.1",
+  "baseUrl": "https://api-onboardflow.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
