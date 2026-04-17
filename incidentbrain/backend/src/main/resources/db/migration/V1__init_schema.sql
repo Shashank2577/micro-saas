@@ -10,5 +10,8 @@ CREATE TABLE incidents (
     timeline_events JSONB,
     similar_incidents JSONB,
     postmortem_draft TEXT,
-    embedding vector(1536) -- For similarity search later
+    tenant_id VARCHAR(36) NOT NULL,
+    embedding vector(1536)
 );
+
+CREATE INDEX idx_incidents_tenant_id ON incidents(tenant_id);

@@ -1,5 +1,6 @@
 package com.microsaas.incidentbrain.service;
 
+import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.incidentbrain.domain.model.Incident;
 import com.microsaas.incidentbrain.domain.model.RootCauseCandidate;
 import com.microsaas.incidentbrain.domain.repository.IncidentRepository;
@@ -25,6 +26,8 @@ public class IncidentService {
     private final GitHubIntegrationService githubService;
 
     public Incident createIncident(Incident incident) {
+        String tenantId = TenantContext.require().toString();
+        incident.setTenantId(tenantId);
         incident.setStatus("OPEN");
         if (incident.getTimelineEvents() == null) {
             incident.setTimelineEvents(new ArrayList<>());
@@ -32,12 +35,16 @@ public class IncidentService {
         return incidentRepository.save(incident);
     }
 
+    public List<Incident> listIncidents() {
+        return incidentRepository.findByTenantId(TenantContext.require().toString());
+    }
+
     public Optional<Incident> getIncident(String id) {
-        return incidentRepository.findById(id);
+        return incidentRepository.findByIdAndTenantId(id, TenantContext.require().toString());
     }
 
     public void ingestDatadogLogs(String incidentId, String serviceName) {
-        Incident incident = incidentRepository.findById(incidentId)
+        Incident incident = incidentRepository.findByIdAndTenantId(incidentId, TenantContext.require().toString())
                 .orElseThrow(() -> new RuntimeException("Incident not found"));
         
         List<String> logs = datadogService.fetchRecentLogs(serviceName);
@@ -55,12 +62,10 @@ public class IncidentService {
     }
 
     public RootCauseCandidate analyzeIncident(String incidentId) {
-        Incident incident = incidentRepository.findById(incidentId)
+        Incident incident = incidentRepository.findByIdAndTenantId(incidentId, TenantContext.require().toString())
                 .orElseThrow(() -> new RuntimeException("Incident not found"));
 
-        // Use the title as a placeholder repository name or pass it via API.
-        // Assuming title format could be `[RepoName] Issue title` to make it dynamic.
-        String repo = "freestack/cross-cutting"; // Let's use a real repository as a fallback if not parsed
+        String repo = "freestack/cross-cutting";
         if (incident.getTitle() != null && incident.getTitle().contains("/")) {
              repo = incident.getTitle().split(" ")[0];
         }
@@ -86,7 +91,7 @@ public class IncidentService {
     }
 
     public String generatePostmortem(String incidentId) {
-        Incident incident = incidentRepository.findById(incidentId)
+        Incident incident = incidentRepository.findByIdAndTenantId(incidentId, TenantContext.require().toString())
                 .orElseThrow(() -> new RuntimeException("Incident not found"));
 
         String prompt = "Generate a postmortem markdown document for the following incident:\n" +
