@@ -1,0 +1,24 @@
+{
+  "app": "observabilitystack",
+  "displayName": "Observability Stack",
+  "version": "0.0.1",
+  "baseUrl": "https://api-observabilitystack.YOURDOMAIN.com",
+  "emits": [
+    "observability.alert.triggered",
+    "observability.incident.created",
+    "observability.incident.escalated",
+    "observability.incident.resolved",
+    "observability.health.failed"
+  ],
+  "consumes": [
+    "platform.service.deployed",
+    "platform.system.error"
+  ],
+  "capabilities": [
+    "monitoring",
+    "logging",
+    "tracing",
+    "incident-management"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
