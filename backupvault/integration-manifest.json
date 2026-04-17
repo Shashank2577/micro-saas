@@ -1,0 +1,22 @@
+{
+  "app": "backupvault",
+  "displayName": "BackupVault",
+  "version": "0.0.1",
+  "baseUrl": "https://api-backupvault.YOURDOMAIN.com",
+  "emits": [
+    "backup.execution.started",
+    "backup.execution.completed",
+    "backup.execution.failed",
+    "backup.restore.started",
+    "backup.restore.completed",
+    "dr.drill.completed"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "backup_management",
+    "point_in_time_recovery",
+    "disaster_recovery",
+    "cross_region_replication"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
