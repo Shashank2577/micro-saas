@@ -3,19 +3,8 @@
   "displayName": "OnboardFlow",
   "version": "0.0.1",
   "baseUrl": "https://api-onboardflow.YOURDOMAIN.com",
-  "emits": [
-    "onboarding.plan.created",
-    "onboarding.task.completed",
-    "onboarding.milestone.achieved",
-    "onboarding.blocked"
-  ],
-  "consumes": [
-    "employee.hired",
-    "employee.updated"
-  ],
-  "capabilities": [
-    "generate-onboarding-plan",
-    "assess-milestone"
-  ],
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }
