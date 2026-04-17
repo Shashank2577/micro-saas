@@ -1,0 +1,28 @@
+{
+  "name": "Document Vault",
+  "appId": "documentvault",
+  "version": "1.0.0",
+  "port": 8113,
+  "description": "Secure document storage and management system with OCR and versioning.",
+  "emits": [
+    "document.uploaded",
+    "document.shared",
+    "document.deleted"
+  ],
+  "consumes": [
+    "tenant.created",
+    "tenant.deleted",
+    "user.created"
+  ],
+  "capabilities": [
+    "file-storage",
+    "ocr",
+    "document-versioning",
+    "storage-quota-management"
+  ],
+  "dependencies": {
+    "database": "postgresql",
+    "cache": "redis",
+    "storage": "s3"
+  }
+}
