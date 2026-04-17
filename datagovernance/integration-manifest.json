@@ -1,0 +1,28 @@
+{
+  "name": "datagovernance",
+  "displayName": "Data Governance",
+  "description": "Data management and compliance service. Handles data retention policies, GDPR/CCPA compliance, data lineage, PII detection, and audit trails.",
+  "emits": [
+    {
+      "eventType": "dsar.completed",
+      "description": "Fired when a Data Subject Access Request is completed"
+    },
+    {
+      "eventType": "consent.updated",
+      "description": "Fired when user consent is updated"
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "user.deleted",
+      "description": "Listen to user deletion events to automate GDPR erasure"
+    }
+  ],
+  "capabilities": [
+    "DATA_RETENTION",
+    "DSAR_MANAGEMENT",
+    "PII_DETECTION",
+    "CONSENT_MANAGEMENT",
+    "DATA_LINEAGE"
+  ]
+}
