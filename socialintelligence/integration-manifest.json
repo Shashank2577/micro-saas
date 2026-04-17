@@ -1,10 +1,45 @@
 {
-  "app": "socialintelligence",
-  "displayName": "Social Intelligence",
-  "version": "0.0.1",
-  "baseUrl": "https://api-socialintelligence.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "app-id": "socialintelligence",
+  "version": "1.0.0",
+  "capabilities": [
+    "social-media-analytics",
+    "growth-intelligence",
+    "audience-insights",
+    "competitor-benchmarking"
+  ],
+  "emits": [
+    {
+      "event": "metrics.synced",
+      "description": "Fired when social metrics are synchronized",
+      "payload": {
+        "tenant_id": "string",
+        "timestamp": "string"
+      }
+    },
+    {
+      "event": "recommendations.generated",
+      "description": "Fired when AI growth recommendations are generated",
+      "payload": {
+        "tenant_id": "string",
+        "count": "integer"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "event": "user.created",
+      "description": "Listens for new user creation to provision tenant data"
+    }
+  ],
+  "api": {
+    "base-path": "/api",
+    "endpoints": [
+      "/accounts",
+      "/metrics/unified",
+      "/metrics/engagement-trends",
+      "/audience/demographics",
+      "/content/top-performing",
+      "/growth/recommendations"
+    ]
+  }
 }

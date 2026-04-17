@@ -2,42 +2,32 @@ spring:
   application:
     name: socialintelligence
   datasource:
-    url: jdbc:postgresql://localhost:5432/cc
-    username: cc
-    password: cc
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:socialintelligence}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        default_schema: socialintelligence
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
   flyway:
-    locations: classpath:db/migration
-    default-schema: socialintelligence
-    schemas: socialintelligence, cc, audit
-  data:
-    redis:
-      host: localhost
-      port: 6379
+    enabled: true
+    baseline-on-migrate: true
 
 server:
   port: 8135
 
-cc:
-  tenancy:
-    mode: header
-    header-name: X-Tenant-ID
-  auth:
-    keycloak-url: http://localhost:8180
-    realm: cc
-    client-id: cc-backend
-  ai:
-    gateway-url: http://localhost:4000
-    api-key: sk-local-dev-key
-    default-model: claude-sonnet-4-6
-
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+litellm:
+  url: ${LITELLM_URL:http://localhost:4000}
+  model: ${LITELLM_MODEL:gpt-4}
+  api-key: ${LITELLM_API_KEY:sk-1234}
