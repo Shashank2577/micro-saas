@@ -1,0 +1,10 @@
+{
+  "app": "retentionsignal",
+  "displayName": "RetentionSignal",
+  "version": "0.0.1",
+  "baseUrl": "https://api-retentionsignal.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
