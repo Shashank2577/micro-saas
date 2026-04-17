@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  pricingintelligence-backend:
+    build:
+      context: ../pricingintelligence/backend
+      dockerfile: Dockerfile
+    ports:
+      - "8174:8174"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/ecosystem
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
+
+  pricingintelligence-frontend:
+    build:
+      context: ../pricingintelligence/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://pricingintelligence-backend:8174
+    depends_on:
+      - pricingintelligence-backend
