@@ -1,0 +1,7 @@
+feat: Fix partially working HealthcareDocAI app
+
+- Ensured port uses 8150 consistently
+- Setup correct API endpoint mapping for EHR sync and get templates
+- Updated mock integrations on backend to emulate responses rather than empty returns
+- Re-scaffolded frontend using Next.js 15
+- Implemented and passing tests for all modules
