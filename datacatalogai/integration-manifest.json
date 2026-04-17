@@ -1,0 +1,10 @@
+{
+  "app": "datacatalogai",
+  "displayName": "DataCatalogAI",
+  "version": "0.0.1",
+  "baseUrl": "https://api-datacatalogai.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
