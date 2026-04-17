@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/analyticsbuilder_test_db
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  flyway:
+    enabled: false
+
+server:
+  port: 0
+
+cc:
+  ai:
+    enabled: false
+  webhook:
+    enabled: false
+  storage:
+    enabled: false

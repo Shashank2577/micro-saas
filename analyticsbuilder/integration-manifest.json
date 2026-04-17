@@ -1,0 +1,10 @@
+{
+  "app": "analyticsbuilder",
+  "displayName": "AnalyticsBuilder",
+  "version": "0.0.1",
+  "baseUrl": "https://api-analyticsbuilder.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
