@@ -27,7 +27,7 @@ public class InsightAIService {
         log.info("Generating AI insights for tenant {}", tenantId);
         List<ContentChannel> channels = channelRepository.findByTenantId(tenantId);
         List<ContentInsight> newInsights = new ArrayList<>();
-        
+
         for (ContentChannel channel : channels) {
             try {
                 ContentInsight insight = ContentInsight.builder()
@@ -38,13 +38,13 @@ public class InsightAIService {
                         .evidence(Map.of("ai_generated", true))
                         .generatedAt(LocalDateTime.now())
                         .build();
-                        
+
                 newInsights.add(insightRepository.save(insight));
             } catch (Exception e) {
                 log.error("Failed to generate AI insight for channel {}", channel.getId(), e);
             }
         }
-        
+
         return newInsights;
     }
 }

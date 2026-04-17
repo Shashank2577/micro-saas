@@ -66,6 +66,33 @@ public class AnalyticsService {
     public Map<String, Object> getRoiAnalytics(UUID tenantId) {
         List<BusinessOutcome> outcomes = outcomeRepository.findByTenantId(tenantId);
         List<ContentPerformance> performances = performanceRepository.findByTenantId(tenantId);
+        List<ContentChannel> channels = channelRepository.findByTenantId(tenantId);
+
+        Map<String, Object> response = new HashMap<>();
+
+        Map<String, Map<String, Object>> roiByChannel = new HashMap<>();
+
+        for(ContentChannel channel: channels) {
+            Map<String, Object> channelStats = new HashMap<>();
+
+            List<BusinessOutcome> channelOutcomes = outcomes.stream().filter(o -> o.getChannelId().equals(channel.getId())).toList();
+            List<ContentPerformance> channelPerformances = performances.stream().filter(p -> p.getChannelId().equals(channel.getId())).toList();
+
+            BigDecimal channelTotalValue = channelOutcomes.stream()
+                .map(BusinessOutcome::getAttributedValue)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+            long channelTotalViews = channelPerformances.stream()
+                    .mapToLong(ContentPerformance::getViews)
+                    .sum();
+
+            channelStats.put("totalValue", channelTotalValue);
+            channelStats.put("totalViews", channelTotalViews);
+            channelStats.put("platform", channel.getPlatform().toString());
+            channelStats.put("valuePerView", channelTotalViews > 0 ? channelTotalValue.divide(new BigDecimal(channelTotalViews), 4, java.math.RoundingMode.HALF_UP) : BigDecimal.ZERO);
+
+            roiByChannel.put(channel.getName(), channelStats);
+        }
 
         BigDecimal totalValue = outcomes.stream()
                 .map(BusinessOutcome::getAttributedValue)
@@ -75,16 +102,15 @@ public class AnalyticsService {
                 .mapToLong(ContentPerformance::getViews)
                 .sum();
 
-        Map<String, Object> roi = new HashMap<>();
-        roi.put("totalValue", totalValue);
-        roi.put("totalViews", totalViews);
-        roi.put("valuePerView", totalViews > 0 ? totalValue.divide(new BigDecimal(totalViews), 4, java.math.RoundingMode.HALF_UP) : BigDecimal.ZERO);
+        response.put("totalValue", totalValue);
+        response.put("totalViews", totalViews);
+        response.put("valuePerView", totalViews > 0 ? totalValue.divide(new BigDecimal(totalViews), 4, java.math.RoundingMode.HALF_UP) : BigDecimal.ZERO);
+        response.put("roiByChannel", roiByChannel);
 
-        return roi;
+        return response;
     }
 
     public List<ContentInsight> getInsights(UUID tenantId) {
-        // Mock generation or fetch existing
         List<ContentInsight> insights = insightRepository.findByTenantId(tenantId);
         if (insights.isEmpty()) {
             return insightAIService.generateInsights(tenantId);
