@@ -1,0 +1,37 @@
+{
+  "appId": "taxoptimizer",
+  "displayName": "Tax Optimizer",
+  "description": "AI-driven tax planning and optimization platform",
+  "version": "1.0.0",
+  "capabilities": [
+    "Tax liability estimation",
+    "Tax loss harvesting identification",
+    "Entity structure modeling",
+    "Accountant collaboration"
+  ],
+  "emits": [
+    {
+      "event": "tax_liability_calculated",
+      "schema": {
+        "tenantId": "string",
+        "profileId": "string",
+        "taxYear": "number",
+        "totalLiability": "number"
+      }
+    },
+    {
+      "event": "tax_package_generated",
+      "schema": {
+        "tenantId": "string",
+        "profileId": "string",
+        "accountantEmail": "string"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "event": "user_onboarded",
+      "source": "nexus-hub"
+    }
+  ]
+}
