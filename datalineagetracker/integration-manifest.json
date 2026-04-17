@@ -1,0 +1,37 @@
+{
+  "appName": "datalineagetracker",
+  "displayName": "Data Lineage Tracker",
+  "version": "1.0.0",
+  "description": "Comprehensive data lineage, governance, and audit tracking platform",
+  "port": 8167,
+  "emits": [
+    {
+      "eventType": "lineage.asset.created",
+      "description": "Fired when a new data asset is registered"
+    },
+    {
+      "eventType": "lineage.incident.opened",
+      "description": "Fired when a compliance or access incident is logged"
+    },
+    {
+      "eventType": "lineage.policy.violated",
+      "description": "Fired when a governance policy check fails"
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "auth.user.login",
+      "description": "Used to track active users for audit trails"
+    },
+    {
+      "eventType": "data.pipeline.run",
+      "description": "Auto-creates lineage links based on pipeline runs"
+    }
+  ],
+  "capabilities": [
+    "Lineage Tracking",
+    "PII Detection",
+    "Governance Enforcement",
+    "Audit Trails"
+  ]
+}
