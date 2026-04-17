@@ -1,0 +1,15 @@
+com/microsaas/retentionsignal/repository/RetentionInterventionRepository.class
+com/microsaas/retentionsignal/model/InterventionType.class
+com/microsaas/retentionsignal/model/SignalType.class
+com/microsaas/retentionsignal/model/RetentionSignal.class
+com/microsaas/retentionsignal/repository/FlightRiskScoreRepository.class
+com/microsaas/retentionsignal/model/EmployeeProfile.class
+com/microsaas/retentionsignal/model/CompLevel.class
+com/microsaas/retentionsignal/config/RetentionSignalConfig.class
+com/microsaas/retentionsignal/service/FlightRiskService.class
+com/microsaas/retentionsignal/model/FlightRiskScore.class
+com/microsaas/retentionsignal/RetentionSignalApplication.class
+com/microsaas/retentionsignal/repository/EmployeeProfileRepository.class
+com/microsaas/retentionsignal/model/RetentionIntervention.class
+com/microsaas/retentionsignal/model/Outcome.class
+com/microsaas/retentionsignal/repository/RetentionSignalRepository.class

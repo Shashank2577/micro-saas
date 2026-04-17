@@ -3,19 +3,8 @@
   "displayName": "RetentionSignal",
   "version": "0.0.1",
   "baseUrl": "https://api-retentionsignal.YOURDOMAIN.com",
-  "emits": [
-    "flight-risk.identified",
-    "retention-intervention.recommended"
-  ],
-  "consumes": [
-    "employee.survey-completed",
-    "employee.compensation-updated",
-    "employee.manager-changed",
-    "employee.peer-departed"
-  ],
-  "capabilities": [
-    "calculate-flight-risk",
-    "recommend-interventions"
-  ],
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }

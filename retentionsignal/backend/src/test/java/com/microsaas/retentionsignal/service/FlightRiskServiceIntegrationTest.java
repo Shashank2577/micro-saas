@@ -65,7 +65,7 @@ public class FlightRiskServiceIntegrationTest {
         // Given
         createSignal(SignalType.COMP_GAP, 1.0); // 30
         createSignal(SignalType.MANAGER_ISSUES, 1.0); // 15
-        
+
         // When
         FlightRiskScore score = flightRiskService.calculateRisk(employeeId, tenantId);
 
@@ -129,7 +129,7 @@ public class FlightRiskServiceIntegrationTest {
     private void createSignal(SignalType type, double value) {
         createSignalForEmployee(employeeId, type, value);
     }
-    
+
     private void createSignalForEmployee(UUID empId, SignalType type, double value) {
         RetentionSignal signal = new RetentionSignal();
         signal.setEmployeeId(empId);

@@ -1,0 +1,15 @@
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/RetentionSignalApplication.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/config/RetentionSignalConfig.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/CompLevel.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/EmployeeProfile.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/FlightRiskScore.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/InterventionType.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/Outcome.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/RetentionIntervention.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/RetentionSignal.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/model/SignalType.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/repository/EmployeeProfileRepository.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/repository/FlightRiskScoreRepository.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/repository/RetentionInterventionRepository.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/repository/RetentionSignalRepository.java
+/app/retentionsignal/backend/src/main/java/com/microsaas/retentionsignal/service/FlightRiskService.java
