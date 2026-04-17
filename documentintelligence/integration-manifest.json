@@ -1,0 +1,46 @@
+{
+  "appId": "documentintelligence",
+  "displayName": "Document Intelligence",
+  "version": "1.0.0",
+  "baseUrl": "http://localhost:8153",
+  "description": "AI document processing platform. Ingests any document type, extracts structured data, routes to appropriate workflow, answers questions about document contents, and tracks processing status.",
+  "emits": [
+    {
+      "eventType": "document.uploaded",
+      "description": "Emitted when a new document is successfully uploaded",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "documentId": { "type": "string" },
+          "filename": { "type": "string" },
+          "tenantId": { "type": "string" }
+        }
+      }
+    },
+    {
+      "eventType": "document.extraction.completed",
+      "description": "Emitted when document data extraction is complete",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "documentId": { "type": "string" },
+          "documentType": { "type": "string" }
+        }
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "workflow.action.requested",
+      "description": "Triggered to process a specific document based on workflow routing"
+    }
+  ],
+  "capabilities": [
+    "document_ingestion",
+    "ocr",
+    "structured_data_extraction",
+    "document_classification",
+    "semantic_search",
+    "document_qa"
+  ]
+}
