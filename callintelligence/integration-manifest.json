@@ -1,0 +1,23 @@
+{
+  "appId": "callintelligence",
+  "displayName": "CallIntelligence",
+  "description": "AI sales call intelligence platform",
+  "version": "1.0.0",
+  "capabilities": ["CALL_ANALYSIS", "REP_COACHING"],
+  "emits": [
+    {
+      "eventType": "call.analyzed",
+      "description": "Fired when a call is successfully transcribed and analyzed."
+    },
+    {
+      "eventType": "action_item.extracted",
+      "description": "Fired when an action item is extracted from a call."
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "crm.sync_requested",
+      "description": "Fired when a CRM sync is requested for a specific call."
+    }
+  ]
+}

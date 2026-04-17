@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: callintelligence-test
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+
+cc:
+  tenancy:
+    mode: header
+    header-name: X-Tenant-ID
+  auth:
+    keycloak-url: http://localhost:8180
+    realm: cc
+    client-id: cc-backend
+  ai:
+    gateway-url: http://localhost:4000
+    api-key: sk-local-dev-key
+    default-model: claude-sonnet-4-6
