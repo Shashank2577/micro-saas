@@ -34,6 +34,9 @@ public class Incident {
 
     private Double confidenceScore;
 
+    @Column(name = "tenant_id", nullable = false)
+    private String tenantId;
+
     @Type(JsonType.class)
     @Column(columnDefinition = "jsonb")
     private List<TimelineEvent> timelineEvents;

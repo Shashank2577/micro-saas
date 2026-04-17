@@ -2,7 +2,6 @@ package com.microsaas.incidentbrain.api;
 
 import com.microsaas.incidentbrain.domain.model.Incident;
 import com.microsaas.incidentbrain.domain.model.RootCauseCandidate;
-import com.microsaas.incidentbrain.domain.repository.IncidentRepository;
 import com.microsaas.incidentbrain.service.IncidentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import java.util.List;
 public class IncidentController {
 
     private final IncidentService incidentService;
-    private final IncidentRepository incidentRepository;
 
     @PostMapping
     public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
@@ -25,7 +23,7 @@ public class IncidentController {
 
     @GetMapping
     public ResponseEntity<List<Incident>> listIncidents() {
-        return ResponseEntity.ok(incidentRepository.findAll());
+        return ResponseEntity.ok(incidentService.listIncidents());
     }
 
     @GetMapping("/{id}")
