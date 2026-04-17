@@ -1,0 +1,28 @@
+{
+  "app": "notificationhub",
+  "displayName": "NotificationHub",
+  "version": "0.0.1",
+  "baseUrl": "https://api-notificationhub.YOURDOMAIN.com",
+  "emits": [
+    {
+      "event": "notification.delivered",
+      "description": "Emitted when a notification is successfully delivered."
+    },
+    {
+      "event": "notification.failed",
+      "description": "Emitted when a notification fails to deliver."
+    }
+  ],
+  "consumes": [
+    {
+      "event": "user.created",
+      "description": "Consumes user creation events to setup default notification preferences."
+    }
+  ],
+  "capabilities": [
+    "multi-channel-messaging",
+    "notification-scheduling",
+    "delivery-tracking"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
