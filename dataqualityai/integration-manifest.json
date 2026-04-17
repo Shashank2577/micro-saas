@@ -1,0 +1,35 @@
+{
+  "app": "dataqualityai",
+  "displayName": "DataQualityAI",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8158",
+  "healthEndpoint": "/actuator/health",
+  "emits": [
+    "dq.test.failed",
+    "dq.score.degraded",
+    "dq.schema.drift",
+    "dq.issue.opened"
+  ],
+  "consumes": [
+    "asset.loaded",
+    "schema.changed",
+    "pipeline.completed"
+  ],
+  "capabilities": [
+    {
+      "name": "run-tests",
+      "input": "datasetId",
+      "output": "testRuns[]"
+    },
+    {
+      "name": "get-score",
+      "input": "datasetId",
+      "output": "score"
+    },
+    {
+      "name": "suggest-fix",
+      "input": "issueId",
+      "output": "hint"
+    }
+  ]
+}
