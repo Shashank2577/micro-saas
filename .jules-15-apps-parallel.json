@@ -1,0 +1,116 @@
+{
+  "dispatch-time": "2026-04-17T21:00:00Z",
+  "dispatcher": "dispatch-15-apps-parallel.sh",
+  "protocol": "JULES_AUTONOMOUS_BUILD_PROTOCOL.md",
+  "api-key": "secondary",
+  "total-apps": 15,
+  "concurrent-capacity": 15,
+  "all-apps-concurrent": true,
+  "apps": {
+    "datalineagetracker": {
+      "id": "datalineagetracker",
+      "display": "DataLineageTracker",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "expenseintelligence": {
+      "id": "expenseintelligence",
+      "display": "ExpenseIntelligence",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "debtnavigator": {
+      "id": "debtnavigator",
+      "display": "DebtNavigator",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "budgetmaster": {
+      "id": "budgetmaster",
+      "display": "BudgetMaster",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "copyoptimizer": {
+      "id": "copyoptimizer",
+      "display": "CopyOptimizer",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "datagovernanceos": {
+      "id": "datagovernanceos",
+      "display": "DataGovernanceOS",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "retirementplus": {
+      "id": "retirementplus",
+      "display": "RetirementPlus",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "goaltracker": {
+      "id": "goaltracker",
+      "display": "GoalTracker",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "wealthedge": {
+      "id": "wealthedge",
+      "display": "WealthEdge",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "contractsense": {
+      "id": "contractsense",
+      "display": "ContractSense",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "engagementpulse": {
+      "id": "engagementpulse",
+      "display": "EngagementPulse",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "documentintelligence": {
+      "id": "documentintelligence",
+      "display": "DocumentIntelligence",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "compensationos": {
+      "id": "compensationos",
+      "display": "CompensationOS",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "customersuccessos": {
+      "id": "customersuccessos",
+      "display": "CustomerSuccessOS",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    },
+    "taxoptimizer": {
+      "id": "taxoptimizer",
+      "display": "TaxOptimizer",
+      "sessionId": null,
+      "status": "failed",
+      "dispatchedAt": "2026-04-17T21:00:00Z"
+    }
+  }
+}

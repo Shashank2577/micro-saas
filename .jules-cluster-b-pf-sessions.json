@@ -1,0 +1,16 @@
+{
+  "cluster": "B",
+  "theme": "Personal Finance & Wealth Management",
+  "dispatched_at": "2026-04-17T18:00:00Z",
+  "apps": {
+    "b1": {"id": "investtracker", "sessionId": "investtracker-cluster-b-b1", "port": 8201, "status": "pending_dispatch", "complexity": "complex", "hours": 18},
+    "b2": {"id": "wealthplan", "sessionId": "wealthplan-cluster-b-b2", "port": 8202, "status": "pending_dispatch", "complexity": "complex", "hours": 20},
+    "b3": {"id": "taxoptimizer", "sessionId": "taxoptimizer-cluster-b-b3", "port": 8203, "status": "pending_dispatch", "complexity": "complex", "hours": 19},
+    "b4": {"id": "debtnavigator", "sessionId": "debtnavigator-cluster-b-b4", "port": 8204, "status": "pending_dispatch", "complexity": "complex", "hours": 17},
+    "b5": {"id": "goaltracker", "sessionId": "goaltracker-cluster-b-b5", "port": 8205, "status": "pending_dispatch", "complexity": "medium-complex", "hours": 16},
+    "b6": {"id": "cashflowanalyzer", "sessionId": "cashflowanalyzer-cluster-b-b6", "port": 8206, "status": "pending_dispatch", "complexity": "medium-complex", "hours": 16},
+    "b7": {"id": "retirementplus", "sessionId": "retirementplus-cluster-b-b7", "port": 8207, "status": "pending_dispatch", "complexity": "complex", "hours": 18},
+    "b8": {"id": "wealthedge", "sessionId": "wealthedge-cluster-b-b8", "port": 8208, "status": "pending_dispatch", "complexity": "very-complex", "hours": 20},
+    "b9": {"id": "budgetmaster", "sessionId": "budgetmaster-cluster-b-b9", "port": 8209, "status": "pending_dispatch", "complexity": "medium", "hours": 15}
+  }
+}
