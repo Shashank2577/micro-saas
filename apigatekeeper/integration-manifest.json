@@ -1,0 +1,10 @@
+{
+  "app": "apigatekeeper",
+  "displayName": "APIGatekeeper",
+  "version": "0.0.1",
+  "baseUrl": "https://api-apigatekeeper.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
