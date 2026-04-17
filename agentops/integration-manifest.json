@@ -1,0 +1,24 @@
+{
+  "app": "agentops",
+  "displayName": "AgentOps",
+  "version": "0.0.1",
+  "baseUrl": "https://api-agentops.YOURDOMAIN.com",
+  "emits": [
+    "agentops.run.started",
+    "agentops.run.completed",
+    "agentops.run.failed",
+    "agentops.escalation.created",
+    "agentops.escalation.resolved"
+  ],
+  "consumes": [
+    "cc.tenant.created",
+    "cc.tenant.deleted"
+  ],
+  "capabilities": [
+    "ai_agent_observability",
+    "agent_telemetry",
+    "agent_governance",
+    "cost_tracking"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
