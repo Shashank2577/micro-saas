@@ -1,0 +1,10 @@
+{
+  "app": "competitorradar",
+  "displayName": "CompetitorRadar",
+  "version": "0.0.1",
+  "baseUrl": "https://api-competitorradar.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
