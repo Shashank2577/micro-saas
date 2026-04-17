@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: wealthplan
+  datasource:
+    url: jdbc:postgresql://localhost:5432/wealthplan
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8202
+
+logging:
+  level:
+    root: INFO
+    com.microsaas.wealthplan: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+cc:
+  ai:
+    litellm:
+      base-url: http://localhost:4000
+      model: gemma2:9b

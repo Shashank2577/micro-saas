@@ -1,0 +1,28 @@
+{
+  "app": "wealthplan",
+  "displayName": "WealthPlan",
+  "version": "0.0.1",
+  "baseUrl": "https://api-wealthplan.YOURDOMAIN.com",
+  "emits": [
+    {
+      "eventType": "wealthplan.goal.created",
+      "description": "Emitted when a new goal is created"
+    },
+    {
+      "eventType": "wealthplan.scenario.modeled",
+      "description": "Emitted when a new scenario is modeled"
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "core.tenant.created",
+      "description": "Triggered when a new tenant is boarded"
+    }
+  ],
+  "capabilities": [
+    "financial_planning",
+    "monte_carlo_simulation",
+    "goal_tracking"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
