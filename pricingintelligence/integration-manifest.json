@@ -1,0 +1,20 @@
+{
+  "app": "pricingintelligence",
+  "displayName": "PricingIntelligence",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8174",
+  "emits": [
+    {
+      "type": "pricingintelligence.experiment.completed",
+      "description": "Fired when a pricing experiment is completed."
+    }
+  ],
+  "consumes": [
+    {
+      "type": "crm.deal.closed",
+      "description": "Fired when a deal is closed (won or lost), used to feed historical data."
+    }
+  ],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
