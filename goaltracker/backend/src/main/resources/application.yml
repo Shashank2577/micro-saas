@@ -1,0 +1,24 @@
+server:
+  port: 8205
+
+spring:
+  application:
+    name: goaltracker
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/nexus}
+    username: ${DB_USER:nexus_user}
+    password: ${DB_PASSWORD:nexus_password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+ai:
+  litellm:
+    base-url: http://localhost:4000
