@@ -1,0 +1,16 @@
+{
+  "app": "dataroomai",
+  "displayName": "DataRoom AI",
+  "version": "0.0.1",
+  "baseUrl": "https://api-dataroomai.YOURDOMAIN.com",
+  "emits": [
+    "document-uploaded",
+    "diligence-gap-detected"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "analyze-documents",
+    "answer-questions"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
