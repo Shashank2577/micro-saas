@@ -15,3 +15,17 @@ services:
     depends_on:
       - postgres
       - litellm
+
+  experimentengine-backend:
+    build:
+      context: ../experimentengine
+      dockerfile: Dockerfile
+    ports:
+      - "8154:8154"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/experimentengine
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - postgres
