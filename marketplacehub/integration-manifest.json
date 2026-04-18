@@ -1,0 +1,21 @@
+{
+  "app": "marketplacehub",
+  "displayName": "MarketplaceHub",
+  "version": "0.1.0",
+  "baseUrl": "http://localhost:8108",
+  "emits": [
+    "app.installed",
+    "app.review.submitted",
+    "app.review.approved"
+  ],
+  "consumes": [
+    "app.registered",
+    "app.updated"
+  ],
+  "capabilities": [
+    "app_catalog_search",
+    "app_installation",
+    "app_reviews"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
