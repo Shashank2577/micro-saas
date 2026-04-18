@@ -1,0 +1,25 @@
+{
+  "app": "processminer",
+  "displayName": "ProcessMiner",
+  "version": "0.0.1",
+  "baseUrl": "https://api-processminer.YOURDOMAIN.com",
+  "emits": [
+    {
+      "event": "PROCESS_ANALYZED",
+      "description": "Fired when a process model has been analyzed for bottlenecks and opportunities."
+    }
+  ],
+  "consumes": [
+    {
+      "event": "EVENT_LOG_CREATED",
+      "description": "Ingest event logs from other applications in the ecosystem."
+    }
+  ],
+  "capabilities": [
+    "Process Discovery",
+    "Bottleneck Analysis",
+    "Compliance Checking",
+    "Automation Opportunity Scoring"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
