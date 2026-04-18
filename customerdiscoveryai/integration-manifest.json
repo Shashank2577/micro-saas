@@ -1,0 +1,17 @@
+{
+  "app": "customerdiscoveryai",
+  "name": "CustomerDiscoveryAI",
+  "description": "AI user research platform that automatically synthesizes findings from 100+ interviews.",
+  "emits": [
+    "interview.completed",
+    "insights.generated",
+    "report.completed"
+  ],
+  "consumes": [
+    "user.created"
+  ],
+  "capabilities": [
+    "research_synthesis",
+    "interview_analysis"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "app": "meetingbrain",
+  "displayName": "MeetingBrain",
+  "version": "0.0.1",
+  "baseUrl": "https://api-meetingbrain.YOURDOMAIN.com",
+  "emits": [
+    "MeetingAnalyzedEvent",
+    "ActionItemCreatedEvent"
+  ],
+  "consumes": [
+    "ProjectCreatedEvent"
+  ],
+  "capabilities": [
+    "meeting-transcription",
+    "decision-tracking",
+    "action-item-extraction",
+    "institutional-memory",
+    "semantic-search",
+    "meeting-analytics"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
