@@ -1,0 +1,37 @@
+{
+  "id": "integrationbridge",
+  "name": "IntegrationBridge",
+  "displayName": "Integration Bridge",
+  "baseUrl": "http://integrationbridge-backend:8109",
+  "status": "ACTIVE",
+  "manifest": {
+    "version": "1.0.0",
+    "description": "Integration platform for connecting third-party services.",
+    "capabilities": [
+      "integration_management",
+      "sync_jobs",
+      "oauth_flow"
+    ],
+    "emits": [
+      {
+        "type": "sync_job_completed",
+        "description": "Fired when a data sync job completes",
+        "payloadSchema": {
+          "type": "object",
+          "properties": {
+            "jobId": { "type": "string" },
+            "integrationId": { "type": "string" },
+            "recordsProcessed": { "type": "number" },
+            "status": { "type": "string" }
+          }
+        }
+      }
+    ],
+    "consumes": [
+      {
+        "type": "user.created",
+        "description": "Trigger a sync job when a new user is created"
+      }
+    ]
+  }
+}
