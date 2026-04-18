@@ -1,0 +1,34 @@
+{
+  "app": "marketsignal",
+  "displayName": "Market Signal",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8149",
+  "emits": [
+    {
+      "eventType": "marketsignal.pattern.detected",
+      "description": "Fired when a new market pattern is detected",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "patternId": {"type": "string"},
+          "patternType": {"type": "string"},
+          "title": {"type": "string"}
+        }
+      }
+    },
+    {
+      "eventType": "marketsignal.brief.generated",
+      "description": "Fired when a new market brief is generated",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "briefId": {"type": "string"},
+          "title": {"type": "string"}
+        }
+      }
+    }
+  ],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
