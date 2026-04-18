@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ecosystemmap
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/ecosystemmap}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+cc:
+  ai:
+    litellm-url: ${LITELLM_URL:http://localhost:4000}
+    model: ${AI_MODEL:claude-3-sonnet}
+  auth:
+    jwk-set-uri: ${JWK_URI:http://localhost:8081/realms/nexus/protocol/openid-connect/certs}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

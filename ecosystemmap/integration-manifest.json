@@ -1,0 +1,16 @@
+{
+  "app": "ecosystemmap",
+  "display_name": "EcosystemMap",
+  "description": "AI ecosystem visualization platform and ROI tracker.",
+  "emits": [],
+  "consumes": [
+    "app.deployed",
+    "app.undeployed",
+    "data.flow.event"
+  ],
+  "capabilities": [
+    "ecosystem_visualization",
+    "roi_tracking",
+    "integration_discovery"
+  ]
+}
