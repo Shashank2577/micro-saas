@@ -1,0 +1,30 @@
+{
+  "appId": "workspacemanager",
+  "name": "Workspace Manager",
+  "description": "Multi-tenant workspace and organization management service.",
+  "emits": [
+    {
+      "event": "WORKSPACE_CREATED",
+      "description": "Emitted when a new workspace is created."
+    },
+    {
+      "event": "MEMBER_INVITED",
+      "description": "Emitted when a new member is invited."
+    },
+    {
+      "event": "MEMBER_REMOVED",
+      "description": "Emitted when a member is removed."
+    }
+  ],
+  "consumes": [
+    {
+      "event": "USER_SIGNED_UP",
+      "description": "Consumes user signup to handle auto-provisioning based on SSO domains."
+    }
+  ],
+  "capabilities": [
+    "Manage Workspaces",
+    "Manage Teams",
+    "Manage Members"
+  ]
+}
