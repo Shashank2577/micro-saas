@@ -1,0 +1,10 @@
+{
+  "app": "voiceagentbuilder",
+  "displayName": "VoiceAgentBuilder",
+  "version": "0.0.1",
+  "baseUrl": "https://api-voiceagentbuilder.YOURDOMAIN.com",
+  "emits": ["call.completed", "agent.escalated"],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
