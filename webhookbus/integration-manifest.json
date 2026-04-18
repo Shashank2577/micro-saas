@@ -1,0 +1,35 @@
+{
+  "app": "webhookbus",
+  "displayName": "Webhook Bus",
+  "version": "1.0.0",
+  "baseUrl": "http://webhookbus-backend:8114",
+  "emits": [
+    {
+      "event": "webhook.received",
+      "description": "Fired when a new webhook event is ingested",
+      "payloadSchema": {
+        "eventId": "string",
+        "source": "string",
+        "eventType": "string"
+      }
+    },
+    {
+      "event": "webhook.delivered",
+      "description": "Fired when a webhook delivery is attempted (success or failure)",
+      "payloadSchema": {
+        "deliveryId": "string",
+        "eventId": "string",
+        "endpointId": "string",
+        "status": "string"
+      }
+    }
+  ],
+  "consumes": [],
+  "capabilities": [
+    "Webhook ingestion",
+    "Webhook delivery routing",
+    "Delivery retry and exponential backoff",
+    "Event replay"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
