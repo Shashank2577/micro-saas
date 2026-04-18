@@ -1,0 +1,19 @@
+{
+  "name": "compensationos",
+  "port": 8147,
+  "description": "Compensation Benchmark & Planning Platform",
+  "emits": [
+    "compensation.cycle.created",
+    "compensation.cycle.completed"
+  ],
+  "consumes": [
+    "tenant.created",
+    "employee.hired",
+    "employee.terminated"
+  ],
+  "capabilities": [
+    "CompensationBenchmarking",
+    "PayEquityAnalysis",
+    "BudgetForecasting"
+  ]
+}
