@@ -1,0 +1,23 @@
+{
+  "appId": "insuranceai",
+  "displayName": "InsuranceAI",
+  "port": 8080,
+  "capabilities": [
+    "claims_processing",
+    "policy_management",
+    "fraud_detection",
+    "risk_scoring"
+  ],
+  "emits": [
+    "claim.created",
+    "claim.status_updated",
+    "policy.created"
+  ],
+  "consumes": [
+    "user.created"
+  ],
+  "dependencies": [
+    "postgres",
+    "redis"
+  ]
+}
