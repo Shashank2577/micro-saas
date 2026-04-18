@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: tenantmanager
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/nexus}
+    username: ${DATABASE_USER:postgres}
+    password: ${DATABASE_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+server:
+  port: 8080
+
+cc:
+  ai:
+    gateway-url: ${AI_GATEWAY_URL:http://localhost:4000}
+    api-key: ${AI_API_KEY:sk-1234}

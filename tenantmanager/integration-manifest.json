@@ -1,0 +1,16 @@
+{
+  "app": "tenantmanager",
+  "emits": [
+    "tenant.provisioned",
+    "tenant.deprovisioned",
+    "tenant.churn_risk_high"
+  ],
+  "consumes": [
+    "invoice.paid",
+    "usage.spike"
+  ],
+  "capabilities": [
+    "tenant_health_monitoring",
+    "onboarding_automation"
+  ]
+}
