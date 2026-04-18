@@ -1,0 +1,36 @@
+{
+  "app": "billingsync",
+  "displayName": "BillingSync",
+  "version": "0.0.1",
+  "baseUrl": "https://api-billingsync.YOURDOMAIN.com",
+  "emits": [
+    {
+      "event": "invoice.generated",
+      "description": "Fired when a new invoice is generated for a subscription."
+    },
+    {
+      "event": "payment.succeeded",
+      "description": "Fired when a payment is successfully processed."
+    },
+    {
+      "event": "payment.failed",
+      "description": "Fired when a payment fails, initiating dunning management."
+    }
+  ],
+  "consumes": [
+    {
+      "event": "tenant.created",
+      "description": "Listen for new tenant creation to initialize billing context."
+    },
+    {
+      "event": "usage.metered",
+      "description": "Listen for general usage events from other services to record meter events."
+    }
+  ],
+  "capabilities": [
+    "Manage Subscriptions",
+    "Calculate Usage Bills",
+    "Process Invoices and Payments"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
