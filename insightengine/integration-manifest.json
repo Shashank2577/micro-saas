@@ -1,0 +1,31 @@
+{
+  "app": "insightengine",
+  "displayName": "InsightEngine",
+  "version": "0.1.0",
+  "baseUrl": "http://insightengine-backend:8171",
+  "emits": [
+    {
+      "eventType": "insight.discovered",
+      "schema": {
+        "insightId": "uuid",
+        "type": "string",
+        "impactScore": "number"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "metric.recorded",
+      "schema": {
+        "metricName": "string",
+        "value": "number",
+        "timestamp": "string"
+      }
+    }
+  ],
+  "capabilities": [
+    "AI Insight Generation",
+    "Anomaly Detection"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
