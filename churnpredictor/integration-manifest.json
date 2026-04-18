@@ -1,0 +1,42 @@
+{
+  "appId": "churnpredictor",
+  "displayName": "ChurnPredictor",
+  "version": "1.0.0",
+  "port": 8146,
+  "description": "AI churn prevention platform.",
+  "emits": [
+    {
+      "event": "churn.prediction.high_risk",
+      "description": "Emitted when a customer is identified as high risk",
+      "payloadSchema": {
+        "customerId": "string",
+        "tenantId": "string",
+        "probability": "number"
+      }
+    },
+    {
+      "event": "churn.intervention.triggered",
+      "description": "Emitted when a playbook is triggered",
+      "payloadSchema": {
+        "interventionId": "string",
+        "customerId": "string",
+        "actionType": "string"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "event": "customer.usage.updated",
+      "description": "Consumed to update usage score"
+    },
+    {
+      "event": "customer.support.ticket_closed",
+      "description": "Consumed to update support score"
+    }
+  ],
+  "capabilities": [
+    "churn_prediction",
+    "health_scoring",
+    "intervention_automation"
+  ]
+}
