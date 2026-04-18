@@ -1,0 +1,24 @@
+{
+  "app": "retirementplus",
+  "displayName": "RetirementPlus",
+  "version": "0.0.1",
+  "baseUrl": "https://api-retirementplus.YOURDOMAIN.com",
+  "emits": [
+    {
+      "event": "retirementplus.profile_created",
+      "description": "Emitted when a new retirement profile is created."
+    },
+    {
+      "event": "retirementplus.projection_generated",
+      "description": "Emitted when a retirement projection is analyzed and generated."
+    }
+  ],
+  "consumes": [],
+  "capabilities": [
+    {
+      "name": "retirement_planning",
+      "description": "Provides comprehensive retirement income and longevity projections."
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}
