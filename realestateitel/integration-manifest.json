@@ -1,0 +1,27 @@
+{
+  "appId": "realestateitel",
+  "displayName": "Real Estate Intel",
+  "version": "1.0.0",
+  "description": "AI real estate intelligence platform.",
+  "emits": [
+    {
+      "eventType": "property.analyzed",
+      "description": "Emitted when a property's comparables are generated"
+    },
+    {
+      "eventType": "lease.abstracted",
+      "description": "Emitted when a lease document is successfully abstracted"
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "tenant.onboarded",
+      "description": "Initialize default market trends for new tenant"
+    }
+  ],
+  "capabilities": [
+    "automated_comparable_sales_analysis",
+    "lease_abstraction",
+    "market_trend_monitoring"
+  ]
+}
