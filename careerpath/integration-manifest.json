@@ -1,0 +1,32 @@
+{
+  "appName": "careerpath",
+  "displayName": "CareerPath",
+  "port": 8146,
+  "description": "Career development and progression planning platform",
+  "emits": [
+    {
+      "event": "skill_gap_identified",
+      "description": "Fired when an employee runs a skill gap analysis and gaps are found"
+    },
+    {
+      "event": "mentorship_requested",
+      "description": "Fired when an employee requests a mentor match"
+    }
+  ],
+  "consumes": [
+    {
+      "event": "employee_onboarded",
+      "description": "Used to initialize the employee profile in CareerPath"
+    },
+    {
+      "event": "performance_review_completed",
+      "description": "Used to update employee skills based on performance review"
+    }
+  ],
+  "capabilities": [
+    "career_pathing",
+    "skill_gap_analysis",
+    "mentorship_matching",
+    "ai_role_recommendation"
+  ]
+}
