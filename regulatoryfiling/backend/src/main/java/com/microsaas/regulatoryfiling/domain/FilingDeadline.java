@@ -13,8 +13,8 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "filing_obligations")
-public class FilingObligation {
+@Table(name = "filing_deadlines")
+public class FilingDeadline {
     @Id
     private UUID id;
 

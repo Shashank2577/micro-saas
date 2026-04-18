@@ -1,8 +1,8 @@
 package com.microsaas.regulatoryfiling.service;
 
 import com.crosscutting.starter.tenancy.TenantContext;
-import com.microsaas.regulatoryfiling.domain.FilingObligation;
-import com.microsaas.regulatoryfiling.repository.FilingObligationRepository;
+import com.microsaas.regulatoryfiling.domain.SubmissionPacket;
+import com.microsaas.regulatoryfiling.repository.SubmissionPacketRepository;
 import com.microsaas.regulatoryfiling.dto.ValidationResult;
 import com.microsaas.regulatoryfiling.dto.SimulationResult;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,14 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class FilingObligationService {
-    private final FilingObligationRepository repository;
+public class SubmissionPacketService {
+    private final SubmissionPacketRepository repository;
 
-    public FilingObligationService(FilingObligationRepository repository) {
+    public SubmissionPacketService(SubmissionPacketRepository repository) {
         this.repository = repository;
     }
 
-    public FilingObligation create(FilingObligation entity) {
+    public SubmissionPacket create(SubmissionPacket entity) {
         entity.setId(UUID.randomUUID());
         entity.setTenantId(TenantContext.require());
         entity.setCreatedAt(OffsetDateTime.now());
@@ -29,8 +29,8 @@ public class FilingObligationService {
         return repository.save(entity);
     }
 
-    public FilingObligation update(UUID id, FilingObligation entity) {
-        FilingObligation existing = getById(id);
+    public SubmissionPacket update(UUID id, SubmissionPacket entity) {
+        SubmissionPacket existing = getById(id);
         existing.setName(entity.getName());
         existing.setStatus(entity.getStatus());
         existing.setMetadataJson(entity.getMetadataJson());
@@ -39,28 +39,28 @@ public class FilingObligationService {
     }
 
     @Transactional(readOnly = true)
-    public List<FilingObligation> list() {
+    public List<SubmissionPacket> list() {
         return repository.findByTenantId(TenantContext.require());
     }
 
     @Transactional(readOnly = true)
-    public FilingObligation getById(UUID id) {
+    public SubmissionPacket getById(UUID id) {
         return repository.findByIdAndTenantId(id, TenantContext.require())
-                .orElseThrow(() -> new RuntimeException("FilingObligation not found"));
+                .orElseThrow(() -> new RuntimeException("SubmissionPacket not found"));
     }
 
     public void delete(UUID id) {
-        FilingObligation existing = getById(id);
+        SubmissionPacket existing = getById(id);
         repository.delete(existing);
     }
 
     public ValidationResult validate(UUID id) {
-        FilingObligation existing = getById(id);
+        SubmissionPacket existing = getById(id);
         return ValidationResult.builder().valid(true).message("Validated " + existing.getName()).build();
     }
 
     public SimulationResult simulate(UUID id) {
-        FilingObligation existing = getById(id);
+        SubmissionPacket existing = getById(id);
         return SimulationResult.builder().success(true).outcome("Simulated " + existing.getName()).build();
     }
 }
