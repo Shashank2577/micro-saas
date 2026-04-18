@@ -1,0 +1,32 @@
+{
+  "app": "identitycore",
+  "displayName": "IdentityCore",
+  "version": "0.0.1",
+  "baseUrl": "https://api-identitycore.YOURDOMAIN.com",
+  "emits": [
+    {
+      "type": "identitycore.anomaly.detected",
+      "version": "1.0",
+      "description": "Emitted when a new access anomaly is detected."
+    },
+    {
+      "type": "identitycore.review.completed",
+      "version": "1.0",
+      "description": "Emitted when an access review is completed."
+    }
+  ],
+  "consumes": [
+    {
+      "type": "nexushub.auth.login",
+      "version": "1.0",
+      "description": "Consumed to analyze login behavior for anomalies."
+    }
+  ],
+  "capabilities": [
+    {
+      "name": "Access Review",
+      "description": "Provides agentic access review capabilities."
+    }
+  ],
+  "healthEndpoint": "/actuator/health"
+}
