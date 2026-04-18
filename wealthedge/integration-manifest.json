@@ -1,0 +1,10 @@
+{
+  "app": "wealthedge",
+  "displayName": "WealthEdge",
+  "version": "0.0.1",
+  "baseUrl": "https://api-wealthedge.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
