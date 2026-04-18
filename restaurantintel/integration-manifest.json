@@ -1,0 +1,22 @@
+{
+  "app": "restaurantintel",
+  "displayName": "Restaurant Intel",
+  "version": "0.0.1",
+  "baseUrl": "https://api-restaurantintel.YOURDOMAIN.com",
+  "emits": [
+    "restaurantintel.order.approved",
+    "restaurantintel.schedule.generated",
+    "restaurantintel.review.analyzed"
+  ],
+  "consumes": [
+    "pos.order.completed",
+    "inventory.stock.updated"
+  ],
+  "capabilities": [
+    "menu_intelligence",
+    "predictive_ordering",
+    "staff_scheduling",
+    "review_sentiment_analysis"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
