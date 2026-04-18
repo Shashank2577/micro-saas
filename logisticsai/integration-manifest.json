@@ -1,0 +1,46 @@
+{
+  "appId": "logisticsai",
+  "name": "LogisticsAI",
+  "description": "AI logistics intelligence platform",
+  "version": "1.0.0",
+  "capabilities": {
+    "hasDashboard": true,
+    "hasAiAgent": true,
+    "requiresTenancy": true
+  },
+  "emits": [
+    {
+      "eventType": "carrier.performance.updated",
+      "description": "Emitted when a carrier's performance prediction is updated",
+      "payloadSchema": {
+        "carrierId": "uuid",
+        "onTimeRate": "number",
+        "predictedDelayMins": "number"
+      }
+    },
+    {
+      "eventType": "route.optimized",
+      "description": "Emitted when a route is optimized by AI",
+      "payloadSchema": {
+        "routeId": "uuid",
+        "origin": "string",
+        "destination": "string",
+        "estimatedArrival": "timestamp"
+      }
+    },
+    {
+      "eventType": "exception.resolved",
+      "description": "Emitted when a logistics exception is marked as resolved",
+      "payloadSchema": {
+        "exceptionId": "uuid",
+        "status": "string"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "inventory.low",
+      "description": "Listens for low inventory to trigger demand forecasting"
+    }
+  ]
+}
