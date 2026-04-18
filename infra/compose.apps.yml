@@ -25,3 +25,30 @@
       - "3113:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8113
+
+  restaurantintel-backend:
+    image: restaurantintel-backend:latest
+    build:
+      context: ../restaurantintel
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=restaurantintel
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - AI_GATEWAY_URL=http://litellm:4000
+    depends_on:
+      - postgres
+      - litellm
+
+  restaurantintel-frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ../restaurantintel/frontend:/app
+    ports:
+      - "3000:3000"
+    command: sh -c "npm install && npm start"
