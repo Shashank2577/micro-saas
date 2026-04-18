@@ -1,0 +1,20 @@
+{
+  "app": "observabilityai",
+  "displayName": "ObservabilityAI",
+  "version": "0.0.1",
+  "baseUrl": "https://api-observabilityai.YOURDOMAIN.com",
+  "emits": [
+    {
+      "type": "observabilityai.alert.created",
+      "description": "Fired when a new alert is created based on an anomaly or AI insight."
+    }
+  ],
+  "consumes": [
+    {
+      "type": "nexushub.event.forwarded",
+      "description": "Listens for general events that may provide context to logs and traces."
+    }
+  ],
+  "capabilities": ["OBSERVABILITY", "AI_ANALYSIS"],
+  "healthEndpoint": "/actuator/health"
+}
