@@ -1,0 +1,15 @@
+{
+  "app": "dataunification",
+  "displayName": "DataUnification",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8170",
+  "emits": [
+    "sync.completed",
+    "sync.failed"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "schema_reconciliation"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
