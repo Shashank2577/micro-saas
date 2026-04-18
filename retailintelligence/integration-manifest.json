@@ -1,0 +1,56 @@
+{
+  "appId": "retailintelligence",
+  "name": "Retail Intelligence",
+  "version": "1.0.0",
+  "description": "AI retail operations platform providing demand forecasting and pricing recommendations.",
+  "emits": [
+    {
+      "event": "sku.created",
+      "description": "Emitted when a new SKU is created",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" }
+        }
+      }
+    },
+    {
+      "event": "forecast.generated",
+      "description": "Emitted when AI generates a new demand forecast",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" }
+        }
+      }
+    },
+    {
+      "event": "sku.price_updated",
+      "description": "Emitted when a pricing recommendation is applied",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" }
+        }
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "event": "sales.order.placed",
+      "description": "Consumed to deduct stock levels for ordered items",
+      "expectedFormat": {
+        "type": "object",
+        "properties": {
+          "skuId": { "type": "string", "format": "uuid" },
+          "quantity": { "type": "integer" }
+        }
+      }
+    }
+  ],
+  "capabilities": [
+    "Demand Forecasting",
+    "Pricing Optimization",
+    "Inventory Tracking"
+  ]
+}
