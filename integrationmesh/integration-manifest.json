@@ -1,0 +1,10 @@
+{
+  "app": "integrationmesh",
+  "displayName": "IntegrationMesh",
+  "version": "0.0.1",
+  "baseUrl": "https://api-integrationmesh.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

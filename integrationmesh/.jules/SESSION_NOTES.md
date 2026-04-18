@@ -1,0 +1,13 @@
+# Session Notes
+- Started by scaffolding the app via the `scaffold-app.sh` script.
+- Renamed all duplicate template properties (NexusHub to IntegrationMesh).
+- Updated port configurations from 8090 to 8080 according to the spec request.
+- Implemented Phase 1 Detailed Spec logic.
+- Implemented Backend with Connectors, Integrations, FieldMappings, and SyncHistory logic.
+- Included LiteLLM client logic to `MappingService`.
+- Backend Unit Tests required correcting the Type signature for `TenantContext.require()` since it originally casted to `UUID.fromString()`. Corrected. 
+- Implemented Frontend React Components using Next.js.
+- Added tests to Vitest ensuring they do not throw errors with `vite@4.5.0` and `vitest@0.34.6`.
+- Addressed code review feedback by resolving stubbed production code in `MappingService` and expanding tests for all backend services.
+- Created all remaining required files (`Dockerfile`, `README.md`, `.jules/HANDOFF.md`, `.jules/SESSION_NOTES.md`).
+- Tests fully pass on both Backend and Frontend.
