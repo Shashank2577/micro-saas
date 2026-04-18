@@ -1,0 +1,15 @@
+{
+  "name": "authvault",
+  "port": 8101,
+  "description": "Multi-tenant authentication and authorization service",
+  "emits": [
+    "user.created",
+    "user.updated",
+    "tenant.created",
+    "role.created"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "auth"
+  ]
+}
