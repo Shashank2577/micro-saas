@@ -1,10 +1,17 @@
 {
-  "app": "debtnavigator",
-  "displayName": "DebtNavigator",
-  "version": "0.0.1",
-  "baseUrl": "https://api-debtnavigator.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "appName": "debtnavigator",
+  "version": "1.0.0",
+  "emits": [
+    "debtnavigator.plan.generated",
+    "debtnavigator.plan.approved",
+    "debtnavigator.milestone.completed"
+  ],
+  "consumes": [
+    "cashflowai.shortfall.detected",
+    "goaltracker.goal.updated",
+    "wealthedge.portfolio.rebalanced"
+  ],
+  "capabilities": [
+    "debt-optimization"
+  ]
 }

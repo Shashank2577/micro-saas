@@ -63,3 +63,17 @@ export const api = {
     },
   },
 };
+
+export const apiFetch = async (endpoint: string, options: RequestInit = {}) => {
+  const res = await fetch(`${BASE_URL}${endpoint}`, {
+    ...options,
+    headers: {
+      ...headers,
+      ...options.headers,
+    },
+  });
+  if (!res.ok) {
+    throw new Error(`API fetch failed: ${res.status}`);
+  }
+  return res.json();
+};
