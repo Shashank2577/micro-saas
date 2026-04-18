@@ -1,0 +1,47 @@
+{
+  "app": "taskqueue",
+  "displayName": "TaskQueue",
+  "version": "0.0.1",
+  "baseUrl": "http://taskqueue-backend:8116",
+  "healthEndpoint": "/actuator/health",
+  "emits": [
+    {
+      "eventType": "taskqueue.job.completed",
+      "schema": {
+        "jobId": "string",
+        "name": "string",
+        "status": "string",
+        "result": "string"
+      }
+    },
+    {
+      "eventType": "taskqueue.job.failed",
+      "schema": {
+        "jobId": "string",
+        "name": "string",
+        "status": "string",
+        "error": "string"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "taskqueue.job.enqueue",
+      "schema": {
+        "name": "string",
+        "priority": "string",
+        "payload": "string"
+      }
+    }
+  ],
+  "capabilities": [
+    {
+      "name": "distributed_job_processing",
+      "description": "Process background jobs asynchronously with priority and retry support"
+    },
+    {
+      "name": "scheduled_task_execution",
+      "description": "Execute recurring jobs based on cron expressions"
+    }
+  ]
+}

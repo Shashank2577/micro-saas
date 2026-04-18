@@ -25,3 +25,33 @@
       - "3113:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8113
+
+  taskqueue-backend:
+    build:
+      context: ../taskqueue
+      dockerfile: Dockerfile
+    ports:
+      - "8116:8116"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/microsaas
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+      - CC_AI_GATEWAY_URL=http://litellm:4000
+    depends_on:
+      - postgres
+      - redis
+      - litellm
+
+  taskqueue-frontend:
+    build:
+      context: ../taskqueue/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3016:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8116/api
+    depends_on:
+      - taskqueue-backend
