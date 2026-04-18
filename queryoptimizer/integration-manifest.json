@@ -1,0 +1,10 @@
+{
+  "app": "queryoptimizer",
+  "displayName": "Query Optimizer",
+  "version": "0.0.1",
+  "baseUrl": "https://api-queryoptimizer.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}

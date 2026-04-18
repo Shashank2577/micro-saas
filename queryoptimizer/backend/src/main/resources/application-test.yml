@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: queryoptimizer-test
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        default_schema: public
+        dialect: org.hibernate.dialect.H2Dialect
+  flyway:
+    enabled: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8166
+
+cc:
+  tenancy:
+    mode: header
+    header-name: X-Tenant-ID
+  auth:
+    keycloak-url: http://localhost:8180
+    realm: cc
+    client-id: cc-backend
+  ai:
+    gateway-url: http://localhost:4000
+    api-key: sk-local-dev-key
+    default-model: claude-sonnet-4-6
+
