@@ -1,0 +1,30 @@
+server:
+  port: 8114
+
+spring:
+  application:
+    name: usageintelligence
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/micro_saas}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+cc:
+  ai:
+    gateway-url: ${AI_GATEWAY_URL:http://localhost:4000}
+    api-key: ${AI_API_KEY:dummy-key}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

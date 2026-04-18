@@ -1,0 +1,17 @@
+{
+  "app": "usageintelligence",
+  "emits": [
+    "usage.anomaly_detected",
+    "usage.cohort_created"
+  ],
+  "consumes": [
+    "user.created",
+    "user.deleted"
+  ],
+  "capabilities": [
+    "event_tracking",
+    "metric_aggregation",
+    "cohort_management",
+    "ai_usage_insights"
+  ]
+}
