@@ -1,0 +1,10 @@
+{
+  "app": "agencyos",
+  "displayName": "AgencyOS",
+  "version": "0.0.1",
+  "baseUrl": "https://api-agencyos.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
