@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: observabilityai
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/nexus}
+    username: ${DB_USER:nexus}
+    password: ${DB_PASSWORD:nexus}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: true
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+cc:
+  ai:
+    gateway-url: ${AI_GATEWAY_URL:http://localhost:4000/v1/chat/completions}
+    api-key: ${AI_API_KEY:mock-key}

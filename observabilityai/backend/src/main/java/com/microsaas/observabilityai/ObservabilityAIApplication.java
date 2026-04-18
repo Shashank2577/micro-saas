@@ -1,0 +1,13 @@
+package com.microsaas.observabilityai;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+@SpringBootApplication
+@EnableScheduling
+public class ObservabilityAIApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ObservabilityAIApplication.class, args);
+    }
+}
