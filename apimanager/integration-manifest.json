@@ -1,0 +1,21 @@
+{
+  "appName": "apimanager",
+  "displayName": "API Manager",
+  "description": "API documentation and lifecycle management service. Provides OpenAPI/Swagger documentation, API versioning, deprecation, and developer portal.",
+  "port": 8118,
+  "emits": [
+    "api.version.published",
+    "api.version.deprecated",
+    "api.key.generated",
+    "api.key.revoked"
+  ],
+  "consumes": [
+    "tenant.created",
+    "tenant.deleted"
+  ],
+  "capabilities": [
+    "API_DOCUMENTATION",
+    "API_VERSIONING",
+    "API_KEY_MANAGEMENT"
+  ]
+}
