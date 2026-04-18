@@ -11,9 +11,9 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "api_spec_new")
+@Table(name = "deprecation_notice")
 @Data
-public class ApiSpec {
+public class DeprecationNotice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
