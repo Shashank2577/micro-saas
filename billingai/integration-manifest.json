@@ -1,10 +1,13 @@
 {
   "app": "billingai",
-  "displayName": "Billing AI",
-  "version": "0.0.1",
-  "baseUrl": "https://api-billingai.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "emits": [
+    "billingai.invoice.generated",
+    "billingai.payment.failed",
+    "billingai.dunning.completed"
+  ],
+  "consumes": [
+    "usageintelligence.event.received",
+    "apimanager.key.generated",
+    "notificationhub.channel.registered"
+  ]
 }
