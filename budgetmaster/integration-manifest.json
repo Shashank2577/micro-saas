@@ -1,0 +1,22 @@
+{
+  "app": "budgetmaster",
+  "displayName": "BudgetMaster",
+  "version": "0.0.1",
+  "baseUrl": "http://localhost:8209",
+  "emits": [
+    {
+      "eventType": "budget.alert.triggered",
+      "schema": {
+        "budgetId": "string",
+        "categoryId": "string",
+        "message": "string"
+      }
+    }
+  ],
+  "consumes": [],
+  "capabilities": [
+    "budget_management",
+    "expense_tracking"
+  ],
+  "healthEndpoint": "/actuator/health"
+}

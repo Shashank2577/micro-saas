@@ -1,0 +1,48 @@
+package com.microsaas.budgetmaster.domain;
+
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "bm_alerts")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Alert {
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @Column(name = "tenant_id", nullable = false)
+    private UUID tenantId;
+
+    @Column(name = "category_id", nullable = false)
+    private UUID categoryId;
+
+    @Column(name = "threshold_percent")
+    private BigDecimal thresholdPercent;
+
+    @Column(name = "threshold_amount")
+    private BigDecimal thresholdAmount;
+
+    @Column(nullable = false)
+    private boolean triggered;
+
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+}
