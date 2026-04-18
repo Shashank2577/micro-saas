@@ -4,6 +4,10 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+
+
+
+
 import com.crosscutting.socialintelligence.domain.ContentAnalysis;
 import com.crosscutting.socialintelligence.service.AnalyticsService;
 import org.springframework.http.ResponseEntity;

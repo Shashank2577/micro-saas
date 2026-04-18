@@ -25,3 +25,26 @@
       - "3113:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8113
+
+  retailintelligence-backend:
+    build:
+      context: ../retailintelligence
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - DB_HOST=postgres
+      - AI_GATEWAY_URL=http://litellm:4000
+    depends_on:
+      - postgres
+      - litellm
+
+  retailintelligence-frontend:
+    build:
+      context: ../retailintelligence/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3015:3000" # Unique port for UI if we deploy it
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
