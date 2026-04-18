@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: datagovernanceos
+  datasource:
+    url: jdbc:postgresql://localhost:5432/cc
+    username: cc
+    password: cc
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        default_schema: tenant
+  flyway:
+    locations: classpath:db/migration
+    default-schema: tenant
+    schemas: tenant, cc, audit
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+server:
+  port: 8283
+
+cc:
+  tenancy:
+    mode: header
+    header-name: X-Tenant-ID
+  auth:
+    keycloak-url: http://localhost:8180
+    realm: cc
+    client-id: cc-backend
+  ai:
+    gateway-url: http://localhost:4000
+    api-key: sk-local-dev-key
+    default-model: claude-sonnet-4-6
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

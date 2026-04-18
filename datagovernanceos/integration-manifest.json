@@ -1,0 +1,8 @@
+{
+  "app": "datagovernanceos",
+  "displayName": "DataGovernanceOS",
+  "description": "Data governance and classification",
+  "emits": ["data_asset.created", "policy.created", "audit.failed"],
+  "consumes": ["pipeline.failed"],
+  "capabilities": ["policy_lookup", "asset_classification"]
+}
