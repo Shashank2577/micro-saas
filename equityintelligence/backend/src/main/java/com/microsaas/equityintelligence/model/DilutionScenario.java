@@ -1,45 +1,13 @@
 package com.microsaas.equityintelligence.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
+import lombok.EqualsAndHashCode;
 
-import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.UUID;
-
-@Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-@Table(name = "dilution_scenario")
-public class DilutionScenario {
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @Column(nullable = false)
-    private UUID tenantId;
-
-    @Column(nullable = false)
-    private String name;
-
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb", nullable = false)
-    private Map<String, Object> scenarioData;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
-    
-    @PrePersist
-    protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
-    }
+@EqualsAndHashCode(callSuper = true)
+@Entity
+@Table(name = "dilution_scenarios")
+public class DilutionScenario extends BaseEntity {
 }
