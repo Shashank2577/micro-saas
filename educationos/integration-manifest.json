@@ -1,0 +1,26 @@
+{
+  "appId": "educationos",
+  "displayName": "EducationOS",
+  "description": "AI learning platform builder",
+  "version": "1.0.0",
+  "capabilities": [
+    "LEARNING_MANAGEMENT",
+    "ASSESSMENT"
+  ],
+  "emits": [
+    {
+      "eventType": "course.created",
+      "description": "Fired when a new course is created"
+    },
+    {
+      "eventType": "quiz.completed",
+      "description": "Fired when a learner completes a quiz"
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "user.created",
+      "description": "Used to initialize a learner profile"
+    }
+  ]
+}
