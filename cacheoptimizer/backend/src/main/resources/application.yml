@@ -1,0 +1,31 @@
+server:
+  port: 8114
+
+spring:
+  application:
+    name: cacheoptimizer
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASS:postgres}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+
+litellm:
+  url: ${LITELLM_URL:http://localhost:4000/v1/chat/completions}
+  api-key: ${LITELLM_API_KEY:dummy-key}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
