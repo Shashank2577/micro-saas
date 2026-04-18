@@ -1,0 +1,10 @@
+{
+  "app": "vendormonitor",
+  "displayName": "Vendor Monitor",
+  "version": "0.0.1",
+  "baseUrl": "https://api-vendormonitor.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
