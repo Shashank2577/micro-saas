@@ -1,0 +1,21 @@
+{
+  "app": "auditvault",
+  "displayName": "AuditVault",
+  "version": "0.0.1",
+  "baseUrl": "https://api-auditvault.YOURDOMAIN.com",
+  "emits": [
+    "audit_package.generated",
+    "evidence.mapped"
+  ],
+  "consumes": [
+    "deploy.completed",
+    "access_review.completed",
+    "incident.resolved"
+  ],
+  "capabilities": [
+    "evidence_aggregation",
+    "compliance_mapping",
+    "audit_export"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
