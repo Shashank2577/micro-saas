@@ -1,0 +1,10 @@
+{
+  "app": "customersuccessos",
+  "displayName": "Customer Success OS",
+  "version": "0.0.1",
+  "baseUrl": "https://api-customersuccessos.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
