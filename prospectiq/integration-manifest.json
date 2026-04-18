@@ -1,0 +1,39 @@
+{
+  "appId": "prospectiq",
+  "displayName": "ProspectIQ",
+  "baseUrl": "http://prospectiq-backend:8141",
+  "emits": [
+    {
+      "eventType": "PROSPECT_CREATED",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "prospectId": { "type": "string" },
+          "name": { "type": "string" },
+          "industry": { "type": "string" }
+        }
+      }
+    },
+    {
+      "eventType": "SIGNAL_DETECTED",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "signalId": { "type": "string" },
+          "prospectId": { "type": "string" },
+          "type": { "type": "string" }
+        }
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "CRM_ACTIVITY",
+      "description": "Updates from CRM systems to enrich prospect profile"
+    }
+  ],
+  "capabilities": [
+    "AI prospect briefing",
+    "Signal aggregation"
+  ]
+}
