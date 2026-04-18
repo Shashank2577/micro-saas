@@ -1,0 +1,20 @@
+{
+  "app": "nonprofitos",
+  "displayName": "NonprofitOS",
+  "version": "1.0.0",
+  "description": "AI nonprofit operations platform. Grant writing co-pilot, donor intelligence, and impact measurement.",
+  "emits": [
+    "donor.created",
+    "grant.drafted",
+    "impact.recorded"
+  ],
+  "consumes": [
+    "user.created",
+    "tenant.created"
+  ],
+  "capabilities": [
+    "grant_drafting",
+    "donor_intelligence",
+    "impact_reporting"
+  ]
+}
