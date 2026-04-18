@@ -2,7 +2,15 @@
   "app": "legalresearch",
   "displayName": "LegalResearch",
   "version": "0.0.1",
-  "emits": ["memo.completed"],
-  "consumes": [],
+  "emits": [
+    "legalresearch.memo.generated",
+    "legalresearch.citation.added",
+    "legalresearch.review.requested"
+  ],
+  "consumes": [
+    "complianceradar.change.detected",
+    "policyforge.policy.published",
+    "contractsense.risk.flagged"
+  ],
   "capabilities": [{"name": "research-query", "input": "legalQuestion", "output": "researchMemo"}]
 }
