@@ -1,0 +1,22 @@
+{
+  "appName": "telemetrycore",
+  "version": "1.0.0",
+  "port": 8104,
+  "description": "Centralized analytics and telemetry service",
+  "capabilities": [
+    "multi-tenant-event-collection",
+    "real-time-aggregation",
+    "funnel-analysis",
+    "ab-test-experiments",
+    "cohort-analysis"
+  ],
+  "emits": [
+    "alert_threshold_breached",
+    "metric_anomaly_detected"
+  ],
+  "consumes": [
+    "page_view",
+    "user_signup",
+    "feature_adopted"
+  ]
+}
