@@ -1,0 +1,26 @@
+{
+  "appId": "engagementpulse",
+  "name": "EngagementPulse",
+  "version": "1.0.0",
+  "emits": [
+    {
+      "event": "survey.distributed",
+      "description": "Fired when a survey is scheduled or sent to users"
+    },
+    {
+      "event": "alert.triggered",
+      "description": "Fired when a team's engagement score drops below threshold"
+    }
+  ],
+  "consumes": [
+    {
+      "event": "employee.created",
+      "description": "Used to synchronize employee directory for survey distribution"
+    },
+    {
+      "event": "team.created",
+      "description": "Used to map organizational hierarchy for analytics"
+    }
+  ],
+  "capabilities": ["survey_builder", "sentiment_analysis", "engagement_scoring"]
+}
