@@ -1,16 +1,18 @@
 {
   "app": "contractportfolio",
-  "displayName": "ContractPortfolio",
+  "displayName": "Contract Portfolio",
   "version": "0.0.1",
   "baseUrl": "https://api-contractportfolio.YOURDOMAIN.com",
-  "emits": ["contract.expiring-soon", "renewal.alert-triggered"],
-  "consumes": ["document.uploaded"],
-  "capabilities": [
-    {
-      "name": "extract-terms",
-      "input": "contractId",
-      "output": "extractedTerms"
-    }
+  "emits": [
+    "contractportfolio.contract.indexed",
+    "contractportfolio.renewal.alerted",
+    "contractportfolio.risk.updated"
   ],
+  "consumes": [
+    "documentvault.document.uploaded",
+    "contractsense.contract.analyzed",
+    "regulatoryfiling.filing.submitted"
+  ],
+  "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }

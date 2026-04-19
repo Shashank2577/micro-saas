@@ -20,3 +20,6 @@ package-lock.json
 .jules-env
 .jules-cluster-*-dispatch.log
 .jules-plan-*.json
+contractportfolio/nexus-hub/
+contractportfolio/frontend/node_modules/
+contractportfolio/frontend/.next/
