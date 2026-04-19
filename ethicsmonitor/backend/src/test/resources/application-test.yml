@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16-alpine:///ethicsmonitor_test
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+  flyway:
+    enabled: false
+
+server:
+  port: 0
+
+crosscutting:
+  ai:
+    provider: openai
+    api-key: test-key
+    base-url: http://localhost:4000
+    default-model: claude-3-5-sonnet-20241022
+  events:
+    broker: in-memory
