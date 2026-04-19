@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "purchase_orders")
+@Table(name = "procurement_events")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PurchaseOrder {
+public class ProcurementEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -1,33 +1,28 @@
-# ProcureBot (procurebot)
+# ProcureBot
 
-> **Tier:** Alpha | **Score:** 55/100
+ProcureBot is a Next-15 Production Progression SaaS application.
 
-A micro-saas ecosystem application.
+## Setup
 
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
+### Backend
 
-## Integration
-This application integrates with the Nexus Hub.
+Requirements:
+- Java 21
+- Maven
 
-### Emits Events:
-None
+Run: `cd procurebot/backend && mvn spring-boot:run`
 
-### Consumes Events:
-None
+### Frontend
 
-## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
+Requirements:
+- Node.js 18+
 
-# Frontend
-cd frontend && npm run dev
-```
+Run: `cd procurebot/frontend && npm install && npm run dev`
 
-## Docker Deployment
-```bash
-docker build -t procurebot-backend ./backend
-docker build -t procurebot-frontend ./frontend
-```
+## Running tests
+
+Backend:
+`cd procurebot/backend && mvn test`
+
+Frontend:
+`cd procurebot/frontend && npm test`
