@@ -4,13 +4,14 @@
   "version": "0.0.1",
   "baseUrl": "https://api-apievolver.YOURDOMAIN.com",
   "emits": [
-    "api-spec-uploaded",
-    "breaking-change-detected",
-    "api-deprecated"
+    "apievolver.breaking-change.detected",
+    "apievolver.version.published",
+    "apievolver.sdk.generated"
   ],
   "consumes": [
-    "service.registered",
-    "api-spec-scanned"
+    "apimanager.version.published",
+    "dependencyradar.scan.completed",
+    "securitypulse.finding.created"
   ],
   "capabilities": [
     {

@@ -1,4 +1,4 @@
-CREATE TABLE api_spec (
+CREATE TABLE api_spec_new (
     id UUID PRIMARY KEY,
     tenant_id UUID NOT NULL,
     name VARCHAR(180),
