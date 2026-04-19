@@ -3,8 +3,16 @@
   "displayName": "Copy Optimizer",
   "version": "0.0.1",
   "baseUrl": "https://api-copyoptimizer.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
+  "emits": [
+    "copyoptimizer.variant.generated",
+    "copyoptimizer.variant.promoted",
+    "copyoptimizer.score.computed"
+  ],
+  "consumes": [
+    "seointelligence.cluster.generated",
+    "brandvoice.style.updated",
+    "contentos.asset.created"
+  ],
   "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }
