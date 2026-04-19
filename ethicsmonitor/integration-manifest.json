@@ -1,0 +1,10 @@
+{
+  "app": "ethicsmonitor",
+  "displayName": "EthicsMonitor",
+  "version": "0.0.1",
+  "baseUrl": "https://api-ethicsmonitor.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [],
+  "healthEndpoint": "/actuator/health"
+}
