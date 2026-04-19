@@ -1,45 +1,67 @@
 CREATE SCHEMA IF NOT EXISTS complianceradar;
 
-CREATE TABLE complianceradar.regulatory_changes (
+CREATE TABLE complianceradar.regulation_updates (
     id UUID PRIMARY KEY,
-    jurisdiction VARCHAR(255) NOT NULL,
-    regulation_name VARCHAR(255) NOT NULL,
-    summary TEXT,
-    effective_date DATE,
-    impact_level VARCHAR(50),
     tenant_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180),
+    status VARCHAR(40),
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
 );
+CREATE INDEX idx_regulation_updates_tenant_id ON complianceradar.regulation_updates(tenant_id);
 
-CREATE TABLE complianceradar.compliance_policies (
+CREATE TABLE complianceradar.jurisdiction_rules (
     id UUID PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    content TEXT,
-    owner VARCHAR(255),
-    last_reviewed_at TIMESTAMP WITH TIME ZONE,
     tenant_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180),
+    status VARCHAR(40),
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
 );
+CREATE INDEX idx_jurisdiction_rules_tenant_id ON complianceradar.jurisdiction_rules(tenant_id);
 
-CREATE TABLE complianceradar.compliance_gaps (
+CREATE TABLE complianceradar.impact_assessments (
     id UUID PRIMARY KEY,
-    regulatory_change_id UUID NOT NULL REFERENCES complianceradar.regulatory_changes(id),
-    policy_id UUID REFERENCES complianceradar.compliance_policies(id),
-    gap_description TEXT,
-    severity VARCHAR(50),
-    status VARCHAR(50),
-    owner VARCHAR(255),
     tenant_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180),
+    status VARCHAR(40),
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
 );
+CREATE INDEX idx_impact_assessments_tenant_id ON complianceradar.impact_assessments(tenant_id);
 
-CREATE TABLE complianceradar.compliance_tasks (
+CREATE TABLE complianceradar.control_gaps (
     id UUID PRIMARY KEY,
-    gap_id UUID NOT NULL REFERENCES complianceradar.compliance_gaps(id),
-    description TEXT,
-    due_date DATE,
-    assigned_to VARCHAR(255),
-    completed_at TIMESTAMP WITH TIME ZONE,
     tenant_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180),
+    status VARCHAR(40),
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
 );
+CREATE INDEX idx_control_gaps_tenant_id ON complianceradar.control_gaps(tenant_id);
+
+CREATE TABLE complianceradar.task_assignments (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180),
+    status VARCHAR(40),
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
+);
+CREATE INDEX idx_task_assignments_tenant_id ON complianceradar.task_assignments(tenant_id);
+
+CREATE TABLE complianceradar.deadline_alerts (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180),
+    status VARCHAR(40),
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ
+);
+CREATE INDEX idx_deadline_alerts_tenant_id ON complianceradar.deadline_alerts(tenant_id);

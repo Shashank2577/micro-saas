@@ -2,7 +2,17 @@
   "app": "complianceradar",
   "displayName": "ComplianceRadar",
   "version": "0.0.1",
-  "emits": ["compliance.gap-detected", "compliance.task-completed"],
-  "consumes": ["regulation.changed"],
-  "capabilities": [{"name": "analyze-gaps", "input": "regulationId", "output": "gapList"}]
+  "emits": [
+    "complianceradar.change.detected",
+    "complianceradar.gap.opened",
+    "complianceradar.deadline.alerted"
+  ],
+  "consumes": [
+    "policyforge.policy.published",
+    "auditready.readiness.scored",
+    "regulatoryfiling.filing.submitted"
+  ],
+  "capabilities": [
+    {"name": "analyze-gaps", "input": "regulationId", "output": "gapList"}
+  ]
 }
