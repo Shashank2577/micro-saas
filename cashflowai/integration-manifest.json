@@ -1,10 +1,24 @@
 {
-  "app": "cashflowai",
-  "displayName": "CashflowAI",
-  "version": "0.0.1",
-  "baseUrl": "https://api-cashflowai.YOURDOMAIN.com",
-  "emits": ["cashflow.shortfall-predicted"],
-  "consumes": ["invoice.paid"],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "appId": "cashflowai",
+  "name": "CashflowAI",
+  "version": "1.0.0",
+  "description": "Near-term cash position forecasting and shortfall mitigation automation",
+  "capabilities": [
+    "cash-position-management",
+    "liquidity-forecasting",
+    "shortfall-alerting",
+    "mitigation-options",
+    "scenario-simulation",
+    "funding-events"
+  ],
+  "emits": [
+    "cashflowai.position.updated",
+    "cashflowai.shortfall.detected",
+    "cashflowai.mitigation.recommended"
+  ],
+  "consumes": [
+    "invoiceprocessor.invoice.approved",
+    "budgetpilot.variance.alerted",
+    "debtnavigator.plan.approved"
+  ]
 }

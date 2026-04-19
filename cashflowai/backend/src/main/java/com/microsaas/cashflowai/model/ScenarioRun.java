@@ -4,15 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 
 @Entity
-@Table(name = "cash_positions")
-public class CashPosition {
+@Table(name = "scenario_runs")
+public class ScenarioRun {
     @Id
     @GeneratedValue
     private UUID id;
@@ -36,15 +34,6 @@ public class CashPosition {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private ZonedDateTime updatedAt;
-
-    @Column(name = "as_of", nullable = false)
-    private LocalDate asOf;
-
-    @Column(name = "available_cash", nullable = false, precision = 14, scale = 2)
-    private BigDecimal availableCash;
-
-    @Column(name = "restricted_cash", nullable = false, precision = 14, scale = 2)
-    private BigDecimal restrictedCash;
 
 
     public UUID getId() {
@@ -101,29 +90,5 @@ public class CashPosition {
 
     public void setUpdatedAt(ZonedDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public LocalDate getAsOf() {
-        return this.asOf;
-    }
-
-    public void setAsOf(LocalDate asOf) {
-        this.asOf = asOf;
-    }
-
-    public BigDecimal getAvailableCash() {
-        return this.availableCash;
-    }
-
-    public void setAvailableCash(BigDecimal availableCash) {
-        this.availableCash = availableCash;
-    }
-
-    public BigDecimal getRestrictedCash() {
-        return this.restrictedCash;
-    }
-
-    public void setRestrictedCash(BigDecimal restrictedCash) {
-        this.restrictedCash = restrictedCash;
     }
 }

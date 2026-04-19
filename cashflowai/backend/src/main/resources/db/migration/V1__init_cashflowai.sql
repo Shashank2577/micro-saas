@@ -1,35 +1,68 @@
-CREATE TABLE cash_position (
+CREATE TABLE cash_positions (
     id UUID PRIMARY KEY,
-    date DATE NOT NULL,
-    balance DECIMAL(19, 2) NOT NULL,
-    source VARCHAR(50) NOT NULL,
-    confidence_interval DOUBLE PRECISION,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    as_of DATE NOT NULL,
+    available_cash NUMERIC(14,2) NOT NULL,
+    restricted_cash NUMERIC(14,2) NOT NULL
 );
+CREATE INDEX idx_cash_positions_tenant_id ON cash_positions(tenant_id);
 
-CREATE TABLE cashflow_forecast (
+CREATE TABLE liquidity_forecasts (
     id UUID PRIMARY KEY,
-    period_start DATE NOT NULL,
-    period_end DATE NOT NULL,
-    inflow_forecast DECIMAL(19, 2) NOT NULL,
-    outflow_forecast DECIMAL(19, 2) NOT NULL,
-    net_forecast DECIMAL(19, 2) NOT NULL,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_liquidity_forecasts_tenant_id ON liquidity_forecasts(tenant_id);
 
-CREATE TABLE scenario (
+CREATE TABLE shortfall_alerts (
     id UUID PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
-    assumptions TEXT,
-    projected_runway_days INT,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_shortfall_alerts_tenant_id ON shortfall_alerts(tenant_id);
 
-CREATE TABLE cashflow_alert (
+CREATE TABLE mitigation_options (
     id UUID PRIMARY KEY,
-    alert_type VARCHAR(50) NOT NULL,
-    projected_date DATE,
-    severity VARCHAR(50) NOT NULL,
-    recommended_action TEXT,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_mitigation_options_tenant_id ON mitigation_options(tenant_id);
+
+CREATE TABLE scenario_runs (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_scenario_runs_tenant_id ON scenario_runs(tenant_id);
+
+CREATE TABLE funding_events (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_funding_events_tenant_id ON funding_events(tenant_id);
