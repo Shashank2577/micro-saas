@@ -1,22 +1,80 @@
-CREATE SCHEMA IF NOT EXISTS billingai;
-
-CREATE TABLE billingai.subscription (
+CREATE TABLE subscriptions (
     id UUID PRIMARY KEY,
-    customer_id UUID NOT NULL,
-    plan_id UUID NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE,
-    monthly_rate DECIMAL(19, 2) NOT NULL,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    customer_id VARCHAR(100) NOT NULL,
+    plan_id VARCHAR(100) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
-CREATE TABLE billingai.invoice (
+CREATE TABLE invoices (
     id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
     subscription_id UUID NOT NULL,
-    amount DECIMAL(19, 2) NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    issue_date DATE NOT NULL,
-    due_date DATE NOT NULL,
-    tenant_id UUID NOT NULL
+    amount DECIMAL(19,4) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW(),
+    CONSTRAINT fk_subscription FOREIGN KEY(subscription_id) REFERENCES subscriptions(id)
+);
+
+CREATE TABLE subscription_plans (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE invoice_runs (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE dunning_flows (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE payment_attempts (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE revenue_leak_alerts (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE tax_rules (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
