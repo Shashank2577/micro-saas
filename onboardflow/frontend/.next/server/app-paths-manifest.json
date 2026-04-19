@@ -1,4 +1,10 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
-  "/page": "app/page.js"
+  "/completion-signals/page": "app/completion-signals/page.js",
+  "/escalations/page": "app/escalations/page.js",
+  "/experience-scores/page": "app/experience-scores/page.js",
+  "/page": "app/page.js",
+  "/task-assignments/page": "app/task-assignments/page.js",
+  "/onboarding-plans/page": "app/onboarding-plans/page.js",
+  "/milestone-checklists/page": "app/milestone-checklists/page.js"
 }

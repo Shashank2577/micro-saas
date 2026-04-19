@@ -6,8 +6,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class OnboardFlowApplication {
+public class Application {
     public static void main(String[] args) {
-        SpringApplication.run(OnboardFlowApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 }
