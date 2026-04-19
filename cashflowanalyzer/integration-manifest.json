@@ -1,10 +1,14 @@
 {
-  "app": "cashflowanalyzer",
-  "displayName": "Cashflow Analyzer",
-  "version": "0.0.1",
-  "baseUrl": "https://api-cashflowanalyzer.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "app_name": "cashflowanalyzer",
+  "version": "1.0.0",
+  "emits": [
+    "cashflowanalyzer.forecast.generated",
+    "cashflowanalyzer.anomaly.detected",
+    "cashflowanalyzer.insight.published"
+  ],
+  "consumes": [
+    "invoiceprocessor.invoice.approved",
+    "budgetpilot.reforecast.completed",
+    "financenarrator.summary.requested"
+  ]
 }
