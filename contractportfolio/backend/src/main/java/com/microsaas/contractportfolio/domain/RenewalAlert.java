@@ -1,49 +1,43 @@
 package com.microsaas.contractportfolio.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name = "renewal_alerts")
 @Data
-@Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class RenewalAlert {
-
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @Column(name = "tenant_id", nullable = false)
     private UUID tenantId;
 
-    @Column(name = "contract_id", nullable = false)
-    private UUID contractId;
+    @Column(nullable = false, length = 180)
+    private String name;
 
-    @Column(name = "alert_date", nullable = false)
-    private LocalDate alertDate;
+    @Column(nullable = false, length = 40)
+    private String status;
 
-    @Column(name = "days_until_renewal", nullable = false)
-    private int daysUntilRenewal;
-
-    @Column(name = "acknowledged_by")
-    private String acknowledgedBy;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "metadata_json", columnDefinition = "jsonb")
+    private String metadataJson;
 
     @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private ZonedDateTime createdAt;
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private OffsetDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private ZonedDateTime updatedAt;
+    @Column(name = "updated_at", nullable = false)
+    private OffsetDateTime updatedAt;
 }

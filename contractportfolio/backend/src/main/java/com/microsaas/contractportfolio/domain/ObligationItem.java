@@ -12,10 +12,10 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "contract_records")
+@Table(name = "obligation_items")
 @Data
 @NoArgsConstructor
-public class ContractRecord {
+public class ObligationItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

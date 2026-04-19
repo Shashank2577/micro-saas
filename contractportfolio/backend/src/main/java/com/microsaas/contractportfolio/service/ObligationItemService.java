@@ -1,7 +1,7 @@
 package com.microsaas.contractportfolio.service;
 
-import com.microsaas.contractportfolio.domain.ContractRecord;
-import com.microsaas.contractportfolio.repository.ContractRecordRepository;
+import com.microsaas.contractportfolio.domain.ObligationItem;
+import com.microsaas.contractportfolio.repository.ObligationItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ContractRecordService {
-    private final ContractRecordRepository repository;
+public class ObligationItemService {
+    private final ObligationItemRepository repository;
 
-    public ContractRecord create(ContractRecord entity) {
+    public ObligationItem create(ObligationItem entity) {
         return repository.save(entity);
     }
 
-    public Optional<ContractRecord> update(UUID id, UUID tenantId, ContractRecord updateDetails) {
+    public Optional<ObligationItem> update(UUID id, UUID tenantId, ObligationItem updateDetails) {
         return repository.findByIdAndTenantId(id, tenantId).map(existing -> {
             existing.setName(updateDetails.getName());
             existing.setStatus(updateDetails.getStatus());
@@ -27,11 +27,11 @@ public class ContractRecordService {
         });
     }
 
-    public List<ContractRecord> list(UUID tenantId) {
+    public List<ObligationItem> list(UUID tenantId) {
         return repository.findAllByTenantId(tenantId);
     }
 
-    public Optional<ContractRecord> getById(UUID id, UUID tenantId) {
+    public Optional<ObligationItem> getById(UUID id, UUID tenantId) {
         return repository.findByIdAndTenantId(id, tenantId);
     }
 

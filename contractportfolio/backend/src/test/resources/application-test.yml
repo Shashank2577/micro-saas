@@ -1,12 +1,20 @@
 spring:
   datasource:
-    url: jdbc:tc:postgresql:16-alpine:///test
-    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
-        default_schema: public
+        dialect: org.hibernate.dialect.H2Dialect
   flyway:
     enabled: false
+
+cc:
+  tenancy:
+    enabled: false
+  ai:
+    litellm-url: "http://localhost:4000"
