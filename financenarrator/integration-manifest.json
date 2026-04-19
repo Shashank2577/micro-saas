@@ -3,8 +3,16 @@
   "displayName": "FinanceNarrator",
   "version": "0.0.1",
   "baseUrl": "https://api-financenarrator.YOURDOMAIN.com",
-  "emits": ["narrative.generated"],
-  "consumes": [],
+  "emits": [
+    "financenarrator.narrative.generated",
+    "financenarrator.review.requested",
+    "financenarrator.export.completed"
+  ],
+  "consumes": [
+    "cashflowanalyzer.insight.published",
+    "budgetpilot.variance.alerted",
+    "equityintelligence.round.updated"
+  ],
   "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }
