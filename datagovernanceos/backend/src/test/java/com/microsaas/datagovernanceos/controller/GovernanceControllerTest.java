@@ -37,7 +37,7 @@ public class GovernanceControllerTest {
     void testListAssets() throws Exception {
         when(governanceService.listAssets()).thenReturn(List.of(new DataAsset()));
 
-        mockMvc.perform(get("/api/v1/assets")
+        mockMvc.perform(get("/api/v1/data-governance/assets")
                 .header("X-Tenant-ID", "00000000-0000-0000-0000-000000000001")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
