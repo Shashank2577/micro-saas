@@ -1,7 +1,7 @@
 package com.microsaas.apievolver.service;
 
-import com.microsaas.apievolver.model.ApiSpec;
-import com.microsaas.apievolver.repository.ApiSpecRepository;
+import com.microsaas.apievolver.model.SdkArtifact;
+import com.microsaas.apievolver.repository.SdkArtifactRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,30 +11,30 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class ApiSpecService {
-    private final ApiSpecRepository repository;
+public class SdkArtifactService {
+    private final SdkArtifactRepository repository;
     private final EventPublisher eventPublisher;
 
-    public List<ApiSpec> findAll(UUID tenantId) {
+    public List<SdkArtifact> findAll(UUID tenantId) {
         return repository.findByTenantId(tenantId);
     }
 
-    public ApiSpec findById(UUID id, UUID tenantId) {
+    public SdkArtifact findById(UUID id, UUID tenantId) {
         return repository.findByIdAndTenantId(id, tenantId)
-                .orElseThrow(() -> new RuntimeException("ApiSpec not found"));
+                .orElseThrow(() -> new RuntimeException("SdkArtifact not found"));
     }
 
     @Transactional
-    public ApiSpec create(ApiSpec entity, UUID tenantId) {
+    public SdkArtifact create(SdkArtifact entity, UUID tenantId) {
         entity.setTenantId(tenantId);
-        ApiSpec saved = repository.save(entity);
-        eventPublisher.publish("apievolver.spec.uploaded", tenantId, saved.getId().toString());
+        SdkArtifact saved = repository.save(entity);
+        eventPublisher.publish("apievolver.sdk.generated", tenantId, saved.getId().toString());
         return saved;
     }
 
     @Transactional
-    public ApiSpec update(UUID id, ApiSpec entity, UUID tenantId) {
-        ApiSpec existing = findById(id, tenantId);
+    public SdkArtifact update(UUID id, SdkArtifact entity, UUID tenantId) {
+        SdkArtifact existing = findById(id, tenantId);
         existing.setName(entity.getName());
         existing.setStatus(entity.getStatus());
         existing.setMetadataJson(entity.getMetadataJson());

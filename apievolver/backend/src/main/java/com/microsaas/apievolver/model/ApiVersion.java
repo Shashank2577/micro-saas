@@ -11,9 +11,9 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "api_spec_new")
+@Table(name = "api_version")
 @Data
-public class ApiSpec {
+public class ApiVersion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
