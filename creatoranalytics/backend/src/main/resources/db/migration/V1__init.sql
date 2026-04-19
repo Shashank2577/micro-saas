@@ -1,53 +1,67 @@
-CREATE SCHEMA IF NOT EXISTS creatoranalytics;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE creatoranalytics.content_channel (
-    id UUID PRIMARY KEY,
+CREATE TABLE content_assets (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    platform VARCHAR(50) NOT NULL,
-    url TEXT NOT NULL,
-    tracked_since DATE NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+CREATE INDEX idx_content_assets_tenant_id ON content_assets(tenant_id);
 
-CREATE TABLE creatoranalytics.content_performance (
-    id UUID PRIMARY KEY,
+CREATE TABLE channel_metrics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    channel_id UUID NOT NULL,
-    content_title TEXT NOT NULL,
-    content_url TEXT NOT NULL,
-    views BIGINT NOT NULL,
-    clicks BIGINT NOT NULL,
-    watch_time_minutes INT NOT NULL,
-    measured_at DATE NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+CREATE INDEX idx_channel_metrics_tenant_id ON channel_metrics(tenant_id);
 
-CREATE TABLE creatoranalytics.business_outcome (
-    id UUID PRIMARY KEY,
+CREATE TABLE attribution_models (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    outcome_type VARCHAR(50) NOT NULL,
-    content_id UUID NOT NULL,
-    channel_id UUID NOT NULL,
-    attributed_value DECIMAL NOT NULL,
-    occurred_at TIMESTAMP NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+CREATE INDEX idx_attribution_models_tenant_id ON attribution_models(tenant_id);
 
-CREATE TABLE creatoranalytics.performance_model (
-    id UUID PRIMARY KEY,
+CREATE TABLE roi_snapshots (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    channel_id UUID NOT NULL,
-    content_type TEXT NOT NULL,
-    predicted_views INT NOT NULL,
-    predicted_conversions INT NOT NULL,
-    confidence_score DECIMAL NOT NULL,
-    modeled_at TIMESTAMP NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+CREATE INDEX idx_roi_snapshots_tenant_id ON roi_snapshots(tenant_id);
 
-CREATE TABLE creatoranalytics.content_insight (
-    id UUID PRIMARY KEY,
+CREATE TABLE audience_segments (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    channel_id UUID NOT NULL,
-    insight_type VARCHAR(50) NOT NULL,
-    insight_text TEXT NOT NULL,
-    evidence JSONB,
-    generated_at TIMESTAMP NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
 );
+CREATE INDEX idx_audience_segments_tenant_id ON audience_segments(tenant_id);
+
+CREATE TABLE performance_insights (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX idx_performance_insights_tenant_id ON performance_insights(tenant_id);

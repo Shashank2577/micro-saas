@@ -1,33 +1,28 @@
-# AI content performance analytics tied to business outcomes (creatoranalytics)
+# CreatorAnalytics
 
-> **Tier:** Beta | **Score:** 60/100
+CreatorAnalytics provides content performance attribution and ROI insights for creator teams.
 
-A micro-saas ecosystem application.
+## Tech Stack
+- **Backend**: Java 21, Spring Boot 3.2, PostgreSQL, Flyway
+- **Frontend**: Next.js 14, React, TailwindCSS
 
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
+## Local Development
 
-## Integration
-This application integrates with the Nexus Hub.
+### Backend
+1. Ensure PostgreSQL is running.
+2. Setup database: `createdb creatoranalytics`
+3. Run backend:
+   ```bash
+   cd backend
+   mvn spring-boot:run
+   ```
+4. Access API docs at `http://localhost:8080/swagger-ui.html`
 
-### Emits Events:
-None
+### Frontend
+1. Install dependencies: `cd frontend && npm install`
+2. Run dev server: `npm run dev`
+3. Access UI at `http://localhost:3000/creator-analytics`
 
-### Consumes Events:
-None
-
-## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
-
-# Frontend
-cd frontend && npm run dev
-```
-
-## Docker Deployment
-```bash
-docker build -t creatoranalytics-backend ./backend
-docker build -t creatoranalytics-frontend ./frontend
-```
+## Testing
+- Backend tests: `cd backend && mvn test`
+- Frontend tests: `cd frontend && npm test`
