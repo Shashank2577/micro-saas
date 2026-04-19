@@ -1,182 +1,180 @@
 # CashflowAnalyzer Detailed Specification
 
-## 1. Overview
-**App Name:** CashflowAnalyzer
-**Port:** 8206
-**Theme:** Personal Finance & Wealth Management
-**Purpose:** Personal cash flow analysis and optimization platform. Provides visibility into income and spending patterns, identifies optimization opportunities, and recommends actions.
+## 1) Product Intent
+- **App:** `cashflowanalyzer`
+- **Domain:** Finance Operations
+- **Outcome:** Historical cashflow diagnostics, forecasting, and anomaly explanations
+- **Primary actors:** Finance analyst, CFO, Controller
 
-## 2. Database Schema (PostgreSQL)
+## 2) Domain Model (Database Schema)
+
+All entities must support multi-tenancy (`tenant_id`) and standard audit fields (`created_at`, `updated_at`).
 
 ```sql
-CREATE EXTENSION IF NOT EXISTS vector;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE accounts (
-    id UUID PRIMARY KEY,
+CREATE TABLE cashflow_periods (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    plaid_account_id VARCHAR(255) UNIQUE NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    type VARCHAR(50) NOT NULL,
-    subtype VARCHAR(50),
-    mask VARCHAR(4),
-    current_balance DECIMAL(15, 2),
-    available_balance DECIMAL(15, 2),
-    iso_currency_code VARCHAR(3) DEFAULT 'USD',
-    last_synced_at TIMESTAMP WITH TIME ZONE,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE transactions (
-    id UUID PRIMARY KEY,
+CREATE TABLE cash_movements (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    account_id UUID REFERENCES accounts(id),
-    plaid_transaction_id VARCHAR(255) UNIQUE NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
-    date DATE NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    merchant_name VARCHAR(255),
-    category_id UUID,
-    is_recurring BOOLEAN DEFAULT FALSE,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE categories (
-    id UUID PRIMARY KEY,
+CREATE TABLE trend_signals (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    name VARCHAR(100) NOT NULL,
-    type VARCHAR(20) NOT NULL CHECK (type IN ('INCOME', 'EXPENSE')),
-    parent_category_id UUID REFERENCES categories(id),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE budgets (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    category_id UUID REFERENCES categories(id) NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
-    month INTEGER NOT NULL CHECK (month BETWEEN 1 AND 12),
-    year INTEGER NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE recurring_charges (
-    id UUID PRIMARY KEY,
+CREATE TABLE forecast_runs (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    merchant_name VARCHAR(255) NOT NULL,
-    amount DECIMAL(15, 2) NOT NULL,
-    frequency VARCHAR(50) NOT NULL,
-    last_payment_date DATE NOT NULL,
-    next_payment_date DATE,
-    status VARCHAR(50) DEFAULT 'ACTIVE',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE cash_flow_snapshots (
-    id UUID PRIMARY KEY,
+CREATE TABLE anomaly_flags (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    month INTEGER NOT NULL,
-    year INTEGER NOT NULL,
-    total_income DECIMAL(15, 2) NOT NULL,
-    total_expenses DECIMAL(15, 2) NOT NULL,
-    net_cash_flow DECIMAL(15, 2) NOT NULL,
-    savings_rate DECIMAL(5, 2) NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE spending_patterns (
-    id UUID PRIMARY KEY,
+CREATE TABLE narrative_insights (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    category_id UUID REFERENCES categories(id) NOT NULL,
-    trend_type VARCHAR(50) NOT NULL,
-    description TEXT,
-    percentage_change DECIMAL(5, 2),
-    analysis_date DATE NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE recommendations (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
-    impact_amount DECIMAL(15, 2) NOT NULL,
-    impact_type VARCHAR(50) NOT NULL,
-    status VARCHAR(50) DEFAULT 'PENDING',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
--- Indexes for performance and tenant scoping
-CREATE INDEX idx_transactions_tenant_date ON transactions(tenant_id, date);
-CREATE INDEX idx_accounts_tenant ON accounts(tenant_id);
+CREATE INDEX idx_cashflow_periods_tenant ON cashflow_periods(tenant_id);
+CREATE INDEX idx_cash_movements_tenant ON cash_movements(tenant_id);
+CREATE INDEX idx_trend_signals_tenant ON trend_signals(tenant_id);
+CREATE INDEX idx_forecast_runs_tenant ON forecast_runs(tenant_id);
+CREATE INDEX idx_anomaly_flags_tenant ON anomaly_flags(tenant_id);
+CREATE INDEX idx_narrative_insights_tenant ON narrative_insights(tenant_id);
 ```
 
-## 3. REST Endpoints
+## 3) REST API Contract
 
-### Accounts API (`/api/v1/accounts`)
-- `POST /connect`: Connect Plaid account. Body: `{"public_token": "..."}`
-- `DELETE /{id}`: Disconnect account.
-- `POST /{id}/sync`: Trigger transaction sync.
-- `GET /`: List accounts.
-- `GET /{id}/balance`: Get account balance.
+### CashflowPeriods API (`/api/v1/cashflow/cashflow-periods`)
+- `GET /`: List CashflowPeriods (response: `List<CashflowPeriod>`). Filters: None. Pagination support.
+- `POST /`: Create CashflowPeriod. Request: `{ "name": "...", "status": "..." }`. Response: `CashflowPeriod`.
+- `GET /{id}`: Get CashflowPeriod by ID.
+- `PATCH /{id}`: Update CashflowPeriod. Request: `{ "name": "...", "status": "..." }`.
+- `POST /{id}/validate`: Validate CashflowPeriod. Response: `{ "valid": true/false }`.
 
-### Transactions API (`/api/v1/transactions`)
-- `GET /`: List transactions with pagination and filters (date range, category).
-- `POST /categorize`: Bulk categorize transactions (ML triggered).
-- `PATCH /{id}/category`: Update category. Body: `{"category_id": "..."}`
-- `GET /search`: Search by merchant/name.
-- `GET /{id}`: Details.
+### CashMovements API (`/api/v1/cashflow/cash-movements`)
+- `GET /`: List CashMovements.
+- `POST /`: Create CashMovement.
+- `GET /{id}`: Get CashMovement by ID.
+- `PATCH /{id}`: Update CashMovement.
+- `POST /{id}/validate`: Validate CashMovement.
 
-### Analytics API (`/api/v1/analytics`)
-- `GET /cash-flow`: Get statement for range.
-- `GET /expense-breakdown`: Breakdown by category.
-- `GET /income-summary`: Income streams.
-- `GET /savings-rate`: Calculates rate over last 3 months.
-- `GET /trends`: Spending trends.
+### TrendSignals API (`/api/v1/cashflow/trend-signals`)
+- `GET /`: List TrendSignals.
+- `POST /`: Create TrendSignal.
+- `GET /{id}`: Get TrendSignal by ID.
+- `PATCH /{id}`: Update TrendSignal.
+- `POST /{id}/validate`: Validate TrendSignal.
 
-### Budgeting API (`/api/v1/budgets`)
-- `POST /`: Set budget. Body: `{"category_id": "...", "amount": 100, "month": 4, "year": 2026}`
-- `GET /`: Get budgets.
-- `GET /variance`: Compare budget to actuals.
+### ForecastRuns API (`/api/v1/cashflow/forecast-runs`)
+- `GET /`: List ForecastRuns.
+- `POST /`: Create ForecastRun.
+- `GET /{id}`: Get ForecastRun by ID.
+- `PATCH /{id}`: Update ForecastRun.
+- `POST /{id}/validate`: Validate ForecastRun.
 
-### Optimization API (`/api/v1/optimization`)
-- `GET /recurring`: Identify recurring charges.
-- `GET /subscriptions`: Subscription audit.
-- `GET /recommendations`: Get AI recommendations.
-- `POST /recommendations/{id}/calculate`: Calculate impact modeling.
+### AnomalyFlags API (`/api/v1/cashflow/anomaly-flags`)
+- `GET /`: List AnomalyFlags.
+- `POST /`: Create AnomalyFlag.
+- `GET /{id}`: Get AnomalyFlag by ID.
+- `PATCH /{id}`: Update AnomalyFlag.
+- `POST /{id}/validate`: Validate AnomalyFlag.
 
-## 4. Service Methods (Backend)
-- **AccountAggregationService**: `connectAccount(String token)`, `syncTransactions(UUID accountId)`.
-- **TransactionCategorizationService**: `categorizeTransactions(List<Transaction> txns)` - Calls LiteLLM.
-- **CashFlowAnalysisService**: `generateMonthlySnapshot(int month, int year)`, `calculateSavingsRate()`.
-- **BudgetingService**: `calculateVariance(int month, int year)`.
-- **SpendingPatternService**: `detectTrends(LocalDate since)`.
-- **OptimizationService**: `generateRecommendations()` - Uses LiteLLM for "Eliminate $50 unused subscription...".
+### AI & Workflow APIs
+- `POST /api/v1/cashflow/ai/analyze`: Run AI Analysis. Request: `{ "context": "..." }`. Response: `{ "result": "..." }`.
+- `POST /api/v1/cashflow/ai/recommendations`: Get AI Recommendations. Request: `{ "context": "..." }`. Response: `{ "recommendations": [...] }`.
+- `POST /api/v1/cashflow/workflows/execute`: Trigger async workflow.
+- `GET /api/v1/cashflow/health/contracts`: Health check and contracts definition.
+- `GET /api/v1/cashflow/metrics/summary`: High-level metrics summary.
 
-## 5. React Components (Frontend)
-- `DashboardPage`: Overview cards (Income, Expense, Savings Rate).
-- `CashFlowChart`: Recharts area/bar chart for cash flow.
-- `TransactionBrowser`: React Table with sorting, filtering, editing categories.
-- `BudgetVariance`: Progress bars for budget vs actual.
-- `OptimizationPanel`: List of AI recommendations with action buttons.
-- `SubscriptionManager`: List of recurring charges.
+## 4) Service Methods Contract
+The following backend services must implement these core operations (CRUD + validate/simulate):
+1. **IngestionService**: `create()`, `update()`, `list()`, `getById()`, `delete()`, `validate()`, `simulate()`
+2. **AnalysisService**: `create()`, `update()`, `list()`, `getById()`, `delete()`, `validate()`, `simulate()`
+3. **ForecastingService**: `create()`, `update()`, `list()`, `getById()`, `delete()`, `validate()`, `simulate()`
+4. **AnomaliesService**: `create()`, `update()`, `list()`, `getById()`, `delete()`, `validate()`, `simulate()`
+5. **InsightsService**: `create()`, `update()`, `list()`, `getById()`, `delete()`, `validate()`, `simulate()`
+6. **ReportingService**: `create()`, `update()`, `list()`, `getById()`, `delete()`, `validate()`, `simulate()`
 
-## 6. AI Integration (LiteLLM)
-- **Categorization**: System prompt: "Categorize the following transaction into standard personal finance categories: Housing, Food, Transport, etc. Transaction: {merchant_name} {amount}".
-- **Recommendations**: System prompt: "Analyze these spending patterns and suggest optimization. E.g. Identify unused subscriptions, suggest budget cuts."
+*Note:* Entities like `CashflowPeriod` will typically be handled by `IngestionService` and `ReportingService`, `CashMovement` by `IngestionService` and `AnalysisService`, etc. For simplicity, we can align domains directly with these service layers:
+- `CashflowPeriod` -> `IngestionService`
+- `CashMovement` -> `AnalysisService`
+- `TrendSignal` -> `InsightsService`
+- `ForecastRun` -> `ForecastingService`
+- `AnomalyFlag` -> `AnomaliesService`
+- `NarrativeInsight` -> `ReportingService`
 
-## 7. Acceptance Criteria Check
-1. User connects 2 bank accounts and credit card via Plaid (Account API).
-2. System syncs last 90 days of transactions (500+ transactions) (Sync Service).
-3. Dashboard shows total monthly income, expenses (Analytics API).
-4. Expense breakdown shows percentages (Analytics API).
-5. Savings rate displayed: 27% of gross income (Analytics API).
-6. System identifies recurring subscription charges (Optimization API).
-7. ML categorization accuracy: 95%+ with user correction feedback (Categorization Service).
-8. Monthly budget shows target vs actual with variance alerts (Budget API).
-9. Spending pattern analysis shows 20% increase in food spending last month (Analytics API).
-10. User receives recommendation: 'Eliminate $50 unused subscription, gain $600/year' (Optimization API).
-11. Cash flow projection shows conservative estimate for next 3 months (Analytics API).
-12. PDF export generates professional financial statement (Analytics API - Future/Mocked).
+## 5) AI Integration (LiteLLM)
+- Wrap LiteLLM inside an `AiAnalysisService`.
+- Implement circuit breaker and retry mechanism (Exponential backoff).
+- All AI operations are synchronously executed but traced (audit logged).
+
+## 6) Event Emitters & Consumers
+- **Emits:**
+  - `cashflowanalyzer.forecast.generated`
+  - `cashflowanalyzer.anomaly.detected`
+  - `cashflowanalyzer.insight.published`
+- **Consumes:**
+  - `invoiceprocessor.invoice.approved`
+  - `budgetpilot.reforecast.completed`
+  - `financenarrator.summary.requested`
+
+## 7) Frontend Pages (Next.js App Router)
+- `/ingestion`: Manage CashflowPeriods (Ingestion Service).
+- `/analysis`: Manage CashMovements (Analysis Service).
+- `/forecasting`: Manage ForecastRuns (Forecasting Service).
+- `/anomalies`: Manage AnomalyFlags (Anomalies Service).
+- `/insights`: Manage TrendSignals (Insights Service).
+- `/reporting`: Manage NarrativeInsights (Reporting Service).
+
+Pages should include React tables/lists, detail views, and edit forms. Add vitest and Testing Library tests for each page.
+
+## 8) Error Handling
+- Invalid ID format: 400 Bad Request
+- Not found: 404 Not Found
+- Tenant violation: 403 Forbidden (Cross-tenant access prevented by `TenantContext.require()`).
+- Validation failures: 400 Bad Request with details.
+
+## 9) Acceptance Criteria
+- Tenant isolation enforced on all reads/writes.
+- Service unit tests with >=80% coverage.
+- UI component tests complete.
+- Integration contracts align exactly.
