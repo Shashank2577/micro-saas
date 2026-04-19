@@ -1,32 +1,66 @@
-CREATE SCHEMA IF NOT EXISTS legalresearch;
-
-CREATE TABLE legalresearch.research_threads (
+CREATE TABLE research_queries (
     id UUID PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    practice_area VARCHAR(50) NOT NULL,
     tenant_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
 );
 
-CREATE TABLE legalresearch.research_memos (
+CREATE TABLE source_citations (
     id UUID PRIMARY KEY,
-    title VARCHAR(255) NOT NULL,
-    query TEXT NOT NULL,
-    content TEXT,
-    practice_area VARCHAR(50) NOT NULL,
-    status VARCHAR(50) NOT NULL,
     tenant_id UUID NOT NULL,
-    thread_id UUID REFERENCES legalresearch.research_threads(id),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
 );
 
-CREATE TABLE legalresearch.citations (
+CREATE TABLE precedent_notes (
     id UUID PRIMARY KEY,
-    memo_id UUID NOT NULL REFERENCES legalresearch.research_memos(id),
-    citation_type VARCHAR(50) NOT NULL,
-    reference VARCHAR(255) NOT NULL,
-    summary TEXT,
-    is_verified BOOLEAN DEFAULT FALSE,
     tenant_id UUID NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
 );
+
+CREATE TABLE memo_drafts (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
+);
+
+CREATE TABLE argument_graphs (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
+);
+
+CREATE TABLE review_comments (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMPTZ NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL
+);
+
+CREATE INDEX idx_rq_tenant ON research_queries(tenant_id);
+CREATE INDEX idx_sc_tenant ON source_citations(tenant_id);
+CREATE INDEX idx_pn_tenant ON precedent_notes(tenant_id);
+CREATE INDEX idx_md_tenant ON memo_drafts(tenant_id);
+CREATE INDEX idx_ag_tenant ON argument_graphs(tenant_id);
+CREATE INDEX idx_rc_tenant ON review_comments(tenant_id);
