@@ -1,10 +1,26 @@
 {
-  "app": "ghostwriter",
+  "appId": "ghostwriter",
   "displayName": "GhostWriter",
-  "version": "0.0.1",
-  "baseUrl": "https://api-ghostwriter.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "description": "AI-powered content writing assistant for multi-format generation and editing.",
+  "emits": [
+    {
+      "eventType": "ContentGeneratedEvent",
+      "description": "Emitted when a new piece of content is generated via AI.",
+      "payloadSchema": {
+        "documentId": "uuid",
+        "format": "string"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "BrandVoiceUpdatedEvent",
+      "description": "Listens for updates to the global brand voice to apply as context for AI generation."
+    }
+  ],
+  "capabilities": [
+    "AI content generation",
+    "Multi-format document export",
+    "Brand voice consistency"
+  ]
 }

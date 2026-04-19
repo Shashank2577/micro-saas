@@ -25,3 +25,28 @@
       - "3113:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:8113
+  auditready-backend:
+    build:
+      context: ../auditready
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=auditready
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - AI_GATEWAY_URL=http://ai-gateway:8080
+      - AI_API_KEY=test-key
+    depends_on:
+      - postgres
+
+  auditready-frontend:
+    build:
+      context: ../auditready/frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080/api

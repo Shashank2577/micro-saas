@@ -38,6 +38,7 @@
     </dependencyManagement>
 
     <modules>
+        <module>../auditready/backend</module>
         <module>cc-starter</module>
     </modules>
 </project>

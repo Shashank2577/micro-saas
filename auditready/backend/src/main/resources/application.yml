@@ -1,43 +1,31 @@
+server:
+  port: 8080
+
 spring:
   application:
     name: auditready
   datasource:
-    url: jdbc:postgresql://localhost:5432/cc
-    username: cc
-    password: cc
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:auditready}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        default_schema: auditready
+        format_sql: true
   flyway:
+    enabled: true
+    baseline-on-migrate: true
     locations: classpath:db/migration
-    default-schema: auditready
-    schemas: auditready, tenant, cc, audit
-  data:
-    redis:
-      host: localhost
-      port: 6379
-
-server:
-  port: 8094
-
-cc:
-  tenancy:
-    mode: header
-    header-name: X-Tenant-ID
-  auth:
-    keycloak-url: http://localhost:8180
-    realm: cc
-    client-id: cc-backend
-  ai:
-    gateway-url: http://localhost:4000
-    api-key: sk-local-dev-key
-    default-model: claude-sonnet-4-6
 
 springdoc:
   api-docs:
-    path: /api-docs
+    path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+cc:
+  ai:
+    gateway-url: ${AI_GATEWAY_URL:http://localhost:8080}
+    api-key: ${AI_API_KEY:test-key}
