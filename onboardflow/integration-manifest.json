@@ -1,10 +1,21 @@
 {
   "app": "onboardflow",
   "displayName": "OnboardFlow",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "baseUrl": "https://api-onboardflow.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
+  "emits": [
+    "onboardflow.plan.started",
+    "onboardflow.milestone.completed",
+    "onboardflow.escalation.opened"
+  ],
+  "consumes": [
+    "hiresignal.hire.confirmed",
+    "peopleanalytics.org.signal.updated",
+    "notificationhub.channel.registered"
+  ],
+  "capabilities": [
+    "AI_ANALYZE_ONBOARDING",
+    "WORKFLOW_EXECUTION"
+  ],
   "healthEndpoint": "/actuator/health"
 }
