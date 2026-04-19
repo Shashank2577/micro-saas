@@ -1,7 +1,7 @@
 package com.microsaas.cashflowai.service;
 
-import com.microsaas.cashflowai.model.CashPosition;
-import com.microsaas.cashflowai.repository.CashPositionRepository;
+import com.microsaas.cashflowai.model.ScenarioRun;
+import com.microsaas.cashflowai.repository.ScenarioRunRepository;
 import com.crosscutting.starter.tenancy.TenantContext;
 import lombok.RequiredArgsConstructor;
 import com.crosscutting.starter.webhooks.WebhookService;
@@ -13,27 +13,27 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CashPositionService {
-    private final CashPositionRepository repository;
+public class ScenarioRunService {
+    private final ScenarioRunRepository repository;
     private final WebhookService webhookService;
 
     @Transactional(readOnly = true)
-    public List<CashPosition> list() {
+    public List<ScenarioRun> list() {
         return repository.findByTenantId(TenantContext.require());
     }
 
     @Transactional(readOnly = true)
-    public CashPosition getById(UUID id) {
+    public ScenarioRun getById(UUID id) {
         return repository.findByIdAndTenantId(id, TenantContext.require())
-                .orElseThrow(() -> new RuntimeException("CashPosition not found"));
+                .orElseThrow(() -> new RuntimeException("ScenarioRun not found"));
     }
 
     @Transactional
-    public CashPosition create(CashPosition entity) {
+    public ScenarioRun create(ScenarioRun entity) {
         entity.setTenantId(TenantContext.require());
-        CashPosition saved = repository.save(entity);
+        ScenarioRun saved = repository.save(entity);
         try {
-            webhookService.dispatch(TenantContext.require(), "cashflowai.position.updated", saved.toString());
+            webhookService.dispatch(TenantContext.require(), "cashflowai.scenariorun.updated", saved.toString());
         } catch (Exception e) {
             // Ignore
         }
@@ -41,17 +41,14 @@ public class CashPositionService {
     }
 
     @Transactional
-    public CashPosition update(UUID id, CashPosition updateData) {
-        CashPosition existing = getById(id);
+    public ScenarioRun update(UUID id, ScenarioRun updateData) {
+        ScenarioRun existing = getById(id);
         existing.setName(updateData.getName());
         existing.setStatus(updateData.getStatus());
         existing.setMetadataJson(updateData.getMetadataJson());
-        existing.setAsOf(updateData.getAsOf());
-        existing.setAvailableCash(updateData.getAvailableCash());
-        existing.setRestrictedCash(updateData.getRestrictedCash());
-        CashPosition saved = repository.save(existing);
+        ScenarioRun saved = repository.save(existing);
         try {
-            webhookService.dispatch(TenantContext.require(), "cashflowai.position.updated", saved.toString());
+            webhookService.dispatch(TenantContext.require(), "cashflowai.scenariorun.updated", saved.toString());
         } catch (Exception e) {
             // Ignore
         }
@@ -65,7 +62,7 @@ public class CashPositionService {
 
     @Transactional
     public void validate(UUID id) {
-        CashPosition entity = getById(id);
+        ScenarioRun entity = getById(id);
         if (entity.getName() == null || entity.getName().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
