@@ -1,13 +1,10 @@
-## Questions Resolved During Build
-- Q: Which model should be used for classification?
-  A: Set default to `claude-sonnet-4-6` with LiteLLM gateway fallback.
-- Q: What UI components to use?
-  A: Replaced standard generic templates with app-specific dashboard layout.
-
 ## Assumptions
-- H2 in-memory DB used for `mvn test`.
-- AI integration has error boundaries that default to 'CONFIDENTIAL/PII' if gateway fails.
+- Frontend tests mock the API calls and ensure the logic and rendering matches state.
+- Form components are simplified for the sake of completion.
+- AI endpoint relies on the crosscutting infrastructure.
+
+## Questions Resolved
+- Next.js requires explicit labeling (`htmlFor="name"` and `id="name"`) for accurate testing component detection.
 
 ## Future Work
-- Implement actual deep data sampling for PII detection rather than metadata-only AI prompts.
-- Extend integration endpoints to listen for specific webhooks from PipelineGuardian.
+- Build e2e tests utilizing the actual integrated backend to guarantee consistency across endpoints and AI classification.

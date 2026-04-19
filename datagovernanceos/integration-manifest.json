@@ -2,7 +2,24 @@
   "app": "datagovernanceos",
   "displayName": "DataGovernanceOS",
   "description": "Data governance and classification",
-  "emits": ["data_asset.created", "policy.created", "audit.failed"],
-  "consumes": ["pipeline.failed"],
+  "emits": [
+    "data_asset.created",
+    "policy.created",
+    "datagovernanceos.policy.updated",
+    "datagovernanceos.steward.created",
+    "datagovernanceos.steward.updated",
+    "datagovernanceos.violation.detected",
+    "datagovernanceos.violation.updated",
+    "datagovernanceos.exception.requested",
+    "datagovernanceos.exception.updated",
+    "datagovernanceos.control.checked",
+    "datagovernanceos.control.updated",
+    "datagovernanceos.audit.recorded"
+  ],
+  "consumes": [
+    "datacatalogai.asset.registered",
+    "dataqualityai.rule.failed",
+    "auditready.gap.opened"
+  ],
   "capabilities": ["policy_lookup", "asset_classification"]
 }

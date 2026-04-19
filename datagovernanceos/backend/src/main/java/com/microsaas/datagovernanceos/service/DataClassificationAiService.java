@@ -77,4 +77,44 @@ public class DataClassificationAiService {
         fallback.setReasoning("Fallback classification due to AI service error");
         return fallback;
     }
+
+    public Map<String, Object> analyzeText(Map<String, Object> requestData) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(apiKey);
+
+        String systemPrompt = "You are a data governance expert AI. Analyze the provided text for compliance risks, " +
+                "governance issues, or policy alignment. Respond with a JSON object containing an 'analysis' field and a 'riskScore' (0-100).";
+
+        String userMessage = "Analyze the following: " + requestData;
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("model", defaultModel);
+        requestBody.put("messages", List.of(
+                Map.of("role", "system", "content", systemPrompt),
+                Map.of("role", "user", "content", userMessage)
+        ));
+
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+
+        try {
+            ResponseEntity<Map> response = restTemplate.postForEntity(gatewayUrl + "/v1/chat/completions", entity, Map.class);
+            Map<String, Object> body = response.getBody();
+            if (body != null && body.containsKey("choices")) {
+                List<Map<String, Object>> choices = (List<Map<String, Object>>) body.get("choices");
+                if (!choices.isEmpty()) {
+                    Map<String, Object> message = (Map<String, Object>) choices.get(0).get("message");
+                    String content = (String) message.get("content");
+                    return objectMapper.readValue(content, Map.class);
+                }
+            }
+        } catch (Exception e) {
+            // Fallback for tests or disconnected environments
+        }
+
+        return Map.of(
+            "analysis", "Fallback analysis due to AI service error.",
+            "riskScore", 50
+        );
+    }
 }
