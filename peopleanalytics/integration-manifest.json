@@ -1,10 +1,41 @@
 {
-  "app": "peopleanalytics",
-  "displayName": "People Analytics",
-  "version": "0.0.1",
-  "baseUrl": "http://localhost:8127",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "appId": "peopleanalytics",
+  "version": "v1",
+  "emits": [
+    {
+      "eventType": "peopleanalytics.org.signal.updated",
+      "description": "Fired when an org snapshot or health metric is updated.",
+      "payloadSchema": {}
+    },
+    {
+      "eventType": "peopleanalytics.attrition.risk.detected",
+      "description": "Fired when an attrition signal passes a risk threshold.",
+      "payloadSchema": {}
+    },
+    {
+      "eventType": "peopleanalytics.scenario.generated",
+      "description": "Fired when a planning scenario is generated or completed.",
+      "payloadSchema": {}
+    }
+  ],
+  "consumes": [
+    {
+      "eventType": "performancenarrative.review.finalized",
+      "sourceApp": "performancenarrative",
+      "description": "Consumed to update performance trends.",
+      "action": "Syncs performance scores with headcount mapping."
+    },
+    {
+      "eventType": "retentionsignal.risk.detected",
+      "sourceApp": "retentionsignal",
+      "description": "Consumed to analyze flight risk impacts.",
+      "action": "Triggers immediate attrition analysis."
+    },
+    {
+      "eventType": "onboardflow.milestone.completed",
+      "sourceApp": "onboardflow",
+      "description": "Consumed to update engagement and time-to-productivity.",
+      "action": "Updates engagement indicators."
+    }
+  ]
 }

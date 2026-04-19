@@ -41,3 +41,18 @@ springdoc:
     path: /api-docs
   swagger-ui:
     path: /swagger-ui.html
+
+resilience4j:
+  retry:
+    instances:
+      aiService:
+        maxRetryAttempts: 3
+        waitDuration: 500ms
+  circuitbreaker:
+    instances:
+      aiService:
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        slidingWindowSize: 10
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
