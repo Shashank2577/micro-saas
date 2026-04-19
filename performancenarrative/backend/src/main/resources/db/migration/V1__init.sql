@@ -2,40 +2,60 @@ CREATE SCHEMA IF NOT EXISTS performancenarrative;
 
 CREATE TABLE performancenarrative.review_cycle (
     id UUID PRIMARY KEY,
-    cycle_name VARCHAR(255) NOT NULL,
-    period_start DATE NOT NULL,
-    period_end DATE NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
 CREATE TABLE performancenarrative.employee_review (
     id UUID PRIMARY KEY,
-    cycle_id UUID NOT NULL,
-    employee_id UUID NOT NULL,
-    employee_name VARCHAR(255) NOT NULL,
-    role VARCHAR(255) NOT NULL,
-    overall_rating VARCHAR(50),
-    draft_narrative TEXT,
-    final_narrative TEXT,
-    status VARCHAR(50) NOT NULL,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE TABLE performancenarrative.peer_feedback (
+CREATE TABLE performancenarrative.calibration_note (
     id UUID PRIMARY KEY,
-    review_id UUID NOT NULL,
-    from_employee_id UUID NOT NULL,
-    feedback_text TEXT NOT NULL,
-    rating INTEGER NOT NULL,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
-CREATE TABLE performancenarrative.development_goal (
+CREATE TABLE performancenarrative.goal_evidence (
     id UUID PRIMARY KEY,
-    review_id UUID NOT NULL,
-    goal_description TEXT NOT NULL,
-    target_date DATE NOT NULL,
-    status VARCHAR(50) NOT NULL,
-    tenant_id UUID NOT NULL
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE TABLE performancenarrative.narrative_draft (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+);
+
+CREATE TABLE performancenarrative.feedback_item (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
