@@ -23,12 +23,6 @@
     </properties>
 
     <dependencies>
-        <!-- cc-starter: provides tenancy, auth, RBAC, audit, search, AI, webhooks, etc. -->
-        <dependency>
-            <groupId>com.crosscutting</groupId>
-            <artifactId>cc-starter</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
 
         <!-- Web -->
         <dependency>

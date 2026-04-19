@@ -2,9 +2,9 @@ import { api } from '@/lib/api';
 import { AppCard } from '@/components/AppCard';
 
 export default async function DashboardPage() {
-  let apps = [];
-  let events = [];
-  let workflows = [];
+  let apps: any[] = [];
+  let events: any[] = [];
+  let workflows: any[] = [];
 
   try {
     [apps, events, workflows] = await Promise.all([
