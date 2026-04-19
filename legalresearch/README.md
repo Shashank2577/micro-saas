@@ -1,33 +1,22 @@
-# LegalResearch (legalresearch)
+# LegalResearch
 
-> **Tier:** Alpha | **Score:** 50/100
+## Overview
+Legal intelligence micro-saas focusing on citation tracking, precedent ranking, and memo generation.
 
-A micro-saas ecosystem application.
+## Setup
+1. Backend requires Postgres.
+2. Ensure you run `mvn install` in the `cross-cutting` directory before building.
+3. The frontend is Next.js built and tested with npm.
 
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
+## Integration Contracts
+See `integration-manifest.json` for details on consumed and emitted events.
 
-## Integration
-This application integrates with the Nexus Hub.
+## Build and Run
+- Backend: `mvn -pl legalresearch/backend clean verify`
+- Frontend: `npm --prefix legalresearch/frontend test`
 
-### Emits Events:
-- `memo.completed`
-
-### Consumes Events:
-None
-
-## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
-
-# Frontend
-cd frontend && npm run dev
-```
-
-## Docker Deployment
-```bash
-docker build -t legalresearch-backend ./backend
-docker build -t legalresearch-frontend ./frontend
-```
+## Environment
+- DB_URL
+- DB_USER
+- DB_PASS
+- LITELLM_URL
