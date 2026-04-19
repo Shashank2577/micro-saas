@@ -3,26 +3,29 @@ import re
 with open('copyoptimizer/backend/pom.xml', 'r') as f:
     content = f.read()
 
-# Fix Lombok plugin configuration
+# Add standard maven-compiler-plugin configuration for lombok
 replacement = """
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
+                    <source>21</source>
+                    <target>21</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>${lombok.version}</version>
+                            <version>1.18.32</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <plugin>
 """
 
 content = re.sub(
-    r'<plugins>',
-    f'<plugins>{replacement}',
+    r'<plugin>\s*<groupId>org.springframework.boot</groupId>\s*<artifactId>spring-boot-maven-plugin</artifactId>',
+    replacement + '<groupId>org.springframework.boot</groupId><artifactId>spring-boot-maven-plugin</artifactId>',
     content
 )
 

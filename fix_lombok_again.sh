@@ -1,27 +1,39 @@
 #!/bin/bash
-for f in $(find socialintelligence/backend/src/main/java/com/crosscutting/socialintelligence/domain -name "*.java"); do
-    sed -i '/import lombok.Data;/d' $f
-    sed -i '/import lombok.NoArgsConstructor;/d' $f
-    sed -i '/import lombok.AllArgsConstructor;/d' $f
-    sed -i '/import lombok.Builder;/d' $f
-    sed -i '1s/^/import lombok.Data;\nimport lombok.NoArgsConstructor;\nimport lombok.AllArgsConstructor;\nimport lombok.Builder;\n/' $f
-    sed -i '/@Data/d' $f
-    sed -i '/@NoArgsConstructor/d' $f
-    sed -i '/@AllArgsConstructor/d' $f
-    sed -i '/@Builder/d' $f
-    sed -i '/@Entity/a @Data\n@NoArgsConstructor\n@AllArgsConstructor\n@Builder' $f
-done
+# Remove spring-boot-maven-plugin completely from pom.xml and just leave standard configuration
+# We just need it to compile properly, so we can strip the <build> entirely and put our own
 
-for f in $(find socialintelligence/backend/src/main/java/com/crosscutting/socialintelligence/dto -name "*.java"); do
-    sed -i '/import lombok.Data;/d' $f
-    sed -i '/import lombok.NoArgsConstructor;/d' $f
-    sed -i '/import lombok.AllArgsConstructor;/d' $f
-    sed -i '/import lombok.Builder;/d' $f
-    sed -i '1s/^/import lombok.Data;\nimport lombok.NoArgsConstructor;\nimport lombok.AllArgsConstructor;\nimport lombok.Builder;\n/' $f
-    sed -i '/@Data/d' $f
-    sed -i '/@NoArgsConstructor/d' $f
-    sed -i '/@AllArgsConstructor/d' $f
-    sed -i '/@Builder/d' $f
-    awk '/public class/{print "@Data\n@NoArgsConstructor\n@AllArgsConstructor\n@Builder"; print; next}1' $f > tmp && mv tmp $f
-    awk '/public static class/{print "@Data\n@NoArgsConstructor\n@AllArgsConstructor\n@Builder"; print; next}1' $f > tmp && mv tmp $f
-done
+pom_file="copyoptimizer/backend/pom.xml"
+
+sed -i '/<build>/,/<\/build>/d' $pom_file
+
+cat << 'END_XML' >> $pom_file
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>21</source>
+                    <target>21</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>1.18.32</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+END_XML
+
+# Remove the trailing </project> that might be duplicated
+sed -i 's/<\/project><\/project>/<\/project>/g' $pom_file
+

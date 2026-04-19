@@ -12,12 +12,12 @@ import java.util.UUID;
 import java.util.Map;
 
 @Entity
-@Table(name = "audience_segments")
+@Table(name = "experiment_plans")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AudienceSegment {
+public class ExperimentPlan {
     @Id
     private UUID id;
 
