@@ -1,8 +1,8 @@
 package com.microsaas.regulatoryfiling.service;
 
 import com.crosscutting.starter.tenancy.TenantContext;
-import com.microsaas.regulatoryfiling.domain.FilingObligation;
-import com.microsaas.regulatoryfiling.repository.FilingObligationRepository;
+import com.microsaas.regulatoryfiling.domain.SubmissionReceipt;
+import com.microsaas.regulatoryfiling.repository.SubmissionReceiptRepository;
 import com.microsaas.regulatoryfiling.dto.ValidationResult;
 import com.microsaas.regulatoryfiling.dto.SimulationResult;
 import org.springframework.stereotype.Service;
@@ -14,14 +14,14 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class FilingObligationService {
-    private final FilingObligationRepository repository;
+public class SubmissionReceiptService {
+    private final SubmissionReceiptRepository repository;
 
-    public FilingObligationService(FilingObligationRepository repository) {
+    public SubmissionReceiptService(SubmissionReceiptRepository repository) {
         this.repository = repository;
     }
 
-    public FilingObligation create(FilingObligation entity) {
+    public SubmissionReceipt create(SubmissionReceipt entity) {
         entity.setId(UUID.randomUUID());
         entity.setTenantId(TenantContext.require());
         entity.setCreatedAt(OffsetDateTime.now());
@@ -29,8 +29,8 @@ public class FilingObligationService {
         return repository.save(entity);
     }
 
-    public FilingObligation update(UUID id, FilingObligation entity) {
-        FilingObligation existing = getById(id);
+    public SubmissionReceipt update(UUID id, SubmissionReceipt entity) {
+        SubmissionReceipt existing = getById(id);
         existing.setName(entity.getName());
         existing.setStatus(entity.getStatus());
         existing.setMetadataJson(entity.getMetadataJson());
@@ -39,28 +39,28 @@ public class FilingObligationService {
     }
 
     @Transactional(readOnly = true)
-    public List<FilingObligation> list() {
+    public List<SubmissionReceipt> list() {
         return repository.findByTenantId(TenantContext.require());
     }
 
     @Transactional(readOnly = true)
-    public FilingObligation getById(UUID id) {
+    public SubmissionReceipt getById(UUID id) {
         return repository.findByIdAndTenantId(id, TenantContext.require())
-                .orElseThrow(() -> new RuntimeException("FilingObligation not found"));
+                .orElseThrow(() -> new RuntimeException("SubmissionReceipt not found"));
     }
 
     public void delete(UUID id) {
-        FilingObligation existing = getById(id);
+        SubmissionReceipt existing = getById(id);
         repository.delete(existing);
     }
 
     public ValidationResult validate(UUID id) {
-        FilingObligation existing = getById(id);
+        SubmissionReceipt existing = getById(id);
         return ValidationResult.builder().valid(true).message("Validated " + existing.getName()).build();
     }
 
     public SimulationResult simulate(UUID id) {
-        FilingObligation existing = getById(id);
+        SubmissionReceipt existing = getById(id);
         return SimulationResult.builder().success(true).outcome("Simulated " + existing.getName()).build();
     }
 }
