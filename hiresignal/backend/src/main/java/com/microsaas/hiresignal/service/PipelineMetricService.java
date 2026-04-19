@@ -1,7 +1,7 @@
 package com.microsaas.hiresignal.service;
 
-import com.microsaas.hiresignal.model.Requisition;
-import com.microsaas.hiresignal.repository.RequisitionRepository;
+import com.microsaas.hiresignal.model.PipelineMetric;
+import com.microsaas.hiresignal.repository.PipelineMetricRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,41 +13,41 @@ import java.util.HashMap;
 
 @Service
 @RequiredArgsConstructor
-public class RequisitionService {
+public class PipelineMetricService {
 
-    private final RequisitionRepository repository;
+    private final PipelineMetricRepository repository;
 
-    public List<Requisition> findAll(UUID tenantId) {
+    public List<PipelineMetric> findAll(UUID tenantId) {
         return repository.findByTenantId(tenantId);
     }
 
-    public Optional<Requisition> findById(UUID id, UUID tenantId) {
+    public Optional<PipelineMetric> findById(UUID id, UUID tenantId) {
         return repository.findByIdAndTenantId(id, tenantId);
     }
 
-    public Requisition save(Requisition entity) {
+    public PipelineMetric save(PipelineMetric entity) {
         return repository.save(entity);
     }
 
-    public Requisition update(UUID id, UUID tenantId, Requisition updateData) {
+    public PipelineMetric update(UUID id, UUID tenantId, PipelineMetric updateData) {
         return repository.findByIdAndTenantId(id, tenantId)
                 .map(existing -> {
                     existing.setName(updateData.getName());
                     existing.setStatus(updateData.getStatus());
                     existing.setMetadataJson(updateData.getMetadataJson());
                     return repository.save(existing);
-                }).orElseThrow(() -> new RuntimeException("Requisition not found"));
+                }).orElseThrow(() -> new RuntimeException("PipelineMetric not found"));
     }
 
     public Map<String, Object> validate(UUID id, UUID tenantId) {
-        Optional<Requisition> entity = repository.findByIdAndTenantId(id, tenantId);
+        Optional<PipelineMetric> entity = repository.findByIdAndTenantId(id, tenantId);
         Map<String, Object> response = new HashMap<>();
         if (entity.isPresent()) {
             response.put("valid", true);
-            response.put("message", "Requisition is valid.");
+            response.put("message", "PipelineMetric is valid.");
         } else {
             response.put("valid", false);
-            response.put("message", "Requisition not found.");
+            response.put("message", "PipelineMetric not found.");
         }
         return response;
     }

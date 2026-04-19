@@ -5,12 +5,35 @@
   "baseUrl": "https://api-hiresignal.YOURDOMAIN.com",
   "emits": [
     {
-      "name": "candidate.hired",
-      "description": "Emitted when a candidate is hired",
+      "name": "hiresignal.candidate.shortlisted",
+      "description": "Emitted when candidate is shortlisted",
+      "schema": {}
+    },
+    {
+      "name": "hiresignal.risk.flagged",
+      "description": "Emitted when risk is flagged",
+      "schema": {}
+    },
+    {
+      "name": "hiresignal.hire.confirmed",
+      "description": "Emitted when hire is confirmed",
       "schema": {}
     }
   ],
-  "consumes": [],
+  "consumes": [
+    {
+      "name": "jobcraftai.posting.published",
+      "description": "Consumed when job is published"
+    },
+    {
+      "name": "interviewos.score.submitted",
+      "description": "Consumed when interview score submitted"
+    },
+    {
+      "name": "peopleanalytics.org.signal.updated",
+      "description": "Consumed when people analytics signal updated"
+    }
+  ],
   "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }
