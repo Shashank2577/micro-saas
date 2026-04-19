@@ -1,34 +1,22 @@
-# RegulatoryFiling (regulatoryfiling)
+# RegulatoryFiling Application
 
-> **Tier:** Alpha | **Score:** 50/100
+## Overview
+RegulatoryFiling handles compliance automation, allowing tracking of filing obligations, jurisdiction schedules, and submission packets.
 
-A micro-saas ecosystem application.
+## Requirements
+- Java 21
+- PostgreSQL 16
+- Node.js 18+
 
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
+## Running the Application
+1. Start the database (PostgreSQL on port 5432).
+2. Run the backend: `mvn -pl regulatoryfiling/backend clean spring-boot:run`
+3. Run the frontend: `npm --prefix regulatoryfiling/frontend run dev`
 
-## Integration
-This application integrates with the Nexus Hub.
-
-### Emits Events:
-- `filing.submitted`
-- `filing.overdue`
-
-### Consumes Events:
-- `regulation.changed`
-
-## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
-
-# Frontend
-cd frontend && npm run dev
-```
-
-## Docker Deployment
-```bash
-docker build -t regulatoryfiling-backend ./backend
-docker build -t regulatoryfiling-frontend ./frontend
-```
+## Known Environment Variables
+- `DB_HOST`: Database host (default: localhost)
+- `DB_PORT`: Database port (default: 5432)
+- `DB_NAME`: Database name (default: regulatoryfiling)
+- `DB_USER`: Database user (default: postgres)
+- `DB_PASSWORD`: Database password (default: postgres)
+- `LITELLM_URL`: URL for LiteLLM AI provider
