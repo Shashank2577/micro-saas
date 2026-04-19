@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface FundingRoundRepository extends JpaRepository<FundingRound, UUID> {
-    List<FundingRound> findAllByTenantIdOrderByClosedAtAsc(UUID tenantId);
+    List<FundingRound> findByTenantId(UUID tenantId);
+    Optional<FundingRound> findByIdAndTenantId(UUID id, UUID tenantId);
 }

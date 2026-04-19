@@ -1,19 +1,18 @@
-import './globals.css'
-import type { Metadata } from 'next'
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'Equity Intelligence',
-  description: 'AI cap table + vesting calculation + funding round modeling',
-}
+  title: "EquityIntelligence",
+  description: "EquityIntelligence Management",
+};
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
       <body>{children}</body>
     </html>
-  )
+  );
 }

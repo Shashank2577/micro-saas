@@ -1,49 +1,67 @@
-CREATE SCHEMA IF NOT EXISTS equityintelligence;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TABLE equityintelligence.stakeholder (
-    id UUID PRIMARY KEY,
+CREATE TABLE cap_tables (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    type VARCHAR(50) NOT NULL,
-    email VARCHAR(255),
-    created_at TIMESTAMP NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_cap_tables_tenant ON cap_tables(tenant_id);
 
-CREATE TABLE equityintelligence.equity_grant (
-    id UUID PRIMARY KEY,
+CREATE TABLE shareholders (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    stakeholder_id UUID NOT NULL REFERENCES equityintelligence.stakeholder(id),
-    grant_type VARCHAR(50) NOT NULL,
-    shares BIGINT NOT NULL,
-    grant_date DATE NOT NULL,
-    cliff_months INTEGER NOT NULL,
-    vest_months INTEGER NOT NULL,
-    strike_price DECIMAL(19, 4)
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_shareholders_tenant ON shareholders(tenant_id);
 
-CREATE TABLE equityintelligence.vesting_event (
-    id UUID PRIMARY KEY,
-    grant_id UUID NOT NULL REFERENCES equityintelligence.equity_grant(id),
+CREATE TABLE vesting_schedules (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    vest_date DATE NOT NULL,
-    shares_vested BIGINT NOT NULL,
-    cumulative_vested BIGINT NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_vesting_schedules_tenant ON vesting_schedules(tenant_id);
 
-CREATE TABLE equityintelligence.funding_round (
-    id UUID PRIMARY KEY,
+CREATE TABLE funding_rounds (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    round_name VARCHAR(255) NOT NULL,
-    pre_money_valuation DECIMAL(19, 4) NOT NULL,
-    amount_raised DECIMAL(19, 4) NOT NULL,
-    share_price DECIMAL(19, 4) NOT NULL,
-    closed_at TIMESTAMP
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_funding_rounds_tenant ON funding_rounds(tenant_id);
 
-CREATE TABLE equityintelligence.dilution_scenario (
-    id UUID PRIMARY KEY,
+CREATE TABLE dilution_scenarios (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    scenario_data JSONB NOT NULL,
-    created_at TIMESTAMP NOT NULL
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+CREATE INDEX idx_dilution_scenarios_tenant ON dilution_scenarios(tenant_id);
+
+CREATE TABLE option_pool_plans (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL,
+    name VARCHAR(180) NOT NULL,
+    status VARCHAR(40) NOT NULL,
+    metadata_json JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX idx_option_pool_plans_tenant ON option_pool_plans(tenant_id);
