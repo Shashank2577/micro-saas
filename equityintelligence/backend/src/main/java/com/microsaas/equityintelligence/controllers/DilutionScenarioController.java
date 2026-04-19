@@ -1,0 +1,66 @@
+package com.microsaas.equityintelligence.controllers;
+
+import com.microsaas.equityintelligence.model.DilutionScenario;
+import com.microsaas.equityintelligence.services.DilutionScenarioService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/api/v1/equity/dilution-scenarios")
+public class DilutionScenarioController {
+
+    private final DilutionScenarioService service;
+
+    public DilutionScenarioController(DilutionScenarioService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public List<DilutionScenario> getAll() {
+        return service.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DilutionScenario> getById(@PathVariable UUID id) {
+        return service.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public DilutionScenario create(@RequestBody DilutionScenario entity) {
+        return service.create(entity);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<DilutionScenario> update(@PathVariable UUID id, @RequestBody DilutionScenario entity) {
+        try {
+            return ResponseEntity.ok(service.update(id, entity));
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id) {
+        try {
+            service.delete(id);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/{id}/validate")
+    public ResponseEntity<Boolean> validate(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.validate(id));
+    }
+
+    @PostMapping("/{id}/simulate")
+    public ResponseEntity<String> simulate(@PathVariable UUID id) {
+        return ResponseEntity.ok(service.simulate(id));
+    }
+}

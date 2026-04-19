@@ -1,33 +1,26 @@
-# EquityIntelligence (equityintelligence)
+# EquityIntelligence
 
-> **Tier:** Alpha | **Score:** 55/100
-
-A micro-saas ecosystem application.
-
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
-
-## Integration
-This application integrates with the Nexus Hub.
-
-### Emits Events:
-None
-
-### Consumes Events:
-None
+EquityIntelligence is a micro-SaaS application for managing cap tables, vesting schedules, funding rounds, and dilution scenarios.
 
 ## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
 
-# Frontend
-cd frontend && npm run dev
-```
+### Backend (Spring Boot 3 + Java 21)
+1. Ensure PostgreSQL is running.
+2. Run \`mvn spring-boot:run\` from the \`backend\` directory.
+3. Tests: \`mvn test\`
 
-## Docker Deployment
-```bash
-docker build -t equityintelligence-backend ./backend
-docker build -t equityintelligence-frontend ./frontend
-```
+### Frontend (Next.js 14)
+1. Run \`npm install\` then \`npm run dev\` from the \`frontend\` directory.
+2. Tests: \`npm test\`
+
+## Environment Variables
+
+### Backend
+- \`DB_HOST\` (default: localhost)
+- \`DB_PORT\` (default: 5432)
+- \`DB_NAME\` (default: equityintelligence)
+- \`DB_USER\` (default: postgres)
+- \`DB_PASSWORD\` (default: postgres)
+
+## Integration Events
+See \`integration-manifest.json\` for details on events this application emits and consumes.

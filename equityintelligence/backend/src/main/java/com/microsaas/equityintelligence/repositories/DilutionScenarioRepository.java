@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
 public interface DilutionScenarioRepository extends JpaRepository<DilutionScenario, UUID> {
-    List<DilutionScenario> findAllByTenantIdOrderByCreatedAtDesc(UUID tenantId);
+    List<DilutionScenario> findByTenantId(UUID tenantId);
+    Optional<DilutionScenario> findByIdAndTenantId(UUID id, UUID tenantId);
 }

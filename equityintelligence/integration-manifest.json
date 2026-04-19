@@ -1,10 +1,52 @@
 {
-  "app": "equityintelligence",
-  "displayName": "EquityIntelligence",
-  "version": "0.0.1",
-  "baseUrl": "https://api-equityintelligence.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
-  "healthEndpoint": "/actuator/health"
+  "appId": "equityintelligence",
+  "appName": "Equity Intelligence",
+  "version": "1.0.0",
+  "emits": [
+    {
+      "eventId": "equityintelligence.round.updated",
+      "description": "Triggered when a funding round is created or updated",
+      "schema": {
+        "tenant_id": "string",
+        "round_id": "string",
+        "name": "string",
+        "status": "string"
+      }
+    },
+    {
+      "eventId": "equityintelligence.dilution.simulated",
+      "description": "Triggered when a dilution scenario is simulated",
+      "schema": {
+        "tenant_id": "string",
+        "scenario_id": "string",
+        "result_summary": "string"
+      }
+    },
+    {
+      "eventId": "equityintelligence.vesting.alerted",
+      "description": "Triggered when a vesting event is approaching or completed",
+      "schema": {
+        "tenant_id": "string",
+        "schedule_id": "string",
+        "alert_type": "string"
+      }
+    }
+  ],
+  "consumes": [
+    {
+      "eventId": "financenarrator.narrative.generated",
+      "description": "Consumed to incorporate narrative context into cap table scenarios",
+      "idempotencyKey": "event_id"
+    },
+    {
+      "eventId": "budgetpilot.reforecast.completed",
+      "description": "Consumed to adjust option pool forecasts based on budget",
+      "idempotencyKey": "event_id"
+    },
+    {
+      "eventId": "contractportfolio.contract.indexed",
+      "description": "Consumed to tie equity grants to legal documents",
+      "idempotencyKey": "event_id"
+    }
+  ]
 }
