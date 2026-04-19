@@ -10,8 +10,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
 @Entity
-@Table(name = "employee_review", schema = "performancenarrative")
-public class EmployeeReview {
+@Table(name = "goal_evidence", schema = "performancenarrative")
+public class GoalEvidence {
 
     @Id
     private UUID id;

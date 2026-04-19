@@ -1,10 +1,18 @@
 {
   "app": "performancenarrative",
-  "displayName": "PerformanceNarrative",
+  "displayName": "Performance Narrative",
   "version": "0.0.1",
   "baseUrl": "https://api-performancenarrative.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
+  "emits": [
+    "performancenarrative.review.drafted",
+    "performancenarrative.calibration.flagged",
+    "performancenarrative.review.finalized"
+  ],
+  "consumes": [
+    "goaltracker.goal.updated",
+    "peopleanalytics.signal.updated",
+    "retentionsignal.risk.detected"
+  ],
   "capabilities": [],
   "healthEndpoint": "/actuator/health"
 }
