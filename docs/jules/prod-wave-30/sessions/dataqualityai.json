@@ -1,0 +1,71 @@
+{
+  "app_id": "dataqualityai",
+  "title": "DataQualityAI",
+  "domain": "Data Reliability",
+  "intent": "Data quality rule authoring, drift detection, and automated remediation recommendations",
+  "maturity": {
+    "score": 50,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-db-migrations",
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "rules module fully implemented with backend, frontend, tests",
+    "profiling module fully implemented with backend, frontend, tests",
+    "validation module fully implemented with backend, frontend, tests",
+    "drift module fully implemented with backend, frontend, tests",
+    "issues module fully implemented with backend, frontend, tests",
+    "remediation module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "QualityRule",
+      "DatasetProfile",
+      "DriftEvent",
+      "ValidationRun",
+      "IssueTicket",
+      "RemediationSuggestion"
+    ],
+    "services": [
+      "rulesService",
+      "profilingService",
+      "validationService",
+      "driftService",
+      "issuesService",
+      "remediationService"
+    ],
+    "route_prefix": "/api/v1/data-quality"
+  },
+  "events": {
+    "emits": [
+      "dataqualityai.rule.failed",
+      "dataqualityai.drift.detected",
+      "dataqualityai.remediation.suggested"
+    ],
+    "consumes": [
+      "datacatalogai.asset.registered",
+      "datalineagetracker.link.updated",
+      "pipelineorchestrator.run.completed"
+    ]
+  }
+}

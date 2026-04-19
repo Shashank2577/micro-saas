@@ -1,0 +1,70 @@
+{
+  "app_id": "legalresearch",
+  "title": "LegalResearch",
+  "domain": "Legal Intelligence",
+  "intent": "Legal research workflow with citation tracking, precedent ranking, and memo generation",
+  "maturity": {
+    "score": 50,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "queries module fully implemented with backend, frontend, tests",
+    "sources module fully implemented with backend, frontend, tests",
+    "precedents module fully implemented with backend, frontend, tests",
+    "memos module fully implemented with backend, frontend, tests",
+    "arguments module fully implemented with backend, frontend, tests",
+    "reviews module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "ResearchQuery",
+      "SourceCitation",
+      "PrecedentNote",
+      "MemoDraft",
+      "ArgumentGraph",
+      "ReviewComment"
+    ],
+    "services": [
+      "queriesService",
+      "sourcesService",
+      "precedentsService",
+      "memosService",
+      "argumentsService",
+      "reviewsService"
+    ],
+    "route_prefix": "/api/v1/research"
+  },
+  "events": {
+    "emits": [
+      "legalresearch.memo.generated",
+      "legalresearch.citation.added",
+      "legalresearch.review.requested"
+    ],
+    "consumes": [
+      "complianceradar.change.detected",
+      "policyforge.policy.published",
+      "contractsense.risk.flagged"
+    ]
+  }
+}

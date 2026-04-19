@@ -1,0 +1,50 @@
+{
+  "app_id": "vendoriq",
+  "title": "VendorIQ",
+  "domain": "Finance Operations",
+  "intent": "Vendor scorecards, SLA tracking, and renewal risk management",
+  "maturity": {
+    "score": 55,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "profiles",
+    "sla",
+    "renewals",
+    "risk",
+    "contracts",
+    "benchmarks"
+  ],
+  "entities": [
+    "VendorProfile",
+    "SLAMetric",
+    "RenewalSchedule",
+    "VendorRisk",
+    "ContractTerm",
+    "BenchmarkSnapshot"
+  ],
+  "emits": [
+    "vendoriq.risk.updated",
+    "vendoriq.renewal.alerted",
+    "vendoriq.sla.breached"
+  ],
+  "consumes": [
+    "invoiceprocessor.invoice.approved",
+    "contractportfolio.contract.indexed",
+    "procurebot.order.issued"
+  ],
+  "route_prefix": "/api/v1/vendors",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "app_id": "peopleanalytics",
+  "title": "PeopleAnalytics",
+  "domain": "HR Analytics",
+  "intent": "Workforce health, productivity, and org planning analytics",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "org-snapshots",
+    "headcount",
+    "attrition",
+    "engagement",
+    "performance",
+    "planning"
+  ],
+  "entities": [
+    "OrgSnapshot",
+    "HeadcountMetric",
+    "AttritionSignal",
+    "EngagementIndicator",
+    "PerformanceTrend",
+    "PlanningScenario"
+  ],
+  "emits": [
+    "peopleanalytics.org.signal.updated",
+    "peopleanalytics.attrition.risk.detected",
+    "peopleanalytics.scenario.generated"
+  ],
+  "consumes": [
+    "performancenarrative.review.finalized",
+    "retentionsignal.risk.detected",
+    "onboardflow.milestone.completed"
+  ],
+  "route_prefix": "/api/v1/people-analytics",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

@@ -10,6 +10,20 @@ QUEUE="$REPO_ROOT/.jules-dispatch-queue.txt"
 LOG="$REPO_ROOT/.jules-monitor.log"
 echo "[$(date)] Monitor run started" >> "$LOG"
 
+# ── 0. Resolve feedback blockers (REST guardrail) ───────────────
+echo "=== Feedback guardrail ==="
+if [[ -x "$REPO_ROOT/scripts/jules-feedback-guardrail.sh" ]]; then
+  if [[ -n "${JULES_API_KEYS:-}${JULES_API_KEY:-}${JULES_API_KEY_1:-}${JULES_API_KEY_2:-}${JULES_API_KEY_3:-}" ]]; then
+    if ! bash "$REPO_ROOT/scripts/jules-feedback-guardrail.sh"; then
+      echo "⚠️  Guardrail run failed, continuing monitor workflow"
+    fi
+  else
+    echo "No Jules API keys in env; skipping guardrail"
+  fi
+else
+  echo "Guardrail script missing; skipping"
+fi
+
 # ── 1. Fetch new branches ────────────────────────────────────────
 echo "=== Fetching remote branches ==="
 new_branches=$(git -C "$REPO_ROOT" fetch --all 2>&1 | grep "new branch" || true)
@@ -55,10 +69,10 @@ echo ""
 echo "=== Jules Session States ==="
 session_output=$(jules remote list --session 2>&1)
 micro=$(echo "$session_output" | grep "micro-sa" || true)
-in_progress=$(echo "$micro" | grep -c "In Progress\|Planning" || echo 0)
-awaiting=$(echo "$micro" | grep -c "Awaiting" || echo 0)
-completed=$(echo "$micro" | grep -c "Completed" || echo 0)
-paused=$(echo "$micro" | grep -c "Paused" || echo 0)
+in_progress=$(echo "$micro" | grep -c "In Progress\|Planning" 2>/dev/null || true); in_progress=${in_progress:-0}
+awaiting=$(echo "$micro" | grep -c "Awaiting" 2>/dev/null || true); awaiting=${awaiting:-0}
+completed=$(echo "$micro" | grep -c "Completed" 2>/dev/null || true); completed=${completed:-0}
+paused=$(echo "$micro" | grep -c "Paused" 2>/dev/null || true); paused=${paused:-0}
 total_active=$((in_progress + awaiting + paused))
 echo "In Progress: $in_progress | Awaiting: $awaiting | Paused: $paused | Completed: $completed"
 echo "Total active slots: $total_active"

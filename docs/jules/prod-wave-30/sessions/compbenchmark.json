@@ -1,0 +1,71 @@
+{
+  "app_id": "compbenchmark",
+  "title": "CompBenchmark",
+  "domain": "HR Talent",
+  "intent": "Compensation benchmarking and pay-band intelligence",
+  "maturity": {
+    "score": 55,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "bands module fully implemented with backend, frontend, tests",
+    "datasets module fully implemented with backend, frontend, tests",
+    "benchmarking module fully implemented with backend, frontend, tests",
+    "gaps module fully implemented with backend, frontend, tests",
+    "plans module fully implemented with backend, frontend, tests",
+    "approvals module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "CompBand",
+      "MarketDataset",
+      "BenchmarkRun",
+      "GapFinding",
+      "AdjustmentPlan",
+      "ApprovalRecord"
+    ],
+    "services": [
+      "bandsService",
+      "datasetsService",
+      "benchmarkingService",
+      "gapsService",
+      "plansService",
+      "approvalsService"
+    ],
+    "route_prefix": "/api/v1/compensation-benchmark"
+  },
+  "events": {
+    "emits": [
+      "compbenchmark.band.updated",
+      "compbenchmark.gap.detected",
+      "compbenchmark.plan.recommended"
+    ],
+    "consumes": [
+      "jobcraftai.posting.published",
+      "performancenarrative.review.finalized",
+      "compensationos.cycle.created"
+    ]
+  }
+}

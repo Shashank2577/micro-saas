@@ -1,0 +1,49 @@
+{
+  "app_id": "retentionsignal",
+  "title": "RetentionSignal",
+  "domain": "HR Talent",
+  "intent": "Employee flight-risk modeling and intervention recommendation engine",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "risk-models",
+    "interventions",
+    "signals",
+    "drivers",
+    "followups",
+    "outcomes"
+  ],
+  "entities": [
+    "RetentionRisk",
+    "InterventionPlan",
+    "SentimentSignal",
+    "RiskDriver",
+    "FollowupTask",
+    "OutcomeRecord"
+  ],
+  "emits": [
+    "retentionsignal.risk.detected",
+    "retentionsignal.intervention.recommended",
+    "retentionsignal.outcome.recorded"
+  ],
+  "consumes": [
+    "peopleanalytics.org.signal.updated",
+    "performancenarrative.review.finalized",
+    "engagementpulse.signal.updated"
+  ],
+  "route_prefix": "/api/v1/retention",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

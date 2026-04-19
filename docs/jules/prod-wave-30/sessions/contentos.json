@@ -1,0 +1,71 @@
+{
+  "app_id": "contentos",
+  "title": "ContentOS",
+  "domain": "Creator Operations",
+  "intent": "Campaign planning, content lifecycle orchestration, and multi-channel publishing ops",
+  "maturity": {
+    "score": 45,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "campaigns module fully implemented with backend, frontend, tests",
+    "assets module fully implemented with backend, frontend, tests",
+    "calendar module fully implemented with backend, frontend, tests",
+    "reviews module fully implemented with backend, frontend, tests",
+    "distribution module fully implemented with backend, frontend, tests",
+    "performance module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "ContentCampaign",
+      "ContentAsset",
+      "PublishingSlot",
+      "ReviewTask",
+      "DistributionPlan",
+      "PerformanceSnapshot"
+    ],
+    "services": [
+      "campaignsService",
+      "assetsService",
+      "calendarService",
+      "reviewsService",
+      "distributionService",
+      "performanceService"
+    ],
+    "route_prefix": "/api/v1/content"
+  },
+  "events": {
+    "emits": [
+      "contentos.asset.published",
+      "contentos.review.requested",
+      "contentos.campaign.updated"
+    ],
+    "consumes": [
+      "ghostwriter.draft.created",
+      "videonarrator.package.ready",
+      "seointelligence.cluster.generated"
+    ]
+  }
+}

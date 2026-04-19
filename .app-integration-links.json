@@ -1,0 +1,298 @@
+{
+  "summary": {
+    "apps": 99,
+    "appsWithEmits": 50,
+    "appsWithConsumes": 41,
+    "totalEmitDecls": 131,
+    "totalConsumeDecls": 68,
+    "matchedConsumeDecls": 5,
+    "consumeMatchRate": 7.35,
+    "matchedEmitDecls": 4,
+    "emitMatchRate": 3.05,
+    "integrationEdges": 5,
+    "appsWithOutgoingLinks": 4,
+    "appsWithIncomingLinks": 4,
+    "unmatchedConsumeCount": 63
+  },
+  "unmatchedConsumes": [
+    {
+      "app": "agentops",
+      "event": "cc.tenant.created"
+    },
+    {
+      "app": "agentops",
+      "event": "cc.tenant.deleted"
+    },
+    {
+      "app": "apievolver",
+      "event": "api-spec-scanned"
+    },
+    {
+      "app": "apievolver",
+      "event": "service.registered"
+    },
+    {
+      "app": "apimanager",
+      "event": "tenant.created"
+    },
+    {
+      "app": "apimanager",
+      "event": "tenant.deleted"
+    },
+    {
+      "app": "billingsync",
+      "event": "tenant.created"
+    },
+    {
+      "app": "billingsync",
+      "event": "usage.metered"
+    },
+    {
+      "app": "cashflowai",
+      "event": "invoice.paid"
+    },
+    {
+      "app": "churnpredictor",
+      "event": "customer.support.ticket_closed"
+    },
+    {
+      "app": "churnpredictor",
+      "event": "customer.usage.updated"
+    },
+    {
+      "app": "compensationos",
+      "event": "employee.hired"
+    },
+    {
+      "app": "compensationos",
+      "event": "employee.terminated"
+    },
+    {
+      "app": "compensationos",
+      "event": "tenant.created"
+    },
+    {
+      "app": "complianceradar",
+      "event": "regulation.changed"
+    },
+    {
+      "app": "customerdiscoveryai",
+      "event": "user.created"
+    },
+    {
+      "app": "datagovernanceos",
+      "event": "pipeline.failed"
+    },
+    {
+      "app": "dataprivacyai",
+      "event": "user.data-requested"
+    },
+    {
+      "app": "dataqualityai",
+      "event": "asset.loaded"
+    },
+    {
+      "app": "dataqualityai",
+      "event": "pipeline.completed"
+    },
+    {
+      "app": "dataqualityai",
+      "event": "schema.changed"
+    },
+    {
+      "app": "datastoryteller",
+      "event": "anomaly.detected"
+    },
+    {
+      "app": "datastoryteller",
+      "event": "dashboard.refreshed"
+    },
+    {
+      "app": "datastoryteller",
+      "event": "metric.updated"
+    },
+    {
+      "app": "dependencyradar",
+      "event": "code.pushed"
+    },
+    {
+      "app": "dependencyradar",
+      "event": "pr.merged"
+    },
+    {
+      "app": "documentvault",
+      "event": "tenant.created"
+    },
+    {
+      "app": "documentvault",
+      "event": "tenant.deleted"
+    },
+    {
+      "app": "documentvault",
+      "event": "user.created"
+    },
+    {
+      "app": "ecosystemmap",
+      "event": "app.deployed"
+    },
+    {
+      "app": "ecosystemmap",
+      "event": "app.undeployed"
+    },
+    {
+      "app": "ecosystemmap",
+      "event": "data.flow.event"
+    },
+    {
+      "app": "engagementpulse",
+      "event": "employee.created"
+    },
+    {
+      "app": "engagementpulse",
+      "event": "team.created"
+    },
+    {
+      "app": "experimentengine",
+      "event": "feature-flag.updated"
+    },
+    {
+      "app": "experimentengine",
+      "event": "metric.defined"
+    },
+    {
+      "app": "insuranceai",
+      "event": "user.created"
+    },
+    {
+      "app": "integrationbridge",
+      "event": "user.created"
+    },
+    {
+      "app": "licenseguard",
+      "event": "code.pushed"
+    },
+    {
+      "app": "licenseguard",
+      "event": "pr.merged"
+    },
+    {
+      "app": "marketplacehub",
+      "event": "app.registered"
+    },
+    {
+      "app": "marketplacehub",
+      "event": "app.updated"
+    },
+    {
+      "app": "meetingbrain",
+      "event": "ProjectCreatedEvent"
+    },
+    {
+      "app": "nonprofitos",
+      "event": "tenant.created"
+    },
+    {
+      "app": "nonprofitos",
+      "event": "user.created"
+    },
+    {
+      "app": "notificationhub",
+      "event": "user.created"
+    },
+    {
+      "app": "observabilitystack",
+      "event": "platform.service.deployed"
+    },
+    {
+      "app": "observabilitystack",
+      "event": "platform.system.error"
+    },
+    {
+      "app": "policyforge",
+      "event": "audit.finding-created"
+    },
+    {
+      "app": "pricingintelligence",
+      "event": "crm.deal.closed"
+    },
+    {
+      "app": "processminer",
+      "event": "EVENT_LOG_CREATED"
+    },
+    {
+      "app": "regulatoryfiling",
+      "event": "regulation.changed"
+    },
+    {
+      "app": "restaurantintel",
+      "event": "inventory.stock.updated"
+    },
+    {
+      "app": "restaurantintel",
+      "event": "pos.order.completed"
+    },
+    {
+      "app": "retailintelligence",
+      "event": "sales.order.placed"
+    },
+    {
+      "app": "securitypulse",
+      "event": "pr.merged"
+    },
+    {
+      "app": "securitypulse",
+      "event": "pr.opened"
+    },
+    {
+      "app": "socialintelligence",
+      "event": "user.created"
+    },
+    {
+      "app": "supportintelligence",
+      "event": "feature.released"
+    },
+    {
+      "app": "supportintelligence",
+      "event": "product.updated"
+    },
+    {
+      "app": "taxoptimizer",
+      "event": "user_onboarded"
+    },
+    {
+      "app": "usageintelligence",
+      "event": "user.created"
+    },
+    {
+      "app": "usageintelligence",
+      "event": "user.deleted"
+    }
+  ],
+  "edges": [
+    {
+      "from": "documentvault",
+      "to": "contractsense",
+      "event": "document.uploaded"
+    },
+    {
+      "from": "documentvault",
+      "to": "contractportfolio",
+      "event": "document.uploaded"
+    },
+    {
+      "from": "hiresignal",
+      "to": "interviewos",
+      "event": "candidate.hired"
+    },
+    {
+      "from": "policyforge",
+      "to": "auditready",
+      "event": "policy.published"
+    },
+    {
+      "from": "complianceradar",
+      "to": "auditready",
+      "event": "compliance.gap-detected"
+    }
+  ]
+}

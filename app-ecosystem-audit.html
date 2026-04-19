@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Micro-SaaS Ecosystem Audit</title>
+  <style>
+    :root {
+      --bg: #f5f7f6;
+      --card: #ffffff;
+      --ink: #1a2730;
+      --muted: #5b6b75;
+      --line: #d9e2e1;
+      --accent: #0b7285;
+      --accent-soft: #d6eef2;
+      --good: #1e8e5a;
+      --warn: #b7791f;
+      --bad: #c53030;
+      --pc: #1e8e5a;
+      --beta: #0b7285;
+      --alpha: #b7791f;
+      --inc: #c53030;
+      --shadow: 0 8px 24px rgba(31, 43, 50, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top right, #d9ece7, transparent 40%), var(--bg);
+      line-height: 1.45;
+    }
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: -0.01em; }
+    h1 { font-size: 1.85rem; margin-bottom: 4px; }
+    h2 { font-size: 1.2rem; margin-bottom: 12px; }
+    h3 { font-size: 0.98rem; margin-bottom: 8px; }
+    p { margin: 0; color: var(--muted); }
+    .hero {
+      background: linear-gradient(115deg, #083344, #0b7285 65%, #17a2b8);
+      color: #eefcff;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .hero p { color: #d6f4f9; margin-top: 6px; }
+    .hero-meta {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+    .pill {
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 999px;
+      padding: 3px 10px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .metrics { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+    .metric-label { color: var(--muted); font-size: 0.86rem; }
+    .metric-value { font-size: 1.5rem; font-weight: 700; margin-top: 2px; }
+    .metric-sub { color: var(--muted); font-size: 0.78rem; margin-top: 3px; }
+    .layout {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .findings li { margin-bottom: 9px; font-size: 0.94rem; }
+    .findings b { color: var(--ink); }
+    .sev {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      margin-right: 6px;
+      border: 1px solid transparent;
+      font-weight: 700;
+    }
+    .p0 { color: #991b1b; background: #fee2e2; border-color: #fecaca; }
+    .p1 { color: #92400e; background: #fef3c7; border-color: #fde68a; }
+    .p2 { color: #065f46; background: #d1fae5; border-color: #a7f3d0; }
+    .bars .row {
+      display: grid;
+      grid-template-columns: 140px 1fr 42px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+    }
+    .bar {
+      height: 11px;
+      background: #edf2f2;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #e2e8e8;
+    }
+    .fill { height: 100%; }
+    .controls {
+      display: grid;
+      grid-template-columns: 1.3fr repeat(3, minmax(120px, 180px));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .control {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #fff;
+    }
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .legend span {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 2px 8px;
+    }
+    .apps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 10px;
+    }
+    details {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    summary {
+      cursor: pointer;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .app-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .app-name { font-weight: 700; font-size: 0.98rem; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+    .chip {
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      border: 1px solid var(--line);
+      background: #f8fbfb;
+      color: #36515e;
+      white-space: nowrap;
+    }
+    .score {
+      font-weight: 700;
+      font-size: 1rem;
+      min-width: 54px;
+      text-align: right;
+    }
+    .tier-pc { color: var(--pc); border-color: #b7e3cc; background: #effaf4; }
+    .tier-beta { color: var(--beta); border-color: #b8e3ec; background: #eef9fb; }
+    .tier-alpha { color: var(--alpha); border-color: #ecd8b2; background: #fdf7ea; }
+    .tier-incubating { color: var(--inc); border-color: #f3c0c0; background: #fff1f1; }
+    .body {
+      margin-top: 10px;
+      display: grid;
+      gap: 9px;
+      font-size: 0.88rem;
+    }
+    .kvs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .kv {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px 7px;
+      background: #fbfdfd;
+    }
+    .kv .k { color: var(--muted); font-size: 0.74rem; }
+    .kv .v { font-weight: 700; margin-top: 2px; }
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fcfefe;
+      padding: 8px;
+    }
+    .section h4 {
+      margin: 0 0 5px;
+      font-size: 0.82rem;
+      color: #274757;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    ul { margin: 0; padding-left: 16px; }
+    .small { font-size: 0.8rem; color: var(--muted); }
+    .muted { color: var(--muted); }
+    .footer-note {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .controls { grid-template-columns: 1fr; }
+      .apps { grid-template-columns: 1fr; }
+      .kvs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Micro-SaaS Ecosystem Maturity & Production Readiness Audit</h1>
+      <p>
+        Full-stack structural audit for all apps in this repository, including maturity scoring,
+        production blockers, interoperability findings, and per-app current-vs-target behavior.
+      </p>
+      <div id="heroMeta" class="hero-meta"></div>
+    </section>
+
+    <section id="metrics" class="grid metrics"></section>
+
+    <section class="layout">
+      <article class="card">
+        <h2>Critical Findings</h2>
+        <ol class="findings" id="criticalFindings"></ol>
+      </article>
+      <article class="card">
+        <h2>Risk Concentration (Portfolio Level)</h2>
+        <div class="bars" id="riskBars"></div>
+      </article>
+    </section>
+
+    <section class="card" style="margin-bottom: 12px;">
+      <h2>Tier Distribution</h2>
+      <div class="bars" id="tierBars"></div>
+      <p class="small" style="margin-top: 6px;">
+        Tier logic: Production Candidate (80+), Beta (60-79), Alpha (40-59), Incubating (&lt;40).
+      </p>
+    </section>
+
+    <section class="card" style="margin-bottom: 12px;">
+      <h2>App Explorer: What Each App Does vs What It Should Do</h2>
+      <p class="small" style="margin-bottom: 10px;">
+        Use filters to inspect by maturity, depth, risk profile, and integration health.
+      </p>
+      <div class="controls">
+        <input id="search" class="control" placeholder="Search app, capability, risk, event..." />
+        <select id="tierFilter" class="control">
+          <option value="">All tiers</option>
+          <option>Production Candidate</option>
+          <option>Beta</option>
+          <option>Alpha</option>
+          <option>Incubating</option>
+        </select>
+        <select id="depthFilter" class="control">
+          <option value="">All depths</option>
+          <option>Deep</option>
+          <option>Medium</option>
+          <option>Shallow</option>
+        </select>
+        <select id="riskFilter" class="control">
+          <option value="">All risk tags</option>
+        </select>
+      </div>
+      <div id="legend" class="legend"></div>
+      <div id="appsContainer" class="apps"></div>
+      <p id="resultInfo" class="small" style="margin-top: 8px;"></p>
+    </section>
+
+    <p class="footer-note">
+      Data source: <code>.app-report-data.json</code> (generated from repository files and manifests).
+      This is a static audit snapshot and does not represent runtime SLA validation.
+    </p>
+  </div>
+
+  <script>
+    const riskLabels = {
+      "no-frontend": "No Frontend",
+      "no-db-migrations": "No DB Migrations",
+      "no-backend-tests": "No Backend Tests",
+      "no-frontend-tests": "No Frontend Tests",
+      "no-backend-dockerfile": "No Backend Dockerfile",
+      "no-readme": "No README",
+      "no-integration-manifest": "No Integration Manifest"
+    };
+
+    const tierColor = {
+      "Production Candidate": "var(--pc)",
+      "Beta": "var(--beta)",
+      "Alpha": "var(--alpha)",
+      "Incubating": "var(--inc)"
+    };
+
+    function pct(n, d) {
+      if (!d) return "0%";
+      return `${((n / d) * 100).toFixed(1)}%`;
+    }
+
+    function createBarRow(label, value, max, color, suffix = "") {
+      const width = max > 0 ? (value / max) * 100 : 0;
+      return `
+        <div class="row">
+          <div>${label}</div>
+          <div class="bar"><div class="fill" style="width:${width}%;background:${color};"></div></div>
+          <div style="text-align:right;">${value}${suffix}</div>
+        </div>
+      `;
+    }
+
+    function toArray(v) {
+      return Array.isArray(v) ? v : [];
+    }
+
+    function appCard(app) {
+      const tierClass = `tier-${app.tier.toLowerCase().replace(/\s+/g, "-")}`;
+      const appRisks = toArray(app.risks);
+      const appEmits = toArray(app.emits);
+      const appConsumes = toArray(app.consumes);
+      const appCapabilities = toArray(app.capabilities);
+      const appShouldDo = toArray(app.shouldDo);
+      const appUnmatchedConsumes = toArray(app.unmatchedConsumes);
+      const risks = appRisks.length ? appRisks.map(r => `<span class="chip">${riskLabels[r] || r}</span>`).join("") : `<span class="chip">No flagged structural risks</span>`;
+      const emits = appEmits.length ? appEmits.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No emit contracts declared</li>";
+      const consumes = appConsumes.length ? appConsumes.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No consume contracts declared</li>";
+      const capabilities = appCapabilities.length ? appCapabilities.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No capabilities declared</li>";
+      const shouldDo = appShouldDo.length ? appShouldDo.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No immediate blockers inferred</li>";
+      const unmatched = appUnmatchedConsumes.length ? appUnmatchedConsumes.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No unmatched consume event names</li>";
+      return `
+        <details>
+          <summary>
+            <div class="app-head">
+              <div>
+                <div class="app-name">${app.app}</div>
+                <div class="chips">
+                  <span class="chip ${tierClass}">${app.tier}</span>
+                  <span class="chip">Depth: ${app.depth}</span>
+                  <span class="chip">B/F tests: ${app.backendTests}/${app.frontendTests}</span>
+                  <span class="chip">Migrations: ${app.migrations}</span>
+                  <span class="chip">Links in/out: ${app.incomingLinks}/${app.outgoingLinks}</span>
+                </div>
+              </div>
+              <div class="score">${app.score}</div>
+            </div>
+          </summary>
+          <div class="body">
+            <div class="kvs">
+              <div class="kv"><div class="k">Controllers</div><div class="v">${app.controllers}</div></div>
+              <div class="kv"><div class="k">Services</div><div class="v">${app.services}</div></div>
+              <div class="kv"><div class="k">Domain Objects</div><div class="v">${app.domain}</div></div>
+              <div class="kv"><div class="k">Backend</div><div class="v">${app.backend ? "Yes" : "No"}</div></div>
+              <div class="kv"><div class="k">Frontend</div><div class="v">${app.frontend ? "Yes" : "No"}</div></div>
+              <div class="kv"><div class="k">Risk Tags</div><div class="v">${appRisks.length}</div></div>
+            </div>
+            <div class="section">
+              <h4>What It Does Now</h4>
+              <p>${app.doesNow}</p>
+            </div>
+            <div class="section">
+              <h4>What It Should Do (Target State)</h4>
+              <ul>${shouldDo}</ul>
+            </div>
+            <div class="section">
+              <h4>Structural Risks</h4>
+              <div class="chips">${risks}</div>
+            </div>
+            <div class="section">
+              <h4>Declared Emits</h4>
+              <ul>${emits}</ul>
+            </div>
+            <div class="section">
+              <h4>Declared Consumes</h4>
+              <ul>${consumes}</ul>
+            </div>
+            <div class="section">
+              <h4>Unmatched Consumes (No Producer Found)</h4>
+              <ul>${unmatched}</ul>
+            </div>
+            <div class="section">
+              <h4>Capabilities</h4>
+              <ul>${capabilities}</ul>
+            </div>
+          </div>
+        </details>
+      `;
+    }
+
+    async function loadData() {
+      const response = await fetch("./.app-report-data.json", { cache: "no-store" });
+      if (!response.ok) throw new Error(`Unable to load data: ${response.status}`);
+      return response.json();
+    }
+
+    function render(data) {
+      const summary = data.summary;
+      const integration = data.integrationSummary;
+      const manifest = data.manifestSummary || {};
+      const risks = data.riskSummary || {};
+
+      const heroMeta = document.getElementById("heroMeta");
+      heroMeta.innerHTML = [
+        `<span class="pill">Generated: ${new Date(data.generatedAt).toLocaleString()}</span>`,
+        `<span class="pill">Apps audited: ${summary.totalApps}</span>`,
+        `<span class="pill">Avg maturity score: ${summary.avgScore}</span>`,
+        `<span class="pill">Integration consume match: ${integration.consumeMatchRate}%</span>`
+      ].join("");
+
+      const metrics = document.getElementById("metrics");
+      metrics.innerHTML = [
+        { label: "Production Candidates", value: summary.tiers.productionCandidate, sub: pct(summary.tiers.productionCandidate, summary.totalApps) },
+        { label: "Beta Apps", value: summary.tiers.beta, sub: pct(summary.tiers.beta, summary.totalApps) },
+        { label: "Alpha Apps", value: summary.tiers.alpha, sub: pct(summary.tiers.alpha, summary.totalApps) },
+        { label: "Incubating Apps", value: summary.tiers.incubating, sub: pct(summary.tiers.incubating, summary.totalApps) },
+        { label: "Apps with Any Tests", value: summary.withAnyTests, sub: `${summary.totalBackendTests} backend + ${summary.totalFrontendTests} frontend` },
+        { label: "Apps with Frontend", value: summary.withFrontend, sub: pct(summary.withFrontend, summary.totalApps) },
+        { label: "Manifests Present", value: manifest.exists ?? 0, sub: `${toArray(manifest.missing).length} missing` },
+        { label: "Interoperability Edges", value: integration.integrationEdges, sub: `${integration.unmatchedConsumeCount} unmatched consumes` }
+      ].map(m => `
+        <article class="card">
+          <div class="metric-label">${m.label}</div>
+          <div class="metric-value">${m.value}</div>
+          <div class="metric-sub">${m.sub}</div>
+        </article>
+      `).join("");
+
+      const findings = document.getElementById("criticalFindings");
+      findings.innerHTML = `
+        <li><span class="sev p0">P0</span><b>Cross-app interoperability is minimal:</b> only ${integration.integrationEdges} producer→consumer links, with ${integration.unmatchedConsumeCount} unmatched consume declarations (${integration.consumeMatchRate}% consume match).</li>
+        <li><span class="sev p1">P1</span><b>Event taxonomy is fragmented:</b> tenant/user/core/cc naming variants reduce automatic app-to-app compatibility and orchestration reliability.</li>
+        <li><span class="sev p1">P1</span><b>Manifest schema drift is high:</b> ${toArray(manifest.schemaShapes).length}+ schema shapes detected; this weakens contract governance and automated registry validation.</li>
+        <li><span class="sev p1">P1</span><b>Production hygiene gaps are broad:</b> ${risks["no-backend-tests"]} apps without backend tests, ${risks["no-frontend-tests"]} without frontend tests, ${risks["no-backend-dockerfile"]} without backend Dockerfiles.</li>
+        <li><span class="sev p2">P2</span><b>Documentation and onboarding debt:</b> ${risks["no-readme"]} apps have no README, slowing handoff, support, and operational consistency.</li>
+      `;
+
+      const riskRows = Object.entries(risks);
+      const maxRisk = riskRows.length ? Math.max(...riskRows.map(([, v]) => v)) : 0;
+      const riskBars = document.getElementById("riskBars");
+      riskBars.innerHTML = riskRows
+        .sort((a, b) => b[1] - a[1])
+        .map(([k, v]) => createBarRow(riskLabels[k] || k, v, maxRisk, "linear-gradient(90deg,#f59e0b,#ef4444)"))
+        .join("");
+
+      const tierBars = document.getElementById("tierBars");
+      const tierData = [
+        ["Production Candidate", summary.tiers.productionCandidate],
+        ["Beta", summary.tiers.beta],
+        ["Alpha", summary.tiers.alpha],
+        ["Incubating", summary.tiers.incubating]
+      ];
+      const maxTier = Math.max(...tierData.map(([, v]) => v));
+      tierBars.innerHTML = tierData.map(([k, v]) => createBarRow(k, v, maxTier, tierColor[k])).join("");
+
+      const riskSet = new Set();
+      for (const app of data.apps) for (const r of toArray(app.risks)) riskSet.add(r);
+      const riskFilter = document.getElementById("riskFilter");
+      riskFilter.innerHTML += [...riskSet].sort().map(r => `<option value="${r}">${riskLabels[r] || r}</option>`).join("");
+
+      const legend = document.getElementById("legend");
+      legend.innerHTML = Object.entries(riskLabels).map(([k, v]) => `<span data-risk="${k}">${v}</span>`).join("");
+
+      const search = document.getElementById("search");
+      const tierFilter = document.getElementById("tierFilter");
+      const depthFilter = document.getElementById("depthFilter");
+      const appsContainer = document.getElementById("appsContainer");
+      const resultInfo = document.getElementById("resultInfo");
+
+      function matches(app, text) {
+        const hay = [
+          app.app,
+          app.tier,
+          app.depth,
+          app.doesNow,
+          ...toArray(app.risks),
+          ...toArray(app.capabilities),
+          ...toArray(app.emits),
+          ...toArray(app.consumes),
+          ...toArray(app.unmatchedConsumes),
+          ...toArray(app.shouldDo)
+        ].join(" ").toLowerCase();
+        return hay.includes(text.toLowerCase());
+      }
+
+      function drawApps() {
+        const text = search.value.trim();
+        const tier = tierFilter.value;
+        const depth = depthFilter.value;
+        const risk = riskFilter.value;
+        const filtered = data.apps.filter(app => {
+          if (tier && app.tier !== tier) return false;
+          if (depth && app.depth !== depth) return false;
+          if (risk && !toArray(app.risks).includes(risk)) return false;
+          if (text && !matches(app, text)) return false;
+          return true;
+        });
+        appsContainer.innerHTML = filtered.map(appCard).join("");
+        resultInfo.textContent = `Showing ${filtered.length} of ${data.apps.length} apps`;
+      }
+
+      [search, tierFilter, depthFilter, riskFilter].forEach(el => el.addEventListener("input", drawApps));
+      drawApps();
+    }
+
+    (async () => {
+      try {
+        const data = await loadData();
+        render(data);
+      } catch (error) {
+        document.body.innerHTML = `
+          <div style="max-width:900px;margin:30px auto;padding:20px;background:#fff;border:1px solid #ddd;border-radius:10px;font-family:Segoe UI,sans-serif;">
+            <h2>Unable to load audit data</h2>
+            <p>Expected <code>.app-report-data.json</code> in the same folder as this HTML file.</p>
+            <p>Error: <code>${String(error.message || error)}</code></p>
+            <p>Tip: open this directory with a local web server (for example <code>python3 -m http.server</code>) and then open the HTML page.</p>
+          </div>
+        `;
+      }
+    })();
+  </script>
+</body>
+</html>

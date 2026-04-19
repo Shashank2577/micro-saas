@@ -1,0 +1,72 @@
+{
+  "app_id": "jobcraftai",
+  "title": "JobCraftAI",
+  "domain": "HR Talent",
+  "intent": "Generate inclusive, high-converting job descriptions with hiring analytics",
+  "maturity": {
+    "score": 35,
+    "tier": "Incubating",
+    "depth": "Shallow",
+    "risks": [
+      "no-db-migrations",
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "role-profiles module fully implemented with backend, frontend, tests",
+    "drafting module fully implemented with backend, frontend, tests",
+    "bias-check module fully implemented with backend, frontend, tests",
+    "publishing module fully implemented with backend, frontend, tests",
+    "performance module fully implemented with backend, frontend, tests",
+    "iterations module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "JobPosting",
+      "RoleProfile",
+      "BiasCheck",
+      "ChannelPerformance",
+      "CandidatePersona",
+      "RevisionLog"
+    ],
+    "services": [
+      "role-profilesService",
+      "draftingService",
+      "bias-checkService",
+      "publishingService",
+      "performanceService",
+      "iterationsService"
+    ],
+    "route_prefix": "/api/v1/job-postings"
+  },
+  "events": {
+    "emits": [
+      "jobcraftai.posting.published",
+      "jobcraftai.bias.issue.flagged",
+      "jobcraftai.channel.performance.updated"
+    ],
+    "consumes": [
+      "hiresignal.requisition.created",
+      "peopleanalytics.role.benchmark.updated",
+      "compbenchmark.band.changed"
+    ]
+  }
+}

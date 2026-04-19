@@ -1,0 +1,49 @@
+{
+  "app_id": "analyticsbuilder",
+  "title": "AnalyticsBuilder",
+  "domain": "Data & Analytics",
+  "intent": "Self-serve dashboard and report builder with governed metrics",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "dashboards",
+    "widgets",
+    "metrics",
+    "queries",
+    "sharing",
+    "reports"
+  ],
+  "entities": [
+    "Dashboard",
+    "Widget",
+    "MetricDefinition",
+    "QueryTemplate",
+    "SharingPolicy",
+    "ScheduledReport"
+  ],
+  "emits": [
+    "analyticsbuilder.dashboard.published",
+    "analyticsbuilder.report.scheduled",
+    "analyticsbuilder.metric.changed"
+  ],
+  "consumes": [
+    "datacatalogai.asset.updated",
+    "dataqualityai.rule.failed",
+    "usageintelligence.event.received"
+  ],
+  "route_prefix": "/api/v1/analytics",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

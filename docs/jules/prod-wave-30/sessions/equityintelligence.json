@@ -1,0 +1,71 @@
+{
+  "app_id": "equityintelligence",
+  "title": "EquityIntelligence",
+  "domain": "Finance Operations",
+  "intent": "Cap table, vesting, and round scenario intelligence for founders and finance teams",
+  "maturity": {
+    "score": 55,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "cap-table module fully implemented with backend, frontend, tests",
+    "shareholders module fully implemented with backend, frontend, tests",
+    "vesting module fully implemented with backend, frontend, tests",
+    "rounds module fully implemented with backend, frontend, tests",
+    "dilution module fully implemented with backend, frontend, tests",
+    "option-pool module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "CapTable",
+      "Shareholder",
+      "VestingSchedule",
+      "FundingRound",
+      "DilutionScenario",
+      "OptionPoolPlan"
+    ],
+    "services": [
+      "cap-tableService",
+      "shareholdersService",
+      "vestingService",
+      "roundsService",
+      "dilutionService",
+      "option-poolService"
+    ],
+    "route_prefix": "/api/v1/equity"
+  },
+  "events": {
+    "emits": [
+      "equityintelligence.round.updated",
+      "equityintelligence.dilution.simulated",
+      "equityintelligence.vesting.alerted"
+    ],
+    "consumes": [
+      "financenarrator.narrative.generated",
+      "budgetpilot.reforecast.completed",
+      "contractportfolio.contract.indexed"
+    ]
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "updatedAt": "2026-04-18T17:52:17.020Z",
+  "total": 30,
+  "dispatched": 30,
+  "pendingCount": 0,
+  "pending": [],
+  "done": [
+    {
+      "app": "budgetpilot",
+      "sessionId": "15886593282367650958"
+    },
+    {
+      "app": "ghostwriter",
+      "sessionId": "11944992533179204940"
+    },
+    {
+      "app": "invoiceprocessor",
+      "sessionId": "4518192338480615669"
+    },
+    {
+      "app": "jobcraftai",
+      "sessionId": "8897805114648322438"
+    },
+    {
+      "app": "seointelligence",
+      "sessionId": "16707678836168718622"
+    },
+    {
+      "app": "videonarrator",
+      "sessionId": "718683161751977503"
+    },
+    {
+      "app": "securitypulse",
+      "sessionId": "5700557582738563198"
+    },
+    {
+      "app": "supportintelligence",
+      "sessionId": "5951696224690940275"
+    },
+    {
+      "app": "auditready",
+      "sessionId": "6132724446338429562"
+    },
+    {
+      "app": "constructioniq",
+      "sessionId": "12484009687715377415"
+    },
+    {
+      "app": "contentos",
+      "sessionId": "2001629973236646309"
+    },
+    {
+      "app": "dependencyradar",
+      "sessionId": "10476145740205165805"
+    },
+    {
+      "app": "licenseguard",
+      "sessionId": "3647109380060510914"
+    },
+    {
+      "app": "nexus-hub",
+      "sessionId": "11067458382281526585"
+    },
+    {
+      "app": "policyforge",
+      "sessionId": "2651947589372957447"
+    },
+    {
+      "app": "deploysignal",
+      "sessionId": "3397430458721580045"
+    },
+    {
+      "app": "cashflowanalyzer",
+      "sessionId": "4900140116319403212"
+    },
+    {
+      "app": "complianceradar",
+      "sessionId": "13478445033015374620"
+    },
+    {
+      "app": "copyoptimizer",
+      "sessionId": "4266424115610592406"
+    },
+    {
+      "app": "dataqualityai",
+      "sessionId": "9167562134944026423"
+    },
+    {
+      "app": "financenarrator",
+      "sessionId": "3328692350475125981"
+    },
+    {
+      "app": "legalresearch",
+      "sessionId": "2404178606070926527"
+    },
+    {
+      "app": "performancenarrative",
+      "sessionId": "8803006588688803416"
+    },
+    {
+      "app": "regulatoryfiling",
+      "sessionId": "11787127804330841378"
+    },
+    {
+      "app": "cashflowai",
+      "sessionId": "16377395713177902081"
+    },
+    {
+      "app": "compbenchmark",
+      "sessionId": "12532375663862634938"
+    },
+    {
+      "app": "contractportfolio",
+      "sessionId": "531065711287280895"
+    },
+    {
+      "app": "debtnavigator",
+      "sessionId": "3619541537748462447"
+    },
+    {
+      "app": "equityintelligence",
+      "sessionId": "6660337237848742267"
+    },
+    {
+      "app": "goaltracker",
+      "sessionId": "6937620421666913542"
+    }
+  ]
+}

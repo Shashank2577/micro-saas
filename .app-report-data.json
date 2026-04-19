@@ -1,0 +1,3686 @@
+{
+  "generatedAt": "2026-04-18T07:13:24.400Z",
+  "summary": {
+    "totalApps": 99,
+    "tiers": {
+      "productionCandidate": 29,
+      "beta": 36,
+      "alpha": 28,
+      "incubating": 6
+    },
+    "avgScore": 66.95,
+    "withBackend": 99,
+    "withFrontend": 86,
+    "withManifest": 97,
+    "withReadme": 35,
+    "withAnyTests": 75,
+    "withoutAnyTests": 24,
+    "totalBackendTests": 141,
+    "totalFrontendTests": 54
+  },
+  "integrationSummary": {
+    "apps": 99,
+    "appsWithEmits": 50,
+    "appsWithConsumes": 41,
+    "totalEmitDecls": 131,
+    "totalConsumeDecls": 68,
+    "matchedConsumeDecls": 5,
+    "consumeMatchRate": 7.35,
+    "matchedEmitDecls": 4,
+    "emitMatchRate": 3.05,
+    "integrationEdges": 5,
+    "appsWithOutgoingLinks": 4,
+    "appsWithIncomingLinks": 4,
+    "unmatchedConsumeCount": 63
+  },
+  "manifestSummary": {
+    "total": 99,
+    "exists": 97,
+    "missing": [
+      "healthcaredocai",
+      "nexus-hub"
+    ],
+    "parseErrors": [],
+    "emitsGt0": 60,
+    "consumesGt0": 50,
+    "capabilitiesGt0": 54,
+    "healthEndpointPresent": 71,
+    "schemaShapes": [
+      "capabilities,consumes,description,emits,name,port",
+      "app,baseUrl,capabilities,consumes,displayName,emits,healthEndpoint,version",
+      "appName,capabilities,consumes,description,displayName,emits,port",
+      "appId,capabilities,consumes,description,displayName,emits,port,version",
+      "appId,capabilities,consumes,emits,name,version",
+      "baseUrl,displayName,id,manifest,name,status",
+      "capabilities,consumes,description,displayName,emits,name",
+      "appName,capabilities,consumes,description,displayName,emits,port,version",
+      "appId,capabilities,consumes,description,displayName,emits,version",
+      "app,capabilities,consumes,description,emits,name",
+      "appId,capabilities,consumes,dependencies,description,emits,name,port,version",
+      "appId,capabilities,consumes,description,emits,name,version",
+      "api,app-id,capabilities,consumes,emits,version",
+      "app,capabilities,consumes,emits",
+      "app,capabilities,consumes,description,displayName,emits,version",
+      "appId,baseUrl,capabilities,consumes,description,displayName,emits,version",
+      "app,capabilities,consumes,description,display_name,emits",
+      "appId,capabilities,consumes,dependencies,displayName,emits,port",
+      "appId,baseUrl,capabilities,consumes,displayName,emits",
+      "app,capabilities,consumes,displayName,emits,healthEndpoint,version"
+    ]
+  },
+  "riskSummary": {
+    "no-frontend": 13,
+    "no-db-migrations": 8,
+    "no-backend-tests": 25,
+    "no-frontend-tests": 52,
+    "no-backend-dockerfile": 68,
+    "no-readme": 64,
+    "no-integration-manifest": 2
+  },
+  "apps": [
+    {
+      "app": "agencyos",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 6,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "agentops",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 3,
+      "services": 4,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "cc.tenant.created",
+        "cc.tenant.deleted"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "agentops.run.started",
+        "agentops.run.completed",
+        "agentops.run.failed",
+        "agentops.escalation.created",
+        "agentops.escalation.resolved"
+      ],
+      "consumes": [
+        "cc.tenant.created",
+        "cc.tenant.deleted"
+      ],
+      "capabilities": [
+        "ai_agent_observability",
+        "agent_telemetry",
+        "agent_governance",
+        "cost_tracking"
+      ],
+      "doesNow": "Capabilities: ai_agent_observability, agent_telemetry, agent_governance, cost_tracking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "analyticsbuilder",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 5,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "apievolver",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "api-spec-scanned",
+        "service.registered"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "api-spec-uploaded",
+        "breaking-change-detected",
+        "api-deprecated"
+      ],
+      "consumes": [
+        "service.registered",
+        "api-spec-scanned"
+      ],
+      "capabilities": [
+        "diff-specs",
+        "detect-breaking",
+        "notify-consumers"
+      ],
+      "doesNow": "Capabilities: diff-specs, detect-breaking, notify-consumers",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ]
+    },
+    {
+      "app": "apigatekeeper",
+      "score": 75,
+      "tier": "Beta",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 1,
+      "controllers": 8,
+      "services": 5,
+      "domain": 8,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "apimanager",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 2,
+      "controllers": 8,
+      "services": 8,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "tenant.deleted"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "api.version.published",
+        "api.version.deprecated",
+        "api.key.generated",
+        "api.key.revoked"
+      ],
+      "consumes": [
+        "tenant.created",
+        "tenant.deleted"
+      ],
+      "capabilities": [
+        "API_DOCUMENTATION",
+        "API_VERSIONING",
+        "API_KEY_MANAGEMENT"
+      ],
+      "doesNow": "API documentation and lifecycle management service. Provides OpenAPI/Swagger documentation, API versioning, deprecation, and developer portal. Capabilities: API_DOCUMENTATION, API_VERSIONING, API_KEY_MANAGEMENT",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "auditready",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 2,
+      "outgoingLinks": 0,
+      "emits": [
+        "audit.score-calculated",
+        "evidence.collected"
+      ],
+      "consumes": [
+        "policy.published",
+        "compliance.gap-detected"
+      ],
+      "capabilities": [
+        "calculate-readiness"
+      ],
+      "doesNow": "Capabilities: calculate-readiness",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "backupvault",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 3,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "backup.execution.started",
+        "backup.execution.completed",
+        "backup.execution.failed",
+        "backup.restore.started",
+        "backup.restore.completed",
+        "dr.drill.completed"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "backup_management",
+        "point_in_time_recovery",
+        "disaster_recovery",
+        "cross_region_replication"
+      ],
+      "doesNow": "Capabilities: backup_management, point_in_time_recovery, disaster_recovery, cross_region_replication",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ]
+    },
+    {
+      "app": "billingai",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "billingsync",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 2,
+      "controllers": 4,
+      "services": 6,
+      "domain": 8,
+      "risks": [
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "usage.metered"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "invoice.generated",
+        "payment.succeeded",
+        "payment.failed"
+      ],
+      "consumes": [
+        "tenant.created",
+        "usage.metered"
+      ],
+      "capabilities": [
+        "Manage Subscriptions",
+        "Calculate Usage Bills",
+        "Process Invoices and Payments"
+      ],
+      "doesNow": "Capabilities: Manage Subscriptions, Calculate Usage Bills, Process Invoices and Payments",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "brandvoice",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 6,
+      "services": 5,
+      "domain": 4,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "budgetpilot",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "callintelligence",
+      "score": 86,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 5,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "call.analyzed",
+        "action_item.extracted"
+      ],
+      "consumes": [
+        "crm.sync_requested"
+      ],
+      "capabilities": [
+        "CALL_ANALYSIS",
+        "REP_COACHING"
+      ],
+      "doesNow": "AI sales call intelligence platform Capabilities: CALL_ANALYSIS, REP_COACHING",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "cashflowai",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "invoice.paid"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "cashflow.shortfall-predicted"
+      ],
+      "consumes": [
+        "invoice.paid"
+      ],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "cashflowanalyzer",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 5,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "churnpredictor",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 3,
+      "controllers": 3,
+      "services": 5,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "customer.support.ticket_closed",
+        "customer.usage.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "churn.prediction.high_risk",
+        "churn.intervention.triggered"
+      ],
+      "consumes": [
+        "customer.usage.updated",
+        "customer.support.ticket_closed"
+      ],
+      "capabilities": [
+        "churn_prediction",
+        "health_scoring",
+        "intervention_automation"
+      ],
+      "doesNow": "AI churn prevention platform. Capabilities: churn_prediction, health_scoring, intervention_automation",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "compbenchmark",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 4,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "compensationos",
+      "score": 100,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 5,
+      "frontendTests": 2,
+      "controllers": 7,
+      "services": 7,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "employee.hired",
+        "employee.terminated",
+        "tenant.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "compensation.cycle.created",
+        "compensation.cycle.completed"
+      ],
+      "consumes": [
+        "tenant.created",
+        "employee.hired",
+        "employee.terminated"
+      ],
+      "capabilities": [
+        "CompensationBenchmarking",
+        "PayEquityAnalysis",
+        "BudgetForecasting"
+      ],
+      "doesNow": "Compensation Benchmark & Planning Platform Capabilities: CompensationBenchmarking, PayEquityAnalysis, BudgetForecasting",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "competitorradar",
+      "score": 80,
+      "tier": "Production Candidate",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 5,
+      "services": 7,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "complianceradar",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 7,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "regulation.changed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 1,
+      "emits": [
+        "compliance.gap-detected",
+        "compliance.task-completed"
+      ],
+      "consumes": [
+        "regulation.changed"
+      ],
+      "capabilities": [
+        "analyze-gaps"
+      ],
+      "doesNow": "Capabilities: analyze-gaps",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "constructioniq",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "contentos",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "contractportfolio",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 5,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 1,
+      "outgoingLinks": 0,
+      "emits": [
+        "contract.expiring-soon",
+        "renewal.alert-triggered"
+      ],
+      "consumes": [
+        "document.uploaded"
+      ],
+      "capabilities": [
+        "extract-terms"
+      ],
+      "doesNow": "Capabilities: extract-terms",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "contractsense",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 5,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 1,
+      "outgoingLinks": 0,
+      "emits": [
+        "contract.analyzed",
+        "risk.flagged"
+      ],
+      "consumes": [
+        "document.uploaded"
+      ],
+      "capabilities": [
+        "analyze-contract"
+      ],
+      "doesNow": "Capabilities: analyze-contract",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "copyoptimizer",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 4,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "creatoranalytics",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 8,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "customerdiscoveryai",
+      "score": 86,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 3,
+      "services": 2,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "interview.completed",
+        "insights.generated",
+        "report.completed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "research_synthesis",
+        "interview_analysis"
+      ],
+      "doesNow": "AI user research platform that automatically synthesizes findings from 100+ interviews. Capabilities: research_synthesis, interview_analysis",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "datacatalogai",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 7,
+      "domain": 16,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "datagovernance",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 2,
+      "domain": 6,
+      "risks": [
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "dsar.completed",
+        "consent.updated"
+      ],
+      "consumes": [
+        "user.deleted"
+      ],
+      "capabilities": [
+        "DATA_RETENTION",
+        "DSAR_MANAGEMENT",
+        "PII_DETECTION",
+        "CONSENT_MANAGEMENT",
+        "DATA_LINEAGE"
+      ],
+      "doesNow": "Data management and compliance service. Handles data retention policies, GDPR/CCPA compliance, data lineage, PII detection, and audit trails. Capabilities: DATA_RETENTION, DSAR_MANAGEMENT, PII_DETECTION, CONSENT_MANAGEMENT",
+      "shouldDo": [
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "datagovernanceos",
+      "score": 63,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "pipeline.failed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "data_asset.created",
+        "policy.created",
+        "audit.failed"
+      ],
+      "consumes": [
+        "pipeline.failed"
+      ],
+      "capabilities": [
+        "policy_lookup",
+        "asset_classification"
+      ],
+      "doesNow": "Data governance and classification Capabilities: policy_lookup, asset_classification",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "datalineagetracker",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 5,
+      "domain": 6,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "lineage.asset.created",
+        "lineage.incident.opened",
+        "lineage.policy.violated"
+      ],
+      "consumes": [
+        "auth.user.login",
+        "data.pipeline.run"
+      ],
+      "capabilities": [
+        "Lineage Tracking",
+        "PII Detection",
+        "Governance Enforcement",
+        "Audit Trails"
+      ],
+      "doesNow": "Comprehensive data lineage, governance, and audit tracking platform Capabilities: Lineage Tracking, PII Detection, Governance Enforcement, Audit Trails",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ]
+    },
+    {
+      "app": "dataprivacyai",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 2,
+      "domain": 10,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user.data-requested"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "privacy.risk-detected",
+        "dsr.completed"
+      ],
+      "consumes": [
+        "user.data-requested"
+      ],
+      "capabilities": [
+        "assess-privacy-risks"
+      ],
+      "doesNow": "Capabilities: assess-privacy-risks",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "dataqualityai",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 1,
+      "domain": 4,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "asset.loaded",
+        "pipeline.completed",
+        "schema.changed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "dq.test.failed",
+        "dq.score.degraded",
+        "dq.schema.drift",
+        "dq.issue.opened"
+      ],
+      "consumes": [
+        "asset.loaded",
+        "schema.changed",
+        "pipeline.completed"
+      ],
+      "capabilities": [
+        "run-tests",
+        "get-score",
+        "suggest-fix"
+      ],
+      "doesNow": "Capabilities: run-tests, get-score, suggest-fix",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "dataroomai",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 5,
+      "services": 5,
+      "domain": 8,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "document-uploaded",
+        "diligence-gap-detected"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "analyze-documents",
+        "answer-questions"
+      ],
+      "doesNow": "Capabilities: analyze-documents, answer-questions",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "datastoryteller",
+      "score": 81,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 4,
+      "domain": 14,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [
+        "anomaly.detected",
+        "dashboard.refreshed",
+        "metric.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "narrative.generated",
+        "narrative.published",
+        "insight.detected",
+        "delivery.dispatched"
+      ],
+      "consumes": [
+        "metric.updated",
+        "dashboard.refreshed",
+        "anomaly.detected"
+      ],
+      "capabilities": [
+        "generate-narrative",
+        "explain-metric",
+        "summarize-dashboard"
+      ],
+      "doesNow": "Capabilities: generate-narrative, explain-metric, summarize-dashboard",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "debtnavigator",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 4,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "dependencyradar",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend",
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "vulnerability-detected",
+        "dependency-outdated",
+        "upgrade-available"
+      ],
+      "consumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "capabilities": [
+        "scan-dependencies",
+        "check-upgrade",
+        "create-upgrade-pr"
+      ],
+      "doesNow": "Capabilities: scan-dependencies, check-upgrade, create-upgrade-pr",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability."
+      ]
+    },
+    {
+      "app": "deploysignal",
+      "score": 48,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-frontend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ]
+    },
+    {
+      "app": "documentintelligence",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 1,
+      "services": 4,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "document.uploaded",
+        "document.extraction.completed"
+      ],
+      "consumes": [
+        "workflow.action.requested"
+      ],
+      "capabilities": [
+        "document_ingestion",
+        "ocr",
+        "structured_data_extraction",
+        "document_classification",
+        "semantic_search",
+        "document_qa"
+      ],
+      "doesNow": "AI document processing platform. Ingests any document type, extracts structured data, routes to appropriate workflow, answers questions about document contents, and tracks processing status. Capabilities: document_ingestion, ocr, structured_data_extraction, document_classification",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable."
+      ]
+    },
+    {
+      "app": "documentvault",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 5,
+      "services": 8,
+      "domain": 5,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "tenant.deleted",
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 2,
+      "emits": [
+        "document.uploaded",
+        "document.shared",
+        "document.deleted"
+      ],
+      "consumes": [
+        "tenant.created",
+        "tenant.deleted",
+        "user.created"
+      ],
+      "capabilities": [
+        "file-storage",
+        "ocr",
+        "document-versioning",
+        "storage-quota-management"
+      ],
+      "doesNow": "Secure document storage and management system with OCR and versioning. Capabilities: file-storage, ocr, document-versioning, storage-quota-management",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "ecosystemmap",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 3,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "app.deployed",
+        "app.undeployed",
+        "data.flow.event"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [
+        "app.deployed",
+        "app.undeployed",
+        "data.flow.event"
+      ],
+      "capabilities": [
+        "ecosystem_visualization",
+        "roi_tracking",
+        "integration_discovery"
+      ],
+      "doesNow": "AI ecosystem visualization platform and ROI tracker. Capabilities: ecosystem_visualization, roi_tracking, integration_discovery",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "educationos",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "course.created",
+        "quiz.completed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "LEARNING_MANAGEMENT",
+        "ASSESSMENT"
+      ],
+      "doesNow": "AI learning platform builder Capabilities: LEARNING_MANAGEMENT, ASSESSMENT",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "engagementpulse",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 5,
+      "domain": 6,
+      "risks": [],
+      "unmatchedConsumes": [
+        "employee.created",
+        "team.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "survey.distributed",
+        "alert.triggered"
+      ],
+      "consumes": [
+        "employee.created",
+        "team.created"
+      ],
+      "capabilities": [
+        "survey_builder",
+        "sentiment_analysis",
+        "engagement_scoring"
+      ],
+      "doesNow": "Capabilities: survey_builder, sentiment_analysis, engagement_scoring",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "equityintelligence",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "expenseintelligence",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 3,
+      "domain": 9,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "experimentengine",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 1,
+      "controllers": 0,
+      "services": 4,
+      "domain": 15,
+      "risks": [],
+      "unmatchedConsumes": [
+        "feature-flag.updated",
+        "metric.defined"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "experiment.started",
+        "experiment.significant",
+        "experiment.concluded",
+        "rollout.activated",
+        "experiment.guardrail-violated"
+      ],
+      "consumes": [
+        "metric.defined",
+        "feature-flag.updated"
+      ],
+      "capabilities": [
+        "assign",
+        "track-event",
+        "get-results"
+      ],
+      "doesNow": "Capabilities: assign, track-event, get-results",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "financenarrator",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 4,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "narrative.generated"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "ghostwriter",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "goaltracker",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 2,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "goaltracker.goal.created",
+        "goaltracker.savings_plan.generated",
+        "goaltracker.transfer.executed",
+        "goaltracker.progress.updated",
+        "goaltracker.milestone.celebration",
+        "goaltracker.motivation.nudge"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "goal-creation",
+        "savings-calculation",
+        "progress-tracking",
+        "transfer-automation",
+        "investment-recommendation",
+        "motivation-insights",
+        "goal-sharing"
+      ],
+      "doesNow": "Capabilities: goal-creation, savings-calculation, progress-tracking, transfer-automation",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "healthcaredocai",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 3,
+      "frontendTests": 3,
+      "controllers": 1,
+      "services": 3,
+      "domain": 5,
+      "risks": [
+        "no-integration-manifest",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add integration-manifest.json with emits/consumes/capabilities/health endpoint.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "hiresignal",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 1,
+      "emits": [
+        "candidate.hired"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "incidentbrain",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ]
+    },
+    {
+      "app": "insightengine",
+      "score": 86,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 3,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "insight.discovered"
+      ],
+      "consumes": [
+        "metric.recorded"
+      ],
+      "capabilities": [
+        "AI Insight Generation",
+        "Anomaly Detection"
+      ],
+      "doesNow": "Capabilities: AI Insight Generation, Anomaly Detection",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ]
+    },
+    {
+      "app": "insuranceai",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 2,
+      "controllers": 3,
+      "services": 4,
+      "domain": 2,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "claim.created",
+        "claim.status_updated",
+        "policy.created"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "claims_processing",
+        "policy_management",
+        "fraud_detection",
+        "risk_scoring"
+      ],
+      "doesNow": "Capabilities: claims_processing, policy_management, fraud_detection, risk_scoring",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "integrationbridge",
+      "score": 90,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 5,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 5,
+      "domain": 6,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "sync_job_completed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "integration_management",
+        "sync_jobs",
+        "oauth_flow"
+      ],
+      "doesNow": "Integration platform for connecting third-party services. Capabilities: integration_management, sync_jobs, oauth_flow",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "interviewos",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 1,
+      "outgoingLinks": 0,
+      "emits": [
+        "interview.completed"
+      ],
+      "consumes": [
+        "candidate.hired"
+      ],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "investtracker",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 1,
+      "services": 2,
+      "domain": 8,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "invoiceprocessor",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "invoice.received",
+        "invoice.extracted",
+        "invoice.matched",
+        "invoice.approved",
+        "po.created"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "Invoice Extraction",
+        "PO Matching"
+      ],
+      "doesNow": "Capabilities: Invoice Extraction, PO Matching",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "jobcraftai",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "knowledgevault",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "legalresearch",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 6,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "memo.completed"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "research-query"
+      ],
+      "doesNow": "Capabilities: research-query",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "licenseguard",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "license.violation-detected",
+        "sbom.generated"
+      ],
+      "consumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "capabilities": [
+        "scan-repo"
+      ],
+      "doesNow": "Capabilities: scan-repo",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "localizationos",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 8,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "marketplacehub",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 2,
+      "domain": 6,
+      "risks": [
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "app.registered",
+        "app.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "app.installed",
+        "app.review.submitted",
+        "app.review.approved"
+      ],
+      "consumes": [
+        "app.registered",
+        "app.updated"
+      ],
+      "capabilities": [
+        "app_catalog_search",
+        "app_installation",
+        "app_reviews"
+      ],
+      "doesNow": "Capabilities: app_catalog_search, app_installation, app_reviews",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ]
+    },
+    {
+      "app": "marketsignal",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 5,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 4,
+      "domain": 7,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "marketsignal.pattern.detected",
+        "marketsignal.brief.generated"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "meetingbrain",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 7,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "ProjectCreatedEvent"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "MeetingAnalyzedEvent",
+        "ActionItemCreatedEvent"
+      ],
+      "consumes": [
+        "ProjectCreatedEvent"
+      ],
+      "capabilities": [
+        "meeting-transcription",
+        "decision-tracking",
+        "action-item-extraction",
+        "institutional-memory",
+        "semantic-search",
+        "meeting-analytics"
+      ],
+      "doesNow": "Capabilities: meeting-transcription, decision-tracking, action-item-extraction, institutional-memory",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "ndaflow",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 2,
+      "domain": 7,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "nda.executed",
+        "nda.expiring-soon"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "generate-nda"
+      ],
+      "doesNow": "Capabilities: generate-nda",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "nexus-hub",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 5,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-integration-manifest",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add integration-manifest.json with emits/consumes/capabilities/health endpoint.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "nonprofitos",
+      "score": 81,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 3,
+      "services": 3,
+      "domain": 3,
+      "risks": [],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "donor.created",
+        "grant.drafted",
+        "impact.recorded"
+      ],
+      "consumes": [
+        "user.created",
+        "tenant.created"
+      ],
+      "capabilities": [
+        "grant_drafting",
+        "donor_intelligence",
+        "impact_reporting"
+      ],
+      "doesNow": "AI nonprofit operations platform. Grant writing co-pilot, donor intelligence, and impact measurement. Capabilities: grant_drafting, donor_intelligence, impact_reporting",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "notificationhub",
+      "score": 96,
+      "tier": "Production Candidate",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 3,
+      "controllers": 5,
+      "services": 7,
+      "domain": 8,
+      "risks": [],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "notification.delivered",
+        "notification.failed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "multi-channel-messaging",
+        "notification-scheduling",
+        "delivery-tracking"
+      ],
+      "doesNow": "Capabilities: multi-channel-messaging, notification-scheduling, delivery-tracking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "observabilitystack",
+      "score": 75,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 7,
+      "services": 0,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [
+        "platform.service.deployed",
+        "platform.system.error"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "observability.alert.triggered",
+        "observability.incident.created",
+        "observability.incident.escalated",
+        "observability.incident.resolved",
+        "observability.health.failed"
+      ],
+      "consumes": [
+        "platform.service.deployed",
+        "platform.system.error"
+      ],
+      "capabilities": [
+        "monitoring",
+        "logging",
+        "tracing",
+        "incident-management"
+      ],
+      "doesNow": "Capabilities: monitoring, logging, tracing, incident-management",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "onboardflow",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "peopleanalytics",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 5,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "performancenarrative",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "policyforge",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "audit.finding-created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 1,
+      "emits": [
+        "policy.published",
+        "policy.acknowledged"
+      ],
+      "consumes": [
+        "audit.finding-created"
+      ],
+      "capabilities": [
+        "create-policy"
+      ],
+      "doesNow": "Capabilities: create-policy",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "pricingintelligence",
+      "score": 68,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [
+        "crm.deal.closed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "pricingintelligence.experiment.completed"
+      ],
+      "consumes": [
+        "crm.deal.closed"
+      ],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "processminer",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 4,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "EVENT_LOG_CREATED"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "PROCESS_ANALYZED"
+      ],
+      "consumes": [
+        "EVENT_LOG_CREATED"
+      ],
+      "capabilities": [
+        "Process Discovery",
+        "Bottleneck Analysis",
+        "Compliance Checking",
+        "Automation Opportunity Scoring"
+      ],
+      "doesNow": "Capabilities: Process Discovery, Bottleneck Analysis, Compliance Checking, Automation Opportunity Scoring",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "procurebot",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "prospectiq",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 4,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "PROSPECT_CREATED",
+        "SIGNAL_DETECTED"
+      ],
+      "consumes": [
+        "CRM_ACTIVITY"
+      ],
+      "capabilities": [
+        "AI prospect briefing",
+        "Signal aggregation"
+      ],
+      "doesNow": "Capabilities: AI prospect briefing, Signal aggregation",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable."
+      ]
+    },
+    {
+      "app": "queryoptimizer",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 2,
+      "services": 5,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "regulatoryfiling",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 6,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "regulation.changed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "filing.submitted",
+        "filing.overdue"
+      ],
+      "consumes": [
+        "regulation.changed"
+      ],
+      "capabilities": [
+        "track-filing"
+      ],
+      "doesNow": "Capabilities: track-filing",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "restaurantintel",
+      "score": 91,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 4,
+      "frontendTests": 2,
+      "controllers": 4,
+      "services": 5,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "inventory.stock.updated",
+        "pos.order.completed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "restaurantintel.order.approved",
+        "restaurantintel.schedule.generated",
+        "restaurantintel.review.analyzed"
+      ],
+      "consumes": [
+        "pos.order.completed",
+        "inventory.stock.updated"
+      ],
+      "capabilities": [
+        "menu_intelligence",
+        "predictive_ordering",
+        "staff_scheduling",
+        "review_sentiment_analysis"
+      ],
+      "doesNow": "Capabilities: menu_intelligence, predictive_ordering, staff_scheduling, review_sentiment_analysis",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "retailintelligence",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 1,
+      "services": 2,
+      "domain": 3,
+      "risks": [],
+      "unmatchedConsumes": [
+        "sales.order.placed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "sku.created",
+        "forecast.generated",
+        "sku.price_updated"
+      ],
+      "consumes": [
+        "sales.order.placed"
+      ],
+      "capabilities": [
+        "Demand Forecasting",
+        "Pricing Optimization",
+        "Inventory Tracking"
+      ],
+      "doesNow": "AI retail operations platform providing demand forecasting and pricing recommendations. Capabilities: Demand Forecasting, Pricing Optimization, Inventory Tracking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "retentionsignal",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 8,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "retirementplus",
+      "score": 98,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 3,
+      "backendTests": 4,
+      "frontendTests": 3,
+      "controllers": 2,
+      "services": 2,
+      "domain": 3,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "retirementplus.profile_created",
+        "retirementplus.projection_generated"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "retirement_planning"
+      ],
+      "doesNow": "Capabilities: retirement_planning",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ]
+    },
+    {
+      "app": "runwaymodeler",
+      "score": 58,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "securitypulse",
+      "score": 40,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "pr.merged",
+        "pr.opened"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "security-scan-completed",
+        "vulnerability-found",
+        "policy-violation"
+      ],
+      "consumes": [
+        "pr.opened",
+        "pr.merged"
+      ],
+      "capabilities": [
+        "scan-pr",
+        "enforce-policy",
+        "triage-findings"
+      ],
+      "doesNow": "Capabilities: scan-pr, enforce-policy, triage-findings",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability."
+      ]
+    },
+    {
+      "app": "seointelligence",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "socialintelligence",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 0,
+      "frontendTests": 1,
+      "controllers": 5,
+      "services": 4,
+      "domain": 5,
+      "risks": [
+        "no-backend-tests"
+      ],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "metrics.synced",
+        "recommendations.generated"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "social-media-analytics",
+        "growth-intelligence",
+        "audience-insights",
+        "competitor-benchmarking"
+      ],
+      "doesNow": "Capabilities: social-media-analytics, growth-intelligence, audience-insights, competitor-benchmarking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend service + controller tests for critical flows."
+      ]
+    },
+    {
+      "app": "supportintelligence",
+      "score": 40,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 2,
+      "risks": [
+        "no-frontend",
+        "no-backend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "feature.released",
+        "product.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "ticket.created",
+        "ticket.escalated",
+        "ticket.resolved"
+      ],
+      "consumes": [
+        "product.updated",
+        "feature.released"
+      ],
+      "capabilities": [
+        "suggest-response",
+        "detect-escalation",
+        "mine-ticket-patterns"
+      ],
+      "doesNow": "Capabilities: suggest-response, detect-escalation, mine-ticket-patterns",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend service + controller tests for critical flows.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "taskqueue",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 3,
+      "services": 6,
+      "domain": 5,
+      "risks": [
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "taskqueue.job.completed",
+        "taskqueue.job.failed"
+      ],
+      "consumes": [
+        "taskqueue.job.enqueue"
+      ],
+      "capabilities": [
+        "distributed_job_processing",
+        "scheduled_task_execution"
+      ],
+      "doesNow": "Capabilities: distributed_job_processing, scheduled_task_execution",
+      "shouldDo": [
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "taxdataorganizer",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 8,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "taxoptimizer",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 4,
+      "services": 6,
+      "domain": 16,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user_onboarded"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "tax_liability_calculated",
+        "tax_package_generated"
+      ],
+      "consumes": [
+        "user_onboarded"
+      ],
+      "capabilities": [
+        "Tax liability estimation",
+        "Tax loss harvesting identification",
+        "Entity structure modeling",
+        "Accountant collaboration"
+      ],
+      "doesNow": "AI-driven tax planning and optimization platform Capabilities: Tax liability estimation, Tax loss harvesting identification, Entity structure modeling, Accountant collaboration",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "usageintelligence",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [
+        "user.created",
+        "user.deleted"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "usage.anomaly_detected",
+        "usage.cohort_created"
+      ],
+      "consumes": [
+        "user.created",
+        "user.deleted"
+      ],
+      "capabilities": [
+        "event_tracking",
+        "metric_aggregation",
+        "cohort_management",
+        "ai_usage_insights"
+      ],
+      "doesNow": "Capabilities: event_tracking, metric_aggregation, cohort_management, ai_usage_insights",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ]
+    },
+    {
+      "app": "vendoriq",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "videonarrator",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 1,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ]
+    },
+    {
+      "app": "voiceagentbuilder",
+      "score": 80,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 2,
+      "controllers": 5,
+      "services": 5,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "call.completed",
+        "agent.escalated"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ]
+    },
+    {
+      "app": "wealthedge",
+      "score": 81,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 4,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ]
+    },
+    {
+      "app": "wealthplan",
+      "score": 91,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 7,
+      "domain": 8,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "wealthplan.goal.created",
+        "wealthplan.scenario.modeled"
+      ],
+      "consumes": [
+        "core.tenant.created"
+      ],
+      "capabilities": [
+        "financial_planning",
+        "monte_carlo_simulation",
+        "goal_tracking"
+      ],
+      "doesNow": "Capabilities: financial_planning, monte_carlo_simulation, goal_tracking",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ]
+    }
+  ]
+}

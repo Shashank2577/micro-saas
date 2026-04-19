@@ -1,0 +1,71 @@
+{
+  "app_id": "constructioniq",
+  "title": "ConstructionIQ",
+  "domain": "Construction Operations",
+  "intent": "Construction project risk, budget, timeline, and resource intelligence",
+  "maturity": {
+    "score": 45,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "projects module fully implemented with backend, frontend, tests",
+    "site-reports module fully implemented with backend, frontend, tests",
+    "milestones module fully implemented with backend, frontend, tests",
+    "safety module fully implemented with backend, frontend, tests",
+    "change-orders module fully implemented with backend, frontend, tests",
+    "resources module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "ConstructionProject",
+      "SiteReport",
+      "Milestone",
+      "SafetyIncident",
+      "ChangeOrder",
+      "ResourceAllocation"
+    ],
+    "services": [
+      "projectsService",
+      "site-reportsService",
+      "milestonesService",
+      "safetyService",
+      "change-ordersService",
+      "resourcesService"
+    ],
+    "route_prefix": "/api/v1/projects"
+  },
+  "events": {
+    "emits": [
+      "constructioniq.project.risk.updated",
+      "constructioniq.milestone.delayed",
+      "constructioniq.safety.incident.created"
+    ],
+    "consumes": [
+      "budgetpilot.variance.alerted",
+      "notificationhub.channel.registered",
+      "documentvault.document.uploaded"
+    ]
+  }
+}

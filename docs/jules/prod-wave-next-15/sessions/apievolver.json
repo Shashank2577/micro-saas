@@ -1,0 +1,48 @@
+{
+  "app_id": "apievolver",
+  "title": "APIEvolver",
+  "domain": "Developer Platform",
+  "intent": "API contract lifecycle management and backward-compatibility analysis",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile"
+    ]
+  },
+  "modules": [
+    "specs",
+    "versions",
+    "diffs",
+    "compatibility",
+    "deprecations",
+    "sdk"
+  ],
+  "entities": [
+    "ApiSpec",
+    "ApiVersion",
+    "BreakingChange",
+    "CompatibilityReport",
+    "DeprecationNotice",
+    "SdkArtifact"
+  ],
+  "emits": [
+    "apievolver.breaking-change.detected",
+    "apievolver.version.published",
+    "apievolver.sdk.generated"
+  ],
+  "consumes": [
+    "apimanager.version.published",
+    "dependencyradar.scan.completed",
+    "securitypulse.finding.created"
+  ],
+  "route_prefix": "/api/v1/api-evolution",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

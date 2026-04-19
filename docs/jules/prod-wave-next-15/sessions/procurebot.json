@@ -1,0 +1,50 @@
+{
+  "app_id": "procurebot",
+  "title": "ProcureBot",
+  "domain": "Finance & Procurement",
+  "intent": "Procurement workflow automation with approval tiers and vendor intelligence",
+  "maturity": {
+    "score": 55,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "requests",
+    "approvals",
+    "orders",
+    "offers",
+    "controls",
+    "events"
+  ],
+  "entities": [
+    "PurchaseRequest",
+    "ApprovalFlow",
+    "PurchaseOrder",
+    "VendorOffer",
+    "SpendControlRule",
+    "ProcurementEvent"
+  ],
+  "emits": [
+    "procurebot.request.approved",
+    "procurebot.order.issued",
+    "procurebot.policy.blocked"
+  ],
+  "consumes": [
+    "vendoriq.risk.updated",
+    "budgetpilot.variance.alerted",
+    "policyforge.policy.published"
+  ],
+  "route_prefix": "/api/v1/procurement",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

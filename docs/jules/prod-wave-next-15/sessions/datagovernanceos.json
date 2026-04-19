@@ -1,0 +1,49 @@
+{
+  "app_id": "datagovernanceos",
+  "title": "DataGovernanceOS",
+  "domain": "Data Governance",
+  "intent": "Governance policy lifecycle, stewardship workflows, and compliance controls",
+  "maturity": {
+    "score": 63,
+    "tier": "Beta",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "policies",
+    "stewards",
+    "violations",
+    "exceptions",
+    "controls",
+    "audit"
+  ],
+  "entities": [
+    "GovernancePolicy",
+    "StewardAssignment",
+    "PolicyViolation",
+    "ExceptionRequest",
+    "ControlCheck",
+    "AuditTrail"
+  ],
+  "emits": [
+    "datagovernanceos.policy.updated",
+    "datagovernanceos.violation.detected",
+    "datagovernanceos.control.checked"
+  ],
+  "consumes": [
+    "datacatalogai.asset.registered",
+    "dataqualityai.rule.failed",
+    "auditready.gap.opened"
+  ],
+  "route_prefix": "/api/v1/data-governance",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

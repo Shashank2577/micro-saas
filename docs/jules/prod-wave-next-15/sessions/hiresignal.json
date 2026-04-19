@@ -1,0 +1,49 @@
+{
+  "app_id": "hiresignal",
+  "title": "HireSignal",
+  "domain": "HR Talent",
+  "intent": "Candidate fit scoring and hiring pipeline intelligence",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Medium",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "candidates",
+    "signals",
+    "stages",
+    "decisions",
+    "pipeline",
+    "requisitions"
+  ],
+  "entities": [
+    "CandidateProfile",
+    "FitSignal",
+    "InterviewStage",
+    "HiringDecision",
+    "PipelineMetric",
+    "Requisition"
+  ],
+  "emits": [
+    "hiresignal.candidate.shortlisted",
+    "hiresignal.risk.flagged",
+    "hiresignal.hire.confirmed"
+  ],
+  "consumes": [
+    "jobcraftai.posting.published",
+    "interviewos.score.submitted",
+    "peopleanalytics.org.signal.updated"
+  ],
+  "route_prefix": "/api/v1/hiring",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

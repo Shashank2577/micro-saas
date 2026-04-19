@@ -1,0 +1,49 @@
+{
+  "app_id": "runwaymodeler",
+  "title": "RunwayModeler",
+  "domain": "Finance Strategy",
+  "intent": "Cash runway and scenario modeling for strategic planning",
+  "maturity": {
+    "score": 58,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "scenarios",
+    "projections",
+    "headcount",
+    "levers",
+    "assumptions",
+    "sensitivity"
+  ],
+  "entities": [
+    "RunwayScenario",
+    "CashProjection",
+    "HeadcountPlan",
+    "SpendLeverage",
+    "FundingAssumption",
+    "SensitivityModel"
+  ],
+  "emits": [
+    "runwaymodeler.scenario.created",
+    "runwaymodeler.runway.alerted",
+    "runwaymodeler.plan.recommended"
+  ],
+  "consumes": [
+    "cashflowai.position.updated",
+    "budgetpilot.reforecast.completed",
+    "equityintelligence.round.updated"
+  ],
+  "route_prefix": "/api/v1/runway",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

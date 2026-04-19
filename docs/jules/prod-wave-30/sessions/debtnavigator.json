@@ -1,0 +1,70 @@
+{
+  "app_id": "debtnavigator",
+  "title": "DebtNavigator",
+  "domain": "Personal Finance",
+  "intent": "Debt optimization plans with payoff simulation and consolidation analysis",
+  "maturity": {
+    "score": 55,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "accounts module fully implemented with backend, frontend, tests",
+    "plans module fully implemented with backend, frontend, tests",
+    "optimization module fully implemented with backend, frontend, tests",
+    "consolidation module fully implemented with backend, frontend, tests",
+    "projections module fully implemented with backend, frontend, tests",
+    "milestones module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "DebtAccount",
+      "PaymentPlan",
+      "OptimizationRun",
+      "ConsolidationOffer",
+      "RiskProjection",
+      "MilestoneTrack"
+    ],
+    "services": [
+      "accountsService",
+      "plansService",
+      "optimizationService",
+      "consolidationService",
+      "projectionsService",
+      "milestonesService"
+    ],
+    "route_prefix": "/api/v1/debt"
+  },
+  "events": {
+    "emits": [
+      "debtnavigator.plan.generated",
+      "debtnavigator.plan.approved",
+      "debtnavigator.milestone.completed"
+    ],
+    "consumes": [
+      "cashflowai.shortfall.detected",
+      "goaltracker.goal.updated",
+      "wealthedge.portfolio.rebalanced"
+    ]
+  }
+}

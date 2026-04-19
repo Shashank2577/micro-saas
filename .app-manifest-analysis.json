@@ -1,0 +1,1751 @@
+{
+  "summary": {
+    "total": 99,
+    "exists": 97,
+    "missing": [
+      "healthcaredocai",
+      "nexus-hub"
+    ],
+    "parseErrors": [],
+    "emitsGt0": 60,
+    "consumesGt0": 50,
+    "capabilitiesGt0": 54,
+    "healthEndpointPresent": 71,
+    "schemaShapes": [
+      "capabilities,consumes,description,emits,name,port",
+      "app,baseUrl,capabilities,consumes,displayName,emits,healthEndpoint,version",
+      "appName,capabilities,consumes,description,displayName,emits,port",
+      "appId,capabilities,consumes,description,displayName,emits,port,version",
+      "appId,capabilities,consumes,emits,name,version",
+      "baseUrl,displayName,id,manifest,name,status",
+      "capabilities,consumes,description,displayName,emits,name",
+      "appName,capabilities,consumes,description,displayName,emits,port,version",
+      "appId,capabilities,consumes,description,displayName,emits,version",
+      "app,capabilities,consumes,description,emits,name",
+      "appId,capabilities,consumes,dependencies,description,emits,name,port,version",
+      "appId,capabilities,consumes,description,emits,name,version",
+      "api,app-id,capabilities,consumes,emits,version",
+      "app,capabilities,consumes,emits",
+      "app,capabilities,consumes,description,displayName,emits,version",
+      "appId,baseUrl,capabilities,consumes,description,displayName,emits,version",
+      "app,capabilities,consumes,description,display_name,emits",
+      "appId,capabilities,consumes,dependencies,displayName,emits,port",
+      "appId,baseUrl,capabilities,consumes,displayName,emits",
+      "app,capabilities,consumes,displayName,emits,healthEndpoint,version"
+    ]
+  },
+  "out": [
+    {
+      "app": "compensationos",
+      "exists": true,
+      "topKeys": [
+        "capabilities",
+        "consumes",
+        "description",
+        "emits",
+        "name",
+        "port"
+      ],
+      "emits": 2,
+      "consumes": 3,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "retirementplus",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 0,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "notificationhub",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "apimanager",
+      "exists": true,
+      "topKeys": [
+        "appName",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "port"
+      ],
+      "emits": 4,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "churnpredictor",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "port",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "engagementpulse",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "emits",
+        "name",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "processminer",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 1,
+      "capabilities": 4,
+      "health": true
+    },
+    {
+      "app": "restaurantintel",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 4,
+      "health": true
+    },
+    {
+      "app": "wealthplan",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "integrationbridge",
+      "exists": true,
+      "topKeys": [
+        "baseUrl",
+        "displayName",
+        "id",
+        "manifest",
+        "name",
+        "status"
+      ],
+      "emits": 1,
+      "consumes": 1,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "agentops",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 5,
+      "consumes": 2,
+      "capabilities": 4,
+      "health": true
+    },
+    {
+      "app": "billingsync",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "datagovernance",
+      "exists": true,
+      "topKeys": [
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "name"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 5,
+      "health": false
+    },
+    {
+      "app": "datalineagetracker",
+      "exists": true,
+      "topKeys": [
+        "appName",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "port",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 4,
+      "health": false
+    },
+    {
+      "app": "marketplacehub",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "taskqueue",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": true
+    },
+    {
+      "app": "callintelligence",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": false
+    },
+    {
+      "app": "customerdiscoveryai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "description",
+        "emits",
+        "name"
+      ],
+      "emits": 3,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": false
+    },
+    {
+      "app": "insightengine",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": true
+    },
+    {
+      "app": "documentvault",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "dependencies",
+        "description",
+        "emits",
+        "name",
+        "port",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 3,
+      "capabilities": 4,
+      "health": false
+    },
+    {
+      "app": "educationos",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": false
+    },
+    {
+      "app": "retailintelligence",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "description",
+        "emits",
+        "name",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 1,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "socialintelligence",
+      "exists": true,
+      "topKeys": [
+        "api",
+        "app-id",
+        "capabilities",
+        "consumes",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 4,
+      "health": false
+    },
+    {
+      "app": "usageintelligence",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "emits"
+      ],
+      "emits": 2,
+      "consumes": 2,
+      "capabilities": 4,
+      "health": false
+    },
+    {
+      "app": "datastoryteller",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 4,
+      "consumes": 3,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "nonprofitos",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "wealthedge",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "competitorradar",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "voiceagentbuilder",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "backupvault",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 6,
+      "consumes": 0,
+      "capabilities": 4,
+      "health": true
+    },
+    {
+      "app": "documentintelligence",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 6,
+      "health": false
+    },
+    {
+      "app": "ecosystemmap",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "description",
+        "display_name",
+        "emits"
+      ],
+      "emits": 0,
+      "consumes": 3,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "experimentengine",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 5,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "healthcaredocai",
+      "exists": false
+    },
+    {
+      "app": "insuranceai",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "dependencies",
+        "displayName",
+        "emits",
+        "port"
+      ],
+      "emits": 3,
+      "consumes": 1,
+      "capabilities": 4,
+      "health": false
+    },
+    {
+      "app": "prospectiq",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": false
+    },
+    {
+      "app": "queryoptimizer",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "apigatekeeper",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "observabilitystack",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 5,
+      "consumes": 2,
+      "capabilities": 4,
+      "health": true
+    },
+    {
+      "app": "agencyos",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "contractsense",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "incidentbrain",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "investtracker",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "meetingbrain",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 6,
+      "health": true
+    },
+    {
+      "app": "dataprivacyai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "marketsignal",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "ndaflow",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 0,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "taxdataorganizer",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "taxoptimizer",
+      "exists": true,
+      "topKeys": [
+        "appId",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 4,
+      "health": false
+    },
+    {
+      "app": "pricingintelligence",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 1,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "brandvoice",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "dataroomai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 0,
+      "capabilities": 2,
+      "health": true
+    },
+    {
+      "app": "expenseintelligence",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "knowledgevault",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "datagovernanceos",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "description",
+        "displayName",
+        "emits"
+      ],
+      "emits": 3,
+      "consumes": 1,
+      "capabilities": 2,
+      "health": false
+    },
+    {
+      "app": "analyticsbuilder",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "apievolver",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "billingai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "creatoranalytics",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "datacatalogai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "hiresignal",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "interviewos",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 1,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "onboardflow",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "peopleanalytics",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "retentionsignal",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "runwaymodeler",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "cashflowai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 1,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "compbenchmark",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "contractportfolio",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "debtnavigator",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "equityintelligence",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "goaltracker",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 6,
+      "consumes": 0,
+      "capabilities": 7,
+      "health": true
+    },
+    {
+      "app": "localizationos",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "procurebot",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "vendoriq",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "cashflowanalyzer",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "complianceradar",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 1,
+      "health": false
+    },
+    {
+      "app": "copyoptimizer",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "dataqualityai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 4,
+      "consumes": 3,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "financenarrator",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "legalresearch",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 1,
+      "consumes": 0,
+      "capabilities": 1,
+      "health": false
+    },
+    {
+      "app": "performancenarrative",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "regulatoryfiling",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "deploysignal",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "auditready",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 2,
+      "capabilities": 1,
+      "health": false
+    },
+    {
+      "app": "constructioniq",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "contentos",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "dependencyradar",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "licenseguard",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 2,
+      "capabilities": 1,
+      "health": false
+    },
+    {
+      "app": "nexus-hub",
+      "exists": false
+    },
+    {
+      "app": "policyforge",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 2,
+      "consumes": 1,
+      "capabilities": 1,
+      "health": true
+    },
+    {
+      "app": "securitypulse",
+      "exists": true,
+      "topKeys": [
+        "capabilities",
+        "consumes",
+        "emits"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": false
+    },
+    {
+      "app": "supportintelligence",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 3,
+      "consumes": 2,
+      "capabilities": 3,
+      "health": true
+    },
+    {
+      "app": "budgetpilot",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "ghostwriter",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "invoiceprocessor",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 5,
+      "consumes": 0,
+      "capabilities": 2,
+      "health": true
+    },
+    {
+      "app": "jobcraftai",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "seointelligence",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    },
+    {
+      "app": "videonarrator",
+      "exists": true,
+      "topKeys": [
+        "app",
+        "baseUrl",
+        "capabilities",
+        "consumes",
+        "displayName",
+        "emits",
+        "healthEndpoint",
+        "version"
+      ],
+      "emits": 0,
+      "consumes": 0,
+      "capabilities": 0,
+      "health": true
+    }
+  ]
+}

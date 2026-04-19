@@ -1,0 +1,49 @@
+{
+  "app_id": "onboardflow",
+  "title": "OnboardFlow",
+  "domain": "HR Operations",
+  "intent": "Automated 30/60/90 onboarding workflows and completion insights",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "plans",
+    "checklists",
+    "tasks",
+    "completion",
+    "escalations",
+    "experience"
+  ],
+  "entities": [
+    "OnboardingPlan",
+    "MilestoneChecklist",
+    "TaskAssignment",
+    "CompletionSignal",
+    "Escalation",
+    "ExperienceScore"
+  ],
+  "emits": [
+    "onboardflow.plan.started",
+    "onboardflow.milestone.completed",
+    "onboardflow.escalation.opened"
+  ],
+  "consumes": [
+    "hiresignal.hire.confirmed",
+    "peopleanalytics.org.signal.updated",
+    "notificationhub.channel.registered"
+  ],
+  "route_prefix": "/api/v1/onboarding",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}

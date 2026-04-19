@@ -1,0 +1,4845 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Micro-SaaS Ecosystem Audit</title>
+  <style>
+    :root {
+      --bg: #f5f7f6;
+      --card: #ffffff;
+      --ink: #1a2730;
+      --muted: #5b6b75;
+      --line: #d9e2e1;
+      --accent: #0b7285;
+      --accent-soft: #d6eef2;
+      --good: #1e8e5a;
+      --warn: #b7791f;
+      --bad: #c53030;
+      --pc: #1e8e5a;
+      --beta: #0b7285;
+      --alpha: #b7791f;
+      --inc: #c53030;
+      --shadow: 0 8px 24px rgba(31, 43, 50, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top right, #d9ece7, transparent 40%), var(--bg);
+      line-height: 1.45;
+    }
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 28px 18px 40px;
+    }
+    h1, h2, h3 { margin: 0; letter-spacing: -0.01em; }
+    h1 { font-size: 1.85rem; margin-bottom: 4px; }
+    h2 { font-size: 1.2rem; margin-bottom: 12px; }
+    h3 { font-size: 0.98rem; margin-bottom: 8px; }
+    p { margin: 0; color: var(--muted); }
+    .hero {
+      background: linear-gradient(115deg, #083344, #0b7285 65%, #17a2b8);
+      color: #eefcff;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+    .hero p { color: #d6f4f9; margin-top: 6px; }
+    .hero-meta {
+      margin-top: 10px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+    }
+    .pill {
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 999px;
+      padding: 3px 10px;
+      background: rgba(255, 255, 255, 0.12);
+    }
+    .grid {
+      display: grid;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .metrics { grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      box-shadow: var(--shadow);
+    }
+    .metric-label { color: var(--muted); font-size: 0.86rem; }
+    .metric-value { font-size: 1.5rem; font-weight: 700; margin-top: 2px; }
+    .metric-sub { color: var(--muted); font-size: 0.78rem; margin-top: 3px; }
+    .layout {
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .findings li { margin-bottom: 9px; font-size: 0.94rem; }
+    .findings b { color: var(--ink); }
+    .sev {
+      display: inline-block;
+      padding: 1px 8px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      margin-right: 6px;
+      border: 1px solid transparent;
+      font-weight: 700;
+    }
+    .p0 { color: #991b1b; background: #fee2e2; border-color: #fecaca; }
+    .p1 { color: #92400e; background: #fef3c7; border-color: #fde68a; }
+    .p2 { color: #065f46; background: #d1fae5; border-color: #a7f3d0; }
+    .bars .row {
+      display: grid;
+      grid-template-columns: 140px 1fr 42px;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.86rem;
+    }
+    .bar {
+      height: 11px;
+      background: #edf2f2;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid #e2e8e8;
+    }
+    .fill { height: 100%; }
+    .controls {
+      display: grid;
+      grid-template-columns: 1.3fr repeat(3, minmax(120px, 180px));
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .control {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 0.9rem;
+      color: var(--ink);
+      background: #fff;
+    }
+    .legend {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .legend span {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 999px;
+      padding: 2px 8px;
+    }
+    .apps {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 10px;
+    }
+    details {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    summary {
+      cursor: pointer;
+      list-style: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    .app-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      align-items: flex-start;
+    }
+    .app-name { font-weight: 700; font-size: 0.98rem; }
+    .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 4px; }
+    .chip {
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 0.72rem;
+      border: 1px solid var(--line);
+      background: #f8fbfb;
+      color: #36515e;
+      white-space: nowrap;
+    }
+    .score {
+      font-weight: 700;
+      font-size: 1rem;
+      min-width: 54px;
+      text-align: right;
+    }
+    .tier-pc { color: var(--pc); border-color: #b7e3cc; background: #effaf4; }
+    .tier-beta { color: var(--beta); border-color: #b8e3ec; background: #eef9fb; }
+    .tier-alpha { color: var(--alpha); border-color: #ecd8b2; background: #fdf7ea; }
+    .tier-incubating { color: var(--inc); border-color: #f3c0c0; background: #fff1f1; }
+    .body {
+      margin-top: 10px;
+      display: grid;
+      gap: 9px;
+      font-size: 0.88rem;
+    }
+    .kvs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 6px;
+    }
+    .kv {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px 7px;
+      background: #fbfdfd;
+    }
+    .kv .k { color: var(--muted); font-size: 0.74rem; }
+    .kv .v { font-weight: 700; margin-top: 2px; }
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fcfefe;
+      padding: 8px;
+    }
+    .section h4 {
+      margin: 0 0 5px;
+      font-size: 0.82rem;
+      color: #274757;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    ul { margin: 0; padding-left: 16px; }
+    .small { font-size: 0.8rem; color: var(--muted); }
+    .muted { color: var(--muted); }
+    .footer-note {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+      padding-top: 10px;
+    }
+    @media (max-width: 1080px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 860px) {
+      .controls { grid-template-columns: 1fr; }
+      .apps { grid-template-columns: 1fr; }
+      .kvs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="hero">
+      <h1>Micro-SaaS Ecosystem Maturity & Production Readiness Audit</h1>
+      <p>
+        Full-stack structural audit for all apps in this repository, including maturity scoring,
+        production blockers, interoperability findings, and per-app current-vs-target behavior.
+      </p>
+      <div id="heroMeta" class="hero-meta"></div>
+    </section>
+
+    <section id="metrics" class="grid metrics"></section>
+
+    <section class="layout">
+      <article class="card">
+        <h2>Critical Findings</h2>
+        <ol class="findings" id="criticalFindings"></ol>
+      </article>
+      <article class="card">
+        <h2>Risk Concentration (Portfolio Level)</h2>
+        <div class="bars" id="riskBars"></div>
+      </article>
+    </section>
+
+    <section class="card" style="margin-bottom: 12px;">
+      <h2>Tier Distribution</h2>
+      <div class="bars" id="tierBars"></div>
+      <p class="small" style="margin-top: 6px;">
+        Tier logic: Production Candidate (80+), Beta (60-79), Alpha (40-59), Incubating (&lt;40).
+      </p>
+    </section>
+
+    <section class="card" style="margin-bottom: 12px;">
+      <h2>App Explorer: What Each App Does vs What It Should Do</h2>
+      <p class="small" style="margin-bottom: 10px;">
+        Use filters to inspect by maturity, depth, risk profile, and integration health.
+      </p>
+      <div class="controls">
+        <input id="search" class="control" placeholder="Search app, capability, risk, event..." />
+        <select id="tierFilter" class="control">
+          <option value="">All tiers</option>
+          <option>Production Candidate</option>
+          <option>Beta</option>
+          <option>Alpha</option>
+          <option>Incubating</option>
+        </select>
+        <select id="depthFilter" class="control">
+          <option value="">All depths</option>
+          <option>Deep</option>
+          <option>Medium</option>
+          <option>Shallow</option>
+        </select>
+        <select id="riskFilter" class="control">
+          <option value="">All risk tags</option>
+        </select>
+      </div>
+      <div id="legend" class="legend"></div>
+      <div id="appsContainer" class="apps"></div>
+      <p id="resultInfo" class="small" style="margin-top: 8px;"></p>
+    </section>
+
+    <p class="footer-note">
+      Data source: <code>.app-report-data.json</code> (generated from repository files and manifests).
+      This is a static audit snapshot and does not represent runtime SLA validation.
+    </p>
+  </div>
+
+  <script id="embeddedAuditData" type="application/json">{
+  "generatedAt": "2026-04-18T07:13:24.400Z",
+  "summary": {
+    "totalApps": 99,
+    "tiers": {
+      "productionCandidate": 29,
+      "beta": 36,
+      "alpha": 28,
+      "incubating": 6
+    },
+    "avgScore": 66.95,
+    "withBackend": 99,
+    "withFrontend": 86,
+    "withManifest": 97,
+    "withReadme": 35,
+    "withAnyTests": 75,
+    "withoutAnyTests": 24,
+    "totalBackendTests": 141,
+    "totalFrontendTests": 54
+  },
+  "integrationSummary": {
+    "apps": 99,
+    "appsWithEmits": 50,
+    "appsWithConsumes": 41,
+    "totalEmitDecls": 131,
+    "totalConsumeDecls": 68,
+    "matchedConsumeDecls": 5,
+    "consumeMatchRate": 7.35,
+    "matchedEmitDecls": 4,
+    "emitMatchRate": 3.05,
+    "integrationEdges": 5,
+    "appsWithOutgoingLinks": 4,
+    "appsWithIncomingLinks": 4,
+    "unmatchedConsumeCount": 63
+  },
+  "manifestSummary": {
+    "total": 99,
+    "exists": 97,
+    "missing": [
+      "healthcaredocai",
+      "nexus-hub"
+    ],
+    "parseErrors": [],
+    "emitsGt0": 60,
+    "consumesGt0": 50,
+    "capabilitiesGt0": 54,
+    "healthEndpointPresent": 71,
+    "schemaShapes": [
+      "capabilities,consumes,description,emits,name,port",
+      "app,baseUrl,capabilities,consumes,displayName,emits,healthEndpoint,version",
+      "appName,capabilities,consumes,description,displayName,emits,port",
+      "appId,capabilities,consumes,description,displayName,emits,port,version",
+      "appId,capabilities,consumes,emits,name,version",
+      "baseUrl,displayName,id,manifest,name,status",
+      "capabilities,consumes,description,displayName,emits,name",
+      "appName,capabilities,consumes,description,displayName,emits,port,version",
+      "appId,capabilities,consumes,description,displayName,emits,version",
+      "app,capabilities,consumes,description,emits,name",
+      "appId,capabilities,consumes,dependencies,description,emits,name,port,version",
+      "appId,capabilities,consumes,description,emits,name,version",
+      "api,app-id,capabilities,consumes,emits,version",
+      "app,capabilities,consumes,emits",
+      "app,capabilities,consumes,description,displayName,emits,version",
+      "appId,baseUrl,capabilities,consumes,description,displayName,emits,version",
+      "app,capabilities,consumes,description,display_name,emits",
+      "appId,capabilities,consumes,dependencies,displayName,emits,port",
+      "appId,baseUrl,capabilities,consumes,displayName,emits",
+      "app,capabilities,consumes,displayName,emits,healthEndpoint,version"
+    ]
+  },
+  "riskSummary": {
+    "no-frontend": 13,
+    "no-db-migrations": 8,
+    "no-backend-tests": 25,
+    "no-frontend-tests": 52,
+    "no-backend-dockerfile": 68,
+    "no-readme": 64,
+    "no-integration-manifest": 2
+  },
+  "apps": [
+    {
+      "app": "agencyos",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 6,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Agency platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "agentops",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 3,
+      "services": 4,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "cc.tenant.created",
+        "cc.tenant.deleted"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "agentops.run.started",
+        "agentops.run.completed",
+        "agentops.run.failed",
+        "agentops.escalation.created",
+        "agentops.escalation.resolved"
+      ],
+      "consumes": [
+        "cc.tenant.created",
+        "cc.tenant.deleted"
+      ],
+      "capabilities": [
+        "ai_agent_observability",
+        "agent_telemetry",
+        "agent_governance",
+        "cost_tracking"
+      ],
+      "doesNow": "Capabilities: ai_agent_observability, agent_telemetry, agent_governance, cost_tracking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "Observability and governance portal for the AI agent ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Agentops platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "analyticsbuilder",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 5,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Analyticsbuilder platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "apievolver",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "api-spec-scanned",
+        "service.registered"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "api-spec-uploaded",
+        "breaking-change-detected",
+        "api-deprecated"
+      ],
+      "consumes": [
+        "service.registered",
+        "api-spec-scanned"
+      ],
+      "capabilities": [
+        "diff-specs",
+        "detect-breaking",
+        "notify-consumers"
+      ],
+      "doesNow": "Capabilities: diff-specs, detect-breaking, notify-consumers",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ],
+      "cluster": "Cluster A: Dev Intelligence",
+      "vision": "Seamless API evolution management and lifecycle portal.",
+      "endState": "A fully autonomous, multi-tenant Apievolver platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "apigatekeeper",
+      "score": 75,
+      "tier": "Beta",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 1,
+      "controllers": 8,
+      "services": 5,
+      "domain": 8,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Apigatekeeper platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "apimanager",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 2,
+      "controllers": 8,
+      "services": 8,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "tenant.deleted"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "api.version.published",
+        "api.version.deprecated",
+        "api.key.generated",
+        "api.key.revoked"
+      ],
+      "consumes": [
+        "tenant.created",
+        "tenant.deleted"
+      ],
+      "capabilities": [
+        "API_DOCUMENTATION",
+        "API_VERSIONING",
+        "API_KEY_MANAGEMENT"
+      ],
+      "doesNow": "API documentation and lifecycle management service. Provides OpenAPI/Swagger documentation, API versioning, deprecation, and developer portal. Capabilities: API_DOCUMENTATION, API_VERSIONING, API_KEY_MANAGEMENT",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "Professional gateway for managing the entire API lifecycle.",
+      "endState": "A fully autonomous, multi-tenant Apimanager platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "auditready",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 2,
+      "outgoingLinks": 0,
+      "emits": [
+        "audit.score-calculated",
+        "evidence.collected"
+      ],
+      "consumes": [
+        "policy.published",
+        "compliance.gap-detected"
+      ],
+      "capabilities": [
+        "calculate-readiness"
+      ],
+      "doesNow": "Capabilities: calculate-readiness",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Continuous compliance automation for 24/7 audit readiness.",
+      "endState": "A fully autonomous, multi-tenant Auditready platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "backupvault",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 3,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "backup.execution.started",
+        "backup.execution.completed",
+        "backup.execution.failed",
+        "backup.restore.started",
+        "backup.restore.completed",
+        "dr.drill.completed"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "backup_management",
+        "point_in_time_recovery",
+        "disaster_recovery",
+        "cross_region_replication"
+      ],
+      "doesNow": "Capabilities: backup_management, point_in_time_recovery, disaster_recovery, cross_region_replication",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Backupvault platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "billingai",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Billing platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "billingsync",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 2,
+      "controllers": 4,
+      "services": 6,
+      "domain": 8,
+      "risks": [
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "usage.metered"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "invoice.generated",
+        "payment.succeeded",
+        "payment.failed"
+      ],
+      "consumes": [
+        "tenant.created",
+        "usage.metered"
+      ],
+      "capabilities": [
+        "Manage Subscriptions",
+        "Calculate Usage Bills",
+        "Process Invoices and Payments"
+      ],
+      "doesNow": "Capabilities: Manage Subscriptions, Calculate Usage Bills, Process Invoices and Payments",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Billingsync platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "brandvoice",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 6,
+      "services": 5,
+      "domain": 4,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "AI guardian of brand consistency across all communication channels.",
+      "endState": "A fully autonomous, multi-tenant Brandvoice platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "budgetpilot",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Natural language budget tracking for department alignment.",
+      "endState": "A fully autonomous, multi-tenant Budgetpilot platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "callintelligence",
+      "score": 86,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 5,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "call.analyzed",
+        "action_item.extracted"
+      ],
+      "consumes": [
+        "crm.sync_requested"
+      ],
+      "capabilities": [
+        "CALL_ANALYSIS",
+        "REP_COACHING"
+      ],
+      "doesNow": "AI sales call intelligence platform Capabilities: CALL_ANALYSIS, REP_COACHING",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Callintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "cashflowai",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "invoice.paid"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "cashflow.shortfall-predicted"
+      ],
+      "consumes": [
+        "invoice.paid"
+      ],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Predictive financial intelligence eliminating cash flow surprises.",
+      "endState": "A fully autonomous, multi-tenant Cashflow platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "cashflowanalyzer",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 5,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Cashflowanalyzer platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "churnpredictor",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 3,
+      "controllers": 3,
+      "services": 5,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "customer.support.ticket_closed",
+        "customer.usage.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "churn.prediction.high_risk",
+        "churn.intervention.triggered"
+      ],
+      "consumes": [
+        "customer.usage.updated",
+        "customer.support.ticket_closed"
+      ],
+      "capabilities": [
+        "churn_prediction",
+        "health_scoring",
+        "intervention_automation"
+      ],
+      "doesNow": "AI churn prevention platform. Capabilities: churn_prediction, health_scoring, intervention_automation",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Churnpredictor platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "compbenchmark",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 4,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "Real-time compensation benchmarking and pay equity analysis.",
+      "endState": "A fully autonomous, multi-tenant Compbenchmark platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "compensationos",
+      "score": 100,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 5,
+      "frontendTests": 2,
+      "controllers": 7,
+      "services": 7,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "employee.hired",
+        "employee.terminated",
+        "tenant.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "compensation.cycle.created",
+        "compensation.cycle.completed"
+      ],
+      "consumes": [
+        "tenant.created",
+        "employee.hired",
+        "employee.terminated"
+      ],
+      "capabilities": [
+        "CompensationBenchmarking",
+        "PayEquityAnalysis",
+        "BudgetForecasting"
+      ],
+      "doesNow": "Compensation Benchmark & Planning Platform Capabilities: CompensationBenchmarking, PayEquityAnalysis, BudgetForecasting",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Compensation platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "competitorradar",
+      "score": 80,
+      "tier": "Production Candidate",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 5,
+      "services": 7,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Competitorradar platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "complianceradar",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 7,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "regulation.changed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 1,
+      "emits": [
+        "compliance.gap-detected",
+        "compliance.task-completed"
+      ],
+      "consumes": [
+        "regulation.changed"
+      ],
+      "capabilities": [
+        "analyze-gaps"
+      ],
+      "doesNow": "Capabilities: analyze-gaps",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Real-time regulatory tracking mapped to internal policy gaps.",
+      "endState": "A fully autonomous, multi-tenant Complianceradar platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "constructioniq",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Construction platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "contentos",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Central hub for end-to-end content planning, production, and ROI.",
+      "endState": "A fully autonomous, multi-tenant Content platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "contractportfolio",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 5,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 1,
+      "outgoingLinks": 0,
+      "emits": [
+        "contract.expiring-soon",
+        "renewal.alert-triggered"
+      ],
+      "consumes": [
+        "document.uploaded"
+      ],
+      "capabilities": [
+        "extract-terms"
+      ],
+      "doesNow": "Capabilities: extract-terms",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Holistic view of contractual obligations and organization-wide renewals.",
+      "endState": "A fully autonomous, multi-tenant Contractportfolio platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "contractsense",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 5,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 1,
+      "outgoingLinks": 0,
+      "emits": [
+        "contract.analyzed",
+        "risk.flagged"
+      ],
+      "consumes": [
+        "document.uploaded"
+      ],
+      "capabilities": [
+        "analyze-contract"
+      ],
+      "doesNow": "Capabilities: analyze-contract",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "AI-powered legal co-pilot reducing review time and identifying risks.",
+      "endState": "A fully autonomous, multi-tenant Contractsense platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "copyoptimizer",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 4,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Conversion-focused AI predicting and improving marketing performance.",
+      "endState": "A fully autonomous, multi-tenant Copyoptimizer platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "creatoranalytics",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 8,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Definitive ROI tracker connecting content views to business outcomes.",
+      "endState": "A fully autonomous, multi-tenant Creatoranalytics platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "customerdiscoveryai",
+      "score": 86,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 3,
+      "services": 2,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "interview.completed",
+        "insights.generated",
+        "report.completed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "research_synthesis",
+        "interview_analysis"
+      ],
+      "doesNow": "AI user research platform that automatically synthesizes findings from 100+ interviews. Capabilities: research_synthesis, interview_analysis",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Customerdiscovery platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "datacatalogai",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 7,
+      "domain": 16,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Datacatalog platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "datagovernance",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 2,
+      "domain": 6,
+      "risks": [
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "dsar.completed",
+        "consent.updated"
+      ],
+      "consumes": [
+        "user.deleted"
+      ],
+      "capabilities": [
+        "DATA_RETENTION",
+        "DSAR_MANAGEMENT",
+        "PII_DETECTION",
+        "CONSENT_MANAGEMENT",
+        "DATA_LINEAGE"
+      ],
+      "doesNow": "Data management and compliance service. Handles data retention policies, GDPR/CCPA compliance, data lineage, PII detection, and audit trails. Capabilities: DATA_RETENTION, DSAR_MANAGEMENT, PII_DETECTION, CONSENT_MANAGEMENT",
+      "shouldDo": [
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Datagovernance platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "datagovernanceos",
+      "score": 63,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "pipeline.failed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "data_asset.created",
+        "policy.created",
+        "audit.failed"
+      ],
+      "consumes": [
+        "pipeline.failed"
+      ],
+      "capabilities": [
+        "policy_lookup",
+        "asset_classification"
+      ],
+      "doesNow": "Data governance and classification Capabilities: policy_lookup, asset_classification",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Datagovernance platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "datalineagetracker",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 5,
+      "domain": 6,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "lineage.asset.created",
+        "lineage.incident.opened",
+        "lineage.policy.violated"
+      ],
+      "consumes": [
+        "auth.user.login",
+        "data.pipeline.run"
+      ],
+      "capabilities": [
+        "Lineage Tracking",
+        "PII Detection",
+        "Governance Enforcement",
+        "Audit Trails"
+      ],
+      "doesNow": "Comprehensive data lineage, governance, and audit tracking platform Capabilities: Lineage Tracking, PII Detection, Governance Enforcement, Audit Trails",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Datalineagetracker platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "dataprivacyai",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 2,
+      "domain": 10,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user.data-requested"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "privacy.risk-detected",
+        "dsr.completed"
+      ],
+      "consumes": [
+        "user.data-requested"
+      ],
+      "capabilities": [
+        "assess-privacy-risks"
+      ],
+      "doesNow": "Capabilities: assess-privacy-risks",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Automated privacy operations (GDPR/CCPA) at scale.",
+      "endState": "A fully autonomous, multi-tenant Dataprivacy platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "dataqualityai",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 1,
+      "domain": 4,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "asset.loaded",
+        "pipeline.completed",
+        "schema.changed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "dq.test.failed",
+        "dq.score.degraded",
+        "dq.schema.drift",
+        "dq.issue.opened"
+      ],
+      "consumes": [
+        "asset.loaded",
+        "schema.changed",
+        "pipeline.completed"
+      ],
+      "capabilities": [
+        "run-tests",
+        "get-score",
+        "suggest-fix"
+      ],
+      "doesNow": "Capabilities: run-tests, get-score, suggest-fix",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Dataquality platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "dataroomai",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 5,
+      "services": 5,
+      "domain": 8,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "document-uploaded",
+        "diligence-gap-detected"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "analyze-documents",
+        "answer-questions"
+      ],
+      "doesNow": "Capabilities: analyze-documents, answer-questions",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Dataroom platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "datastoryteller",
+      "score": 81,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 4,
+      "domain": 14,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [
+        "anomaly.detected",
+        "dashboard.refreshed",
+        "metric.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "narrative.generated",
+        "narrative.published",
+        "insight.detected",
+        "delivery.dispatched"
+      ],
+      "consumes": [
+        "metric.updated",
+        "dashboard.refreshed",
+        "anomaly.detected"
+      ],
+      "capabilities": [
+        "generate-narrative",
+        "explain-metric",
+        "summarize-dashboard"
+      ],
+      "doesNow": "Capabilities: generate-narrative, explain-metric, summarize-dashboard",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Datastoryteller platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "debtnavigator",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 4,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Debtnavigator platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "dependencyradar",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend",
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "vulnerability-detected",
+        "dependency-outdated",
+        "upgrade-available"
+      ],
+      "consumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "capabilities": [
+        "scan-dependencies",
+        "check-upgrade",
+        "create-upgrade-pr"
+      ],
+      "doesNow": "Capabilities: scan-dependencies, check-upgrade, create-upgrade-pr",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability."
+      ],
+      "cluster": "Cluster A: Dev Intelligence",
+      "vision": "Zero-trust dependency management to proactively fix vulnerabilities.",
+      "endState": "A fully autonomous, multi-tenant Dependencyradar platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "deploysignal",
+      "score": 48,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-frontend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ],
+      "cluster": "Cluster A: Dev Intelligence",
+      "vision": "Risk-aware deployment gatekeeper ensuring release reliability.",
+      "endState": "A fully autonomous, multi-tenant Deploysignal platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "documentintelligence",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 1,
+      "services": 4,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "document.uploaded",
+        "document.extraction.completed"
+      ],
+      "consumes": [
+        "workflow.action.requested"
+      ],
+      "capabilities": [
+        "document_ingestion",
+        "ocr",
+        "structured_data_extraction",
+        "document_classification",
+        "semantic_search",
+        "document_qa"
+      ],
+      "doesNow": "AI document processing platform. Ingests any document type, extracts structured data, routes to appropriate workflow, answers questions about document contents, and tracks processing status. Capabilities: document_ingestion, ocr, structured_data_extraction, document_classification",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Documentintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "documentvault",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 5,
+      "services": 8,
+      "domain": 5,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "tenant.deleted",
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 2,
+      "emits": [
+        "document.uploaded",
+        "document.shared",
+        "document.deleted"
+      ],
+      "consumes": [
+        "tenant.created",
+        "tenant.deleted",
+        "user.created"
+      ],
+      "capabilities": [
+        "file-storage",
+        "ocr",
+        "document-versioning",
+        "storage-quota-management"
+      ],
+      "doesNow": "Secure document storage and management system with OCR and versioning. Capabilities: file-storage, ocr, document-versioning, storage-quota-management",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Documentvault platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "ecosystemmap",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 3,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "app.deployed",
+        "app.undeployed",
+        "data.flow.event"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [
+        "app.deployed",
+        "app.undeployed",
+        "data.flow.event"
+      ],
+      "capabilities": [
+        "ecosystem_visualization",
+        "roi_tracking",
+        "integration_discovery"
+      ],
+      "doesNow": "AI ecosystem visualization platform and ROI tracker. Capabilities: ecosystem_visualization, roi_tracking, integration_discovery",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Ecystemmap platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "educationos",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "course.created",
+        "quiz.completed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "LEARNING_MANAGEMENT",
+        "ASSESSMENT"
+      ],
+      "doesNow": "AI learning platform builder Capabilities: LEARNING_MANAGEMENT, ASSESSMENT",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Education platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "engagementpulse",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 5,
+      "domain": 6,
+      "risks": [],
+      "unmatchedConsumes": [
+        "employee.created",
+        "team.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "survey.distributed",
+        "alert.triggered"
+      ],
+      "consumes": [
+        "employee.created",
+        "team.created"
+      ],
+      "capabilities": [
+        "survey_builder",
+        "sentiment_analysis",
+        "engagement_scoring"
+      ],
+      "doesNow": "Capabilities: survey_builder, sentiment_analysis, engagement_scoring",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Engagementpulse platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "equityintelligence",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Transparent cap table management and funding round modeling.",
+      "endState": "A fully autonomous, multi-tenant Equityintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "expenseintelligence",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 3,
+      "domain": 9,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Smart expense monitoring detecting policy violations and waste.",
+      "endState": "A fully autonomous, multi-tenant Expenseintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "experimentengine",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 1,
+      "controllers": 0,
+      "services": 4,
+      "domain": 15,
+      "risks": [],
+      "unmatchedConsumes": [
+        "feature-flag.updated",
+        "metric.defined"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "experiment.started",
+        "experiment.significant",
+        "experiment.concluded",
+        "rollout.activated",
+        "experiment.guardrail-violated"
+      ],
+      "consumes": [
+        "metric.defined",
+        "feature-flag.updated"
+      ],
+      "capabilities": [
+        "assign",
+        "track-event",
+        "get-results"
+      ],
+      "doesNow": "Capabilities: assign, track-event, get-results",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Experimentengine platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "financenarrator",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 4,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "narrative.generated"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Automated financial storytelling for board-level narratives.",
+      "endState": "A fully autonomous, multi-tenant Financenarrator platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "ghostwriter",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "AI writing partner learning unique voices for long-form content.",
+      "endState": "A fully autonomous, multi-tenant Ghtwriter platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "goaltracker",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 2,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "goaltracker.goal.created",
+        "goaltracker.savings_plan.generated",
+        "goaltracker.transfer.executed",
+        "goaltracker.progress.updated",
+        "goaltracker.milestone.celebration",
+        "goaltracker.motivation.nudge"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "goal-creation",
+        "savings-calculation",
+        "progress-tracking",
+        "transfer-automation",
+        "investment-recommendation",
+        "motivation-insights",
+        "goal-sharing"
+      ],
+      "doesNow": "Capabilities: goal-creation, savings-calculation, progress-tracking, transfer-automation",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Goaltracker platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "healthcaredocai",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 3,
+      "frontendTests": 3,
+      "controllers": 1,
+      "services": 3,
+      "domain": 5,
+      "risks": [
+        "no-integration-manifest",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add integration-manifest.json with emits/consumes/capabilities/health endpoint.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Healthcaredoc platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "hiresignal",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 1,
+      "emits": [
+        "candidate.hired"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "AI recruiting intelligence for high-confidence candidate sourcing.",
+      "endState": "A fully autonomous, multi-tenant Hiresignal platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "incidentbrain",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ],
+      "cluster": "Cluster A: Dev Intelligence",
+      "vision": "Central nervous system for incident response, automating root cause analysis.",
+      "endState": "A fully autonomous, multi-tenant Incidentbrn platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "insightengine",
+      "score": 86,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 3,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "insight.discovered"
+      ],
+      "consumes": [
+        "metric.recorded"
+      ],
+      "capabilities": [
+        "AI Insight Generation",
+        "Anomaly Detection"
+      ],
+      "doesNow": "Capabilities: AI Insight Generation, Anomaly Detection",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Insightengine platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "insuranceai",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 2,
+      "controllers": 3,
+      "services": 4,
+      "domain": 2,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "claim.created",
+        "claim.status_updated",
+        "policy.created"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "claims_processing",
+        "policy_management",
+        "fraud_detection",
+        "risk_scoring"
+      ],
+      "doesNow": "Capabilities: claims_processing, policy_management, fraud_detection, risk_scoring",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Insurance platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "integrationbridge",
+      "score": 90,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 5,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 5,
+      "domain": 6,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "sync_job_completed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "integration_management",
+        "sync_jobs",
+        "oauth_flow"
+      ],
+      "doesNow": "Integration platform for connecting third-party services. Capabilities: integration_management, sync_jobs, oauth_flow",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Integrationbridge platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "interviewos",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 1,
+      "outgoingLinks": 0,
+      "emits": [
+        "interview.completed"
+      ],
+      "consumes": [
+        "candidate.hired"
+      ],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "Structured platform ensuring bias-reduced, high-signal hiring.",
+      "endState": "A fully autonomous, multi-tenant Interview platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "investtracker",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 1,
+      "services": 2,
+      "domain": 8,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Investtracker platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "invoiceprocessor",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "invoice.received",
+        "invoice.extracted",
+        "invoice.matched",
+        "invoice.approved",
+        "po.created"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "Invoice Extraction",
+        "PO Matching"
+      ],
+      "doesNow": "Capabilities: Invoice Extraction, PO Matching",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Manual-free AP processing with automated extraction and matching.",
+      "endState": "A fully autonomous, multi-tenant Invoiceprocessor platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "jobcraftai",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "AI job description builder optimized for SEO and inclusivity.",
+      "endState": "A fully autonomous, multi-tenant Jobcraft platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "knowledgevault",
+      "score": 65,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Knowledgevault platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "legalresearch",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 6,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "memo.completed"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "research-query"
+      ],
+      "doesNow": "Capabilities: research-query",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "AI law library providing cited, accurate research memos.",
+      "endState": "A fully autonomous, multi-tenant Legalresearch platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "licenseguard",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "license.violation-detected",
+        "sbom.generated"
+      ],
+      "consumes": [
+        "code.pushed",
+        "pr.merged"
+      ],
+      "capabilities": [
+        "scan-repo"
+      ],
+      "doesNow": "Capabilities: scan-repo",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Automated SBOM and license risk management.",
+      "endState": "A fully autonomous, multi-tenant Licenseguard platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "localizationos",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 8,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Global-ready content management with deep cultural context.",
+      "endState": "A fully autonomous, multi-tenant Localization platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "marketplacehub",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 2,
+      "services": 2,
+      "domain": 6,
+      "risks": [
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "app.registered",
+        "app.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "app.installed",
+        "app.review.submitted",
+        "app.review.approved"
+      ],
+      "consumes": [
+        "app.registered",
+        "app.updated"
+      ],
+      "capabilities": [
+        "app_catalog_search",
+        "app_installation",
+        "app_reviews"
+      ],
+      "doesNow": "Capabilities: app_catalog_search, app_installation, app_reviews",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Marketplace platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "marketsignal",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 5,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 4,
+      "domain": 7,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "marketsignal.pattern.detected",
+        "marketsignal.brief.generated"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Marketsignal platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "meetingbrain",
+      "score": 73,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 7,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "ProjectCreatedEvent"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "MeetingAnalyzedEvent",
+        "ActionItemCreatedEvent"
+      ],
+      "consumes": [
+        "ProjectCreatedEvent"
+      ],
+      "capabilities": [
+        "meeting-transcription",
+        "decision-tracking",
+        "action-item-extraction",
+        "institutional-memory",
+        "semantic-search",
+        "meeting-analytics"
+      ],
+      "doesNow": "Capabilities: meeting-transcription, decision-tracking, action-item-extraction, institutional-memory",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Meetingbrn platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "ndaflow",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 6,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 2,
+      "domain": 7,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "nda.executed",
+        "nda.expiring-soon"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "generate-nda"
+      ],
+      "doesNow": "Capabilities: generate-nda",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Streamlined AI redlining and execution of NDAs.",
+      "endState": "A fully autonomous, multi-tenant Ndaflow platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "nexus-hub",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 5,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-integration-manifest",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add integration-manifest.json with emits/consumes/capabilities/health endpoint.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "The ecosystem backbone: App Registry, Event Bus, and Workflow Engine.",
+      "endState": "A fully autonomous, multi-tenant Nexus- platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "nonprofitos",
+      "score": 81,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 3,
+      "services": 3,
+      "domain": 3,
+      "risks": [],
+      "unmatchedConsumes": [
+        "tenant.created",
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "donor.created",
+        "grant.drafted",
+        "impact.recorded"
+      ],
+      "consumes": [
+        "user.created",
+        "tenant.created"
+      ],
+      "capabilities": [
+        "grant_drafting",
+        "donor_intelligence",
+        "impact_reporting"
+      ],
+      "doesNow": "AI nonprofit operations platform. Grant writing co-pilot, donor intelligence, and impact measurement. Capabilities: grant_drafting, donor_intelligence, impact_reporting",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Nonprofit platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "notificationhub",
+      "score": 96,
+      "tier": "Production Candidate",
+      "depth": "Deep",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 3,
+      "controllers": 5,
+      "services": 7,
+      "domain": 8,
+      "risks": [],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "notification.delivered",
+        "notification.failed"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "multi-channel-messaging",
+        "notification-scheduling",
+        "delivery-tracking"
+      ],
+      "doesNow": "Capabilities: multi-channel-messaging, notification-scheduling, delivery-tracking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "Centralized engine delivering multi-channel messages at scale.",
+      "endState": "A fully autonomous, multi-tenant Notification platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "observabilitystack",
+      "score": 75,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 7,
+      "services": 0,
+      "domain": 12,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [
+        "platform.service.deployed",
+        "platform.system.error"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "observability.alert.triggered",
+        "observability.incident.created",
+        "observability.incident.escalated",
+        "observability.incident.resolved",
+        "observability.health.failed"
+      ],
+      "consumes": [
+        "platform.service.deployed",
+        "platform.system.error"
+      ],
+      "capabilities": [
+        "monitoring",
+        "logging",
+        "tracing",
+        "incident-management"
+      ],
+      "doesNow": "Capabilities: monitoring, logging, tracing, incident-management",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Observabilitystack platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "onboardflow",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "Automated onboarding journeys for maximum new hire productivity.",
+      "endState": "A fully autonomous, multi-tenant Onboardflow platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "peopleanalytics",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 5,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "Data-driven HR heart providing deep workforce health insights.",
+      "endState": "A fully autonomous, multi-tenant Peopleanalytics platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "performancenarrative",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "Continuous performance feedback with AI-assisted review drafting.",
+      "endState": "A fully autonomous, multi-tenant Performancenarrative platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "policyforge",
+      "score": 45,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 2,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "audit.finding-created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 1,
+      "emits": [
+        "policy.published",
+        "policy.acknowledged"
+      ],
+      "consumes": [
+        "audit.finding-created"
+      ],
+      "capabilities": [
+        "create-policy"
+      ],
+      "doesNow": "Capabilities: create-policy",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Definitive source for corporate policy authoring and acknowledgment.",
+      "endState": "A fully autonomous, multi-tenant Policyforge platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "pricingintelligence",
+      "score": 68,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 4,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [
+        "crm.deal.closed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "pricingintelligence.experiment.completed"
+      ],
+      "consumes": [
+        "crm.deal.closed"
+      ],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Pricingintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "processminer",
+      "score": 93,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 4,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "EVENT_LOG_CREATED"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "PROCESS_ANALYZED"
+      ],
+      "consumes": [
+        "EVENT_LOG_CREATED"
+      ],
+      "capabilities": [
+        "Process Discovery",
+        "Bottleneck Analysis",
+        "Compliance Checking",
+        "Automation Opportunity Scoring"
+      ],
+      "doesNow": "Capabilities: Process Discovery, Bottleneck Analysis, Compliance Checking, Automation Opportunity Scoring",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Processminer platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "procurebot",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "AI-driven procurement streamlining approvals and optimizing spend.",
+      "endState": "A fully autonomous, multi-tenant Procurebot platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "prospectiq",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 4,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "PROSPECT_CREATED",
+        "SIGNAL_DETECTED"
+      ],
+      "consumes": [
+        "CRM_ACTIVITY"
+      ],
+      "capabilities": [
+        "AI prospect briefing",
+        "Signal aggregation"
+      ],
+      "doesNow": "Capabilities: AI prospect briefing, Signal aggregation",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Prpect platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "queryoptimizer",
+      "score": 78,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 2,
+      "services": 5,
+      "domain": 4,
+      "risks": [
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Queryoptimizer platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "regulatoryfiling",
+      "score": 50,
+      "tier": "Alpha",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 6,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "regulation.changed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "filing.submitted",
+        "filing.overdue"
+      ],
+      "consumes": [
+        "regulation.changed"
+      ],
+      "capabilities": [
+        "track-filing"
+      ],
+      "doesNow": "Capabilities: track-filing",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster B: Legal & Compliance",
+      "vision": "Fail-safe tracker for all corporate and regulatory filing deadlines.",
+      "endState": "A fully autonomous, multi-tenant Regulatoryfiling platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "restaurantintel",
+      "score": 91,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 4,
+      "frontendTests": 2,
+      "controllers": 4,
+      "services": 5,
+      "domain": 5,
+      "risks": [],
+      "unmatchedConsumes": [
+        "inventory.stock.updated",
+        "pos.order.completed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "restaurantintel.order.approved",
+        "restaurantintel.schedule.generated",
+        "restaurantintel.review.analyzed"
+      ],
+      "consumes": [
+        "pos.order.completed",
+        "inventory.stock.updated"
+      ],
+      "capabilities": [
+        "menu_intelligence",
+        "predictive_ordering",
+        "staff_scheduling",
+        "review_sentiment_analysis"
+      ],
+      "doesNow": "Capabilities: menu_intelligence, predictive_ordering, staff_scheduling, review_sentiment_analysis",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Restaurantintel platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "retailintelligence",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 2,
+      "controllers": 1,
+      "services": 2,
+      "domain": 3,
+      "risks": [],
+      "unmatchedConsumes": [
+        "sales.order.placed"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "sku.created",
+        "forecast.generated",
+        "sku.price_updated"
+      ],
+      "consumes": [
+        "sales.order.placed"
+      ],
+      "capabilities": [
+        "Demand Forecasting",
+        "Pricing Optimization",
+        "Inventory Tracking"
+      ],
+      "doesNow": "AI retail operations platform providing demand forecasting and pricing recommendations. Capabilities: Demand Forecasting, Pricing Optimization, Inventory Tracking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Retlintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "retentionsignal",
+      "score": 60,
+      "tier": "Beta",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 1,
+      "domain": 8,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster D: HR & Talent",
+      "vision": "Early-warning system for flight risk with intervention playbooks.",
+      "endState": "A fully autonomous, multi-tenant Retentionsignal platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "retirementplus",
+      "score": 98,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 3,
+      "backendTests": 4,
+      "frontendTests": 3,
+      "controllers": 2,
+      "services": 2,
+      "domain": 3,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "retirementplus.profile_created",
+        "retirementplus.projection_generated"
+      ],
+      "consumes": [],
+      "capabilities": [
+        "retirement_planning"
+      ],
+      "doesNow": "Capabilities: retirement_planning",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Retirementplus platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "runwaymodeler",
+      "score": 58,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Dynamic financial forecasting for startup scenario planning.",
+      "endState": "A fully autonomous, multi-tenant Runwaymodeler platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "securitypulse",
+      "score": 40,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-frontend",
+        "no-backend-dockerfile"
+      ],
+      "unmatchedConsumes": [
+        "pr.merged",
+        "pr.opened"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "security-scan-completed",
+        "vulnerability-found",
+        "policy-violation"
+      ],
+      "consumes": [
+        "pr.opened",
+        "pr.merged"
+      ],
+      "capabilities": [
+        "scan-pr",
+        "enforce-policy",
+        "triage-findings"
+      ],
+      "doesNow": "Capabilities: scan-pr, enforce-policy, triage-findings",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability."
+      ],
+      "cluster": "Cluster A: Dev Intelligence",
+      "vision": "Continuous security posture monitor embedding security into dev workflows.",
+      "endState": "A fully autonomous, multi-tenant Securitypulse platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "seointelligence",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 0,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Content-first SEO platform identifying gaps and predicting rank.",
+      "endState": "A fully autonomous, multi-tenant Seointelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "socialintelligence",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 2,
+      "backendTests": 0,
+      "frontendTests": 1,
+      "controllers": 5,
+      "services": 4,
+      "domain": 5,
+      "risks": [
+        "no-backend-tests"
+      ],
+      "unmatchedConsumes": [
+        "user.created"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "metrics.synced",
+        "recommendations.generated"
+      ],
+      "consumes": [
+        "user.created"
+      ],
+      "capabilities": [
+        "social-media-analytics",
+        "growth-intelligence",
+        "audience-insights",
+        "competitor-benchmarking"
+      ],
+      "doesNow": "Capabilities: social-media-analytics, growth-intelligence, audience-insights, competitor-benchmarking",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend service + controller tests for critical flows."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Real-time social listening driving meaningful audience engagement.",
+      "endState": "A fully autonomous, multi-tenant Socialintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "supportintelligence",
+      "score": 40,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": false,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 2,
+      "risks": [
+        "no-frontend",
+        "no-backend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "feature.released",
+        "product.updated"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "ticket.created",
+        "ticket.escalated",
+        "ticket.resolved"
+      ],
+      "consumes": [
+        "product.updated",
+        "feature.released"
+      ],
+      "capabilities": [
+        "suggest-response",
+        "detect-escalation",
+        "mine-ticket-patterns"
+      ],
+      "doesNow": "Capabilities: suggest-response, detect-escalation, mine-ticket-patterns",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add backend service + controller tests for critical flows.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add frontend app shell for operator workflows and observability.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Supportintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "taskqueue",
+      "score": 88,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 3,
+      "services": 6,
+      "domain": 5,
+      "risks": [
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "taskqueue.job.completed",
+        "taskqueue.job.failed"
+      ],
+      "consumes": [
+        "taskqueue.job.enqueue"
+      ],
+      "capabilities": [
+        "distributed_job_processing",
+        "scheduled_task_execution"
+      ],
+      "doesNow": "Capabilities: distributed_job_processing, scheduled_task_execution",
+      "shouldDo": [
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Taskqueue platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "taxdataorganizer",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 3,
+      "services": 3,
+      "domain": 8,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Frictionless tax prep converting transactions to accountant packages.",
+      "endState": "A fully autonomous, multi-tenant Taxdataorganizer platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "taxoptimizer",
+      "score": 70,
+      "tier": "Beta",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 0,
+      "controllers": 4,
+      "services": 6,
+      "domain": 16,
+      "risks": [
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [
+        "user_onboarded"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "tax_liability_calculated",
+        "tax_package_generated"
+      ],
+      "consumes": [
+        "user_onboarded"
+      ],
+      "capabilities": [
+        "Tax liability estimation",
+        "Tax loss harvesting identification",
+        "Entity structure modeling",
+        "Accountant collaboration"
+      ],
+      "doesNow": "AI-driven tax planning and optimization platform Capabilities: Tax liability estimation, Tax loss harvesting identification, Entity structure modeling, Accountant collaboration",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Taxoptimizer platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "usageintelligence",
+      "score": 83,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 3,
+      "frontendTests": 1,
+      "controllers": 1,
+      "services": 3,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [
+        "user.created",
+        "user.deleted"
+      ],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "usage.anomaly_detected",
+        "usage.cohort_created"
+      ],
+      "consumes": [
+        "user.created",
+        "user.deleted"
+      ],
+      "capabilities": [
+        "event_tracking",
+        "metric_aggregation",
+        "cohort_management",
+        "ai_usage_insights"
+      ],
+      "doesNow": "Capabilities: event_tracking, metric_aggregation, cohort_management, ai_usage_insights",
+      "shouldDo": [
+        "Align consumes events with ecosystem producer event names."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Usageintelligence platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "vendoriq",
+      "score": 55,
+      "tier": "Alpha",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 0,
+      "services": 0,
+      "domain": 7,
+      "risks": [
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster C: Finance & Operations",
+      "vision": "Strategic vendor management ensuring service value and SLA adherence.",
+      "endState": "A fully autonomous, multi-tenant Vendor platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "videonarrator",
+      "score": 35,
+      "tier": "Incubating",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 0,
+      "backendTests": 0,
+      "frontendTests": 0,
+      "controllers": 1,
+      "services": 1,
+      "domain": 1,
+      "risks": [
+        "no-db-migrations",
+        "no-backend-tests",
+        "no-frontend-tests",
+        "no-backend-dockerfile",
+        "no-readme"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add Flyway baseline and incremental migrations for all persisted entities.",
+        "Add backend service + controller tests for critical flows.",
+        "Add frontend component/page tests for key user journeys.",
+        "Add backend Dockerfile to make deploy path repeatable.",
+        "Add app README with setup, contracts, SLOs, and runbooks."
+      ],
+      "cluster": "Cluster E: Creator & Media",
+      "vision": "Multi-platform video intelligence repurposing clips into assets.",
+      "endState": "A fully autonomous, multi-tenant Videonarrator platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "voiceagentbuilder",
+      "score": 80,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 1,
+      "frontendTests": 2,
+      "controllers": 5,
+      "services": 5,
+      "domain": 4,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "call.completed",
+        "agent.escalated"
+      ],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Voiceagentbuilder platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "wealthedge",
+      "score": 81,
+      "tier": "Production Candidate",
+      "depth": "Shallow",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 4,
+      "frontendTests": 0,
+      "controllers": 2,
+      "services": 3,
+      "domain": 3,
+      "risks": [
+        "no-frontend-tests"
+      ],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [],
+      "consumes": [],
+      "capabilities": [],
+      "doesNow": "Implements core domain endpoints and integration manifest contracts.",
+      "shouldDo": [
+        "Add frontend component/page tests for key user journeys."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Wealthedge platform with deep Nexus Hub integration."
+    },
+    {
+      "app": "wealthplan",
+      "score": 91,
+      "tier": "Production Candidate",
+      "depth": "Medium",
+      "backend": true,
+      "frontend": true,
+      "migrations": 1,
+      "backendTests": 2,
+      "frontendTests": 1,
+      "controllers": 4,
+      "services": 7,
+      "domain": 8,
+      "risks": [],
+      "unmatchedConsumes": [],
+      "incomingLinks": 0,
+      "outgoingLinks": 0,
+      "emits": [
+        "wealthplan.goal.created",
+        "wealthplan.scenario.modeled"
+      ],
+      "consumes": [
+        "core.tenant.created"
+      ],
+      "capabilities": [
+        "financial_planning",
+        "monte_carlo_simulation",
+        "goal_tracking"
+      ],
+      "doesNow": "Capabilities: financial_planning, monte_carlo_simulation, goal_tracking",
+      "shouldDo": [
+        "Harden cross-app event contracts and expand performance/security/non-functional tests."
+      ],
+      "cluster": "Other / Platform",
+      "vision": "To be a vital part of the 100-app AI-native SaaS ecosystem.",
+      "endState": "A fully autonomous, multi-tenant Wealthplan platform with deep Nexus Hub integration."
+    }
+  ],
+  "clusterGaps": {
+    "Cluster A: Dev Intelligence": {
+      "avgScore": 53.2,
+      "appCount": 5,
+      "targetCount": 5,
+      "primaryGap": "Testing coverage"
+    },
+    "Cluster B: Legal & Compliance": {
+      "avgScore": 55.3,
+      "appCount": 10,
+      "targetCount": 10,
+      "primaryGap": "Testing coverage"
+    },
+    "Cluster C: Finance & Operations": {
+      "avgScore": 53.3,
+      "appCount": 10,
+      "targetCount": 10,
+      "primaryGap": "Testing coverage"
+    },
+    "Cluster D: HR & Talent": {
+      "avgScore": 55.0,
+      "appCount": 8,
+      "targetCount": 8,
+      "primaryGap": "Testing coverage"
+    },
+    "Cluster E: Creator & Media": {
+      "avgScore": 51.4,
+      "appCount": 9,
+      "targetCount": 11,
+      "primaryGap": "Testing coverage"
+    }
+  }
+}</script>
+
+  <script>
+    const riskLabels = {
+      "no-frontend": "No Frontend",
+      "no-db-migrations": "No DB Migrations",
+      "no-backend-tests": "No Backend Tests",
+      "no-frontend-tests": "No Frontend Tests",
+      "no-backend-dockerfile": "No Backend Dockerfile",
+      "no-readme": "No README",
+      "no-integration-manifest": "No Integration Manifest"
+    };
+
+    const tierColor = {
+      "Production Candidate": "var(--pc)",
+      "Beta": "var(--beta)",
+      "Alpha": "var(--alpha)",
+      "Incubating": "var(--inc)"
+    };
+
+    function pct(n, d) {
+      if (!d) return "0%";
+      return `${((n / d) * 100).toFixed(1)}%`;
+    }
+
+    function createBarRow(label, value, max, color, suffix = "") {
+      const width = max > 0 ? (value / max) * 100 : 0;
+      return `
+        <div class="row">
+          <div>${label}</div>
+          <div class="bar"><div class="fill" style="width:${width}%;background:${color};"></div></div>
+          <div style="text-align:right;">${value}${suffix}</div>
+        </div>
+      `;
+    }
+
+    function toArray(v) {
+      return Array.isArray(v) ? v : [];
+    }
+
+    function appCard(app) {
+      const tierClass = `tier-${app.tier.toLowerCase().replace(/\s+/g, "-")}`;
+      const appRisks = toArray(app.risks);
+      const appEmits = toArray(app.emits);
+      const appConsumes = toArray(app.consumes);
+      const appCapabilities = toArray(app.capabilities);
+      const appShouldDo = toArray(app.shouldDo);
+      const appUnmatchedConsumes = toArray(app.unmatchedConsumes);
+      const risks = appRisks.length ? appRisks.map(r => `<span class="chip">${riskLabels[r] || r}</span>`).join("") : `<span class="chip">No flagged structural risks</span>`;
+      const emits = appEmits.length ? appEmits.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No emit contracts declared</li>";
+      const consumes = appConsumes.length ? appConsumes.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No consume contracts declared</li>";
+      const capabilities = appCapabilities.length ? appCapabilities.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No capabilities declared</li>";
+      const shouldDo = appShouldDo.length ? appShouldDo.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No immediate blockers inferred</li>";
+      const unmatched = appUnmatchedConsumes.length ? appUnmatchedConsumes.map(x => `<li>${x}</li>`).join("") : "<li class='muted'>No unmatched consume event names</li>";
+      const quickWins = lowHangingFruits(app).map(x => `<li>${x}</li>`).join("");
+      const integrationCandidates = suggestedIntegrations(app, window.__allAppsForSuggestions || []).map(x => `<li>${x}</li>`).join("") || "<li class='muted'>No clear peers inferred</li>";
+      return `
+        <details>
+          <summary>
+            <div class="app-head">
+              <div>
+                <div class="app-name">${app.app}</div>
+                <div class="chips">
+                  <span class="chip ${tierClass}">${app.tier}</span>
+                  <span class="chip">Depth: ${app.depth}</span>
+                  <span class="chip">B/F tests: ${app.backendTests}/${app.frontendTests}</span>
+                  <span class="chip">Migrations: ${app.migrations}</span>
+                  <span class="chip">Links in/out: ${app.incomingLinks}/${app.outgoingLinks}</span>
+                </div>
+              </div>
+              <div class="score">${app.score}</div>
+            </div>
+          </summary>
+          <div class="body">
+            <div class="kvs">
+              <div class="kv"><div class="k">Controllers</div><div class="v">${app.controllers}</div></div>
+              <div class="kv"><div class="k">Services</div><div class="v">${app.services}</div></div>
+              <div class="kv"><div class="k">Domain Objects</div><div class="v">${app.domain}</div></div>
+              <div class="kv"><div class="k">Backend</div><div class="v">${app.backend ? "Yes" : "No"}</div></div>
+              <div class="kv"><div class="k">Frontend</div><div class="v">${app.frontend ? "Yes" : "No"}</div></div>
+              <div class="kv"><div class="k">Risk Tags</div><div class="v">${appRisks.length}</div></div>
+            </div>
+            <div class="section">
+              <h4>What It Does Now</h4>
+              <p>${app.doesNow}</p>
+            </div>
+            <div class="section">
+              <h4>What It Should Do (Target State)</h4>
+              <ul>${shouldDo}</ul>
+            </div>
+            <div class="section">
+              <h4>Low-Hanging Fruits (Fast Improvements)</h4>
+              <ul>${quickWins}</ul>
+            </div>
+            <div class="section">
+              <h4>What It Can Integrate With (Top Candidates)</h4>
+              <ul>${integrationCandidates}</ul>
+            </div>
+            <div class="section">
+              <h4>Structural Risks</h4>
+              <div class="chips">${risks}</div>
+            </div>
+            <div class="section">
+              <h4>Declared Emits</h4>
+              <ul>${emits}</ul>
+            </div>
+            <div class="section">
+              <h4>Declared Consumes</h4>
+              <ul>${consumes}</ul>
+            </div>
+            <div class="section">
+              <h4>Unmatched Consumes (No Producer Found)</h4>
+              <ul>${unmatched}</ul>
+            </div>
+            <div class="section">
+              <h4>Capabilities</h4>
+              <ul>${capabilities}</ul>
+            </div>
+          </div>
+        </details>
+      `;
+    }
+
+    async function loadData() {
+      const inline = document.getElementById("embeddedAuditData");
+      if (inline && inline.textContent && inline.textContent.trim()) {
+        return JSON.parse(inline.textContent);
+      }
+      throw new Error("Embedded audit data missing from self-contained HTML.");
+    }
+
+    function lowHangingFruits(app) {
+      const wins = [];
+      const risks = toArray(app.risks);
+      if (risks.includes("no-backend-tests")) wins.push("Add 3 backend tests (health, create, list) to de-risk core API path quickly.");
+      if (risks.includes("no-frontend-tests") && app.frontend) wins.push("Add 2 frontend tests for primary page render + main action.");
+      if (risks.includes("no-db-migrations")) wins.push("Add Flyway V1 baseline migration for current schema.");
+      if (risks.includes("no-backend-dockerfile")) wins.push("Add minimal backend Dockerfile to standardize deploy path.");
+      if (risks.includes("no-readme")) wins.push("Add README with runbook, env vars, and contract links.");
+      if (toArray(app.unmatchedConsumes).length > 0) wins.push("Rename or alias consume event names to current producer event names.");
+      if (wins.length === 0) wins.push("Unify event contracts with ecosystem canonical taxonomy and add one integration test.");
+      return wins.slice(0, 4);
+    }
+
+    function suggestedIntegrations(app, allApps) {
+      const name = String(app.app || "").toLowerCase();
+      const hints = [];
+      if (name.includes("compliance") || name.includes("policy") || name.includes("audit") || name.includes("legal") || name.includes("nda") || name.includes("contract")) hints.push("legal");
+      if (name.includes("cash") || name.includes("finance") || name.includes("tax") || name.includes("invoice") || name.includes("budget") || name.includes("equity") || name.includes("wealth") || name.includes("vendor")) hints.push("finance");
+      if (name.includes("hire") || name.includes("interview") || name.includes("people") || name.includes("onboard") || name.includes("retention") || name.includes("comp")) hints.push("hr");
+      if (name.includes("content") || name.includes("social") || name.includes("seo") || name.includes("copy") || name.includes("brand") || name.includes("video") || name.includes("localization") || name.includes("creator")) hints.push("creator");
+      if (name.includes("data") || name.includes("analytics") || name.includes("query") || name.includes("catalog") || name.includes("lineage") || name.includes("story")) hints.push("data");
+      if (name.includes("incident") || name.includes("deploy") || name.includes("security") || name.includes("dependency") || name.includes("observability") || name.includes("api")) hints.push("devops");
+
+      const picks = [];
+      for (const other of allApps) {
+        if (!other || other.app === app.app) continue;
+        const o = String(other.app || "").toLowerCase();
+        let score = 0;
+        for (const h of hints) {
+          if (h === "legal" && (o.includes("compliance") || o.includes("policy") || o.includes("audit") || o.includes("legal") || o.includes("nda") || o.includes("contract"))) score++;
+          if (h === "finance" && (o.includes("cash") || o.includes("finance") || o.includes("tax") || o.includes("invoice") || o.includes("budget") || o.includes("equity") || o.includes("wealth") || o.includes("vendor"))) score++;
+          if (h === "hr" && (o.includes("hire") || o.includes("interview") || o.includes("people") || o.includes("onboard") || o.includes("retention") || o.includes("comp"))) score++;
+          if (h === "creator" && (o.includes("content") || o.includes("social") || o.includes("seo") || o.includes("copy") || o.includes("brand") || o.includes("video") || o.includes("localization") || o.includes("creator"))) score++;
+          if (h === "data" && (o.includes("data") || o.includes("analytics") || o.includes("query") || o.includes("catalog") || o.includes("lineage") || o.includes("story"))) score++;
+          if (h === "devops" && (o.includes("incident") || o.includes("deploy") || o.includes("security") || o.includes("dependency") || o.includes("observability") || o.includes("api"))) score++;
+        }
+        if (score > 0) picks.push({ app: other.app, score: score + (other.incomingLinks || 0) + (other.outgoingLinks || 0) });
+      }
+      picks.sort((a, b) => b.score - a.score || a.app.localeCompare(b.app));
+      return picks.slice(0, 3).map(p => p.app);
+    }
+
+    function render(data) {
+      window.__allAppsForSuggestions = toArray(data.apps);
+      const summary = data.summary;
+      const integration = data.integrationSummary;
+      const manifest = data.manifestSummary || {};
+      const risks = data.riskSummary || {};
+
+      const heroMeta = document.getElementById("heroMeta");
+      heroMeta.innerHTML = [
+        `<span class="pill">Generated: ${new Date(data.generatedAt).toLocaleString()}</span>`,
+        `<span class="pill">Apps audited: ${summary.totalApps}</span>`,
+        `<span class="pill">Avg maturity score: ${summary.avgScore}</span>`,
+        `<span class="pill">Integration consume match: ${integration.consumeMatchRate}%</span>`
+      ].join("");
+
+      const metrics = document.getElementById("metrics");
+      metrics.innerHTML = [
+        { label: "Production Candidates", value: summary.tiers.productionCandidate, sub: pct(summary.tiers.productionCandidate, summary.totalApps) },
+        { label: "Beta Apps", value: summary.tiers.beta, sub: pct(summary.tiers.beta, summary.totalApps) },
+        { label: "Alpha Apps", value: summary.tiers.alpha, sub: pct(summary.tiers.alpha, summary.totalApps) },
+        { label: "Incubating Apps", value: summary.tiers.incubating, sub: pct(summary.tiers.incubating, summary.totalApps) },
+        { label: "Apps with Any Tests", value: summary.withAnyTests, sub: `${summary.totalBackendTests} backend + ${summary.totalFrontendTests} frontend` },
+        { label: "Apps with Frontend", value: summary.withFrontend, sub: pct(summary.withFrontend, summary.totalApps) },
+        { label: "Manifests Present", value: manifest.exists ?? 0, sub: `${toArray(manifest.missing).length} missing` },
+        { label: "Interoperability Edges", value: integration.integrationEdges, sub: `${integration.unmatchedConsumeCount} unmatched consumes` }
+      ].map(m => `
+        <article class="card">
+          <div class="metric-label">${m.label}</div>
+          <div class="metric-value">${m.value}</div>
+          <div class="metric-sub">${m.sub}</div>
+        </article>
+      `).join("");
+
+      const findings = document.getElementById("criticalFindings");
+      findings.innerHTML = `
+        <li><span class="sev p0">P0</span><b>Cross-app interoperability is minimal:</b> only ${integration.integrationEdges} producer→consumer links, with ${integration.unmatchedConsumeCount} unmatched consume declarations (${integration.consumeMatchRate}% consume match).</li>
+        <li><span class="sev p1">P1</span><b>Event taxonomy is fragmented:</b> tenant/user/core/cc naming variants reduce automatic app-to-app compatibility and orchestration reliability.</li>
+        <li><span class="sev p1">P1</span><b>Manifest schema drift is high:</b> ${toArray(manifest.schemaShapes).length}+ schema shapes detected; this weakens contract governance and automated registry validation.</li>
+        <li><span class="sev p1">P1</span><b>Production hygiene gaps are broad:</b> ${risks["no-backend-tests"]} apps without backend tests, ${risks["no-frontend-tests"]} without frontend tests, ${risks["no-backend-dockerfile"]} without backend Dockerfiles.</li>
+        <li><span class="sev p2">P2</span><b>Documentation and onboarding debt:</b> ${risks["no-readme"]} apps have no README, slowing handoff, support, and operational consistency.</li>
+      `;
+
+      const riskRows = Object.entries(risks);
+      const maxRisk = riskRows.length ? Math.max(...riskRows.map(([, v]) => v)) : 0;
+      const riskBars = document.getElementById("riskBars");
+      riskBars.innerHTML = riskRows
+        .sort((a, b) => b[1] - a[1])
+        .map(([k, v]) => createBarRow(riskLabels[k] || k, v, maxRisk, "linear-gradient(90deg,#f59e0b,#ef4444)"))
+        .join("");
+
+      const tierBars = document.getElementById("tierBars");
+      const tierData = [
+        ["Production Candidate", summary.tiers.productionCandidate],
+        ["Beta", summary.tiers.beta],
+        ["Alpha", summary.tiers.alpha],
+        ["Incubating", summary.tiers.incubating]
+      ];
+      const maxTier = Math.max(...tierData.map(([, v]) => v));
+      tierBars.innerHTML = tierData.map(([k, v]) => createBarRow(k, v, maxTier, tierColor[k])).join("");
+
+      const riskSet = new Set();
+      for (const app of data.apps) for (const r of toArray(app.risks)) riskSet.add(r);
+      const riskFilter = document.getElementById("riskFilter");
+      riskFilter.innerHTML += [...riskSet].sort().map(r => `<option value="${r}">${riskLabels[r] || r}</option>`).join("");
+
+      const legend = document.getElementById("legend");
+      legend.innerHTML = Object.entries(riskLabels).map(([k, v]) => `<span data-risk="${k}">${v}</span>`).join("");
+
+      const search = document.getElementById("search");
+      const tierFilter = document.getElementById("tierFilter");
+      const depthFilter = document.getElementById("depthFilter");
+      const appsContainer = document.getElementById("appsContainer");
+      const resultInfo = document.getElementById("resultInfo");
+
+      function matches(app, text) {
+        const hay = [
+          app.app,
+          app.tier,
+          app.depth,
+          app.doesNow,
+          ...toArray(app.risks),
+          ...toArray(app.capabilities),
+          ...toArray(app.emits),
+          ...toArray(app.consumes),
+          ...toArray(app.unmatchedConsumes),
+          ...toArray(app.shouldDo)
+        ].join(" ").toLowerCase();
+        return hay.includes(text.toLowerCase());
+      }
+
+      function drawApps() {
+        const text = search.value.trim();
+        const tier = tierFilter.value;
+        const depth = depthFilter.value;
+        const risk = riskFilter.value;
+        const filtered = data.apps.filter(app => {
+          if (tier && app.tier !== tier) return false;
+          if (depth && app.depth !== depth) return false;
+          if (risk && !toArray(app.risks).includes(risk)) return false;
+          if (text && !matches(app, text)) return false;
+          return true;
+        });
+        appsContainer.innerHTML = filtered.map(appCard).join("");
+        resultInfo.textContent = `Showing ${filtered.length} of ${data.apps.length} apps`;
+      }
+
+      [search, tierFilter, depthFilter, riskFilter].forEach(el => el.addEventListener("input", drawApps));
+      drawApps();
+    }
+
+    (async () => {
+      try {
+        const data = await loadData();
+        render(data);
+      } catch (error) {
+        document.body.innerHTML = `
+          <div style="max-width:900px;margin:30px auto;padding:20px;background:#fff;border:1px solid #ddd;border-radius:10px;font-family:Segoe UI,sans-serif;">
+            <h2>Unable to load audit data</h2>
+            <p>Expected <code>.app-report-data.json</code> in the same folder as this HTML file.</p>
+            <p>Error: <code>${String(error.message || error)}</code></p>
+            <p>Tip: open this directory with a local web server (for example <code>python3 -m http.server</code>) and then open the HTML page.</p>
+          </div>
+        `;
+      }
+    })();
+  </script>
+
+<script>
+(function() {
+    const data = JSON.parse(document.getElementById('embeddedAuditData').textContent);
+    
+    function renderMetrics() {
+        const m = data.summary;
+        const container = document.getElementById('metrics');
+        container.innerHTML = `
+            <div class="card">
+                <div class="metric-label">Avg Maturity Score</div>
+                <div class="metric-value">${m.avgScore.toFixed(1)}</div>
+                <div class="metric-sub">Portfolio performance</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Apps Applied</div>
+                <div class="metric-value">${m.totalApps}</div>
+                <div class="metric-sub">Progress toward 100</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Production Ready</div>
+                <div class="metric-value">${m.tiers.productionCandidate}</div>
+                <div class="metric-sub">Tier: PC (80+)</div>
+            </div>
+            <div class="card">
+                <div class="metric-label">Missing Tests</div>
+                <div class="metric-value">${m.withoutAnyTests}</div>
+                <div class="metric-sub">Apps with 0 tests</div>
+            </div>
+        `;
+    }
+
+    function renderClusterOverview() {
+        const container = document.getElementById('criticalFindings');
+        container.innerHTML = '';
+        Object.entries(data.clusterGaps).forEach(([name, gap]) => {
+            if (typeof gap === 'string') return;
+            const li = document.createElement('li');
+            li.innerHTML = `<span class="sev ${gap.avgScore > 75 ? 'p2' : 'p1'}">${gap.avgScore}</span> <b>${name}</b>: ${gap.appCount}/${gap.targetCount} apps. Primary gap: ${gap.primaryGap}.`;
+            container.appendChild(li);
+        });
+    }
+
+    function renderApps() {
+        const container = document.getElementById('appsContainer');
+        container.innerHTML = '';
+        container.style.display = 'block'; // Single column of clusters
+
+        const grouped = {};
+        data.apps.forEach(app => {
+            if (!grouped[app.cluster]) grouped[app.cluster] = [];
+            grouped[app.cluster].append(app);
+        });
+
+        // Use the existing app list rendering but grouped
+        const clusters = [...new Set(data.apps.map(a => a.cluster))].sort();
+        
+        clusters.forEach(cluster => {
+            const clusterApps = data.apps.filter(a => a.cluster === cluster);
+            const clusterHeader = document.createElement('div');
+            clusterHeader.innerHTML = `<h2 style="margin-top: 2rem; color: #083344;">${cluster}</h2>`;
+            container.appendChild(clusterHeader);
+
+            const grid = document.createElement('div');
+            grid.className = 'apps';
+            clusterApps.forEach(app => {
+                const card = document.createElement('details');
+                card.innerHTML = `
+                    <summary>
+                        <div class="app-head">
+                            <div>
+                                <div class="app-name">${app.app}</div>
+                                <div class="chips">
+                                    <span class="chip tier-${app.tier.toLowerCase().replace(' ', '')}">${app.tier}</span>
+                                    <span class="chip">${app.depth} Depth</span>
+                                </div>
+                            </div>
+                            <div class="score">${app.score}</div>
+                        </div>
+                    </summary>
+                    <div class="body">
+                        <div class="section">
+                            <h4>Vision</h4>
+                            <p>${app.vision}</p>
+                        </div>
+                        <div class="section">
+                            <h4>Functional Status</h4>
+                            <p>${app.doesNow}</p>
+                        </div>
+                        <div class="section">
+                            <h4>Target End-State</h4>
+                            <p>${app.endState}</p>
+                        </div>
+                        <div class="section">
+                            <h4>Immediate Gaps (Next Stage)</h4>
+                            <ul>${app.shouldDo.map(s => `<li>${s}</li>`).join('')}</ul>
+                        </div>
+                        <div class="kvs">
+                            <div class="kv"><div class="k">B-Tests</div><div class="v">${app.backendTests}</div></div>
+                            <div class="kv"><div class="k">F-Tests</div><div class="v">${app.frontendTests}</div></div>
+                            <div class="kv"><div class="k">Risks</div><div class="v">${app.risks.length}</div></div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            container.appendChild(grid);
+        });
+    }
+
+    renderMetrics();
+    renderClusterOverview();
+    renderApps();
+})();
+</script>
+
+<script>
+(function() {
+    setTimeout(() => {
+        const data = JSON.parse(document.getElementById('embeddedAuditData').textContent);
+        
+        function renderMetrics() {
+            const m = data.summary;
+            const container = document.getElementById('metrics');
+            container.innerHTML = `
+                <div class="card">
+                    <div class="metric-label">Avg Maturity Score</div>
+                    <div class="metric-value">${m.avgScore.toFixed(1)}</div>
+                    <div class="metric-sub">Portfolio performance</div>
+                </div>
+                <div class="card">
+                    <div class="metric-label">Apps Applied</div>
+                    <div class="metric-value">${m.totalApps}</div>
+                    <div class="metric-sub">Progress toward 100</div>
+                </div>
+                <div class="card">
+                    <div class="metric-label">Production Ready</div>
+                    <div class="metric-value">${m.tiers.productionCandidate}</div>
+                    <div class="metric-sub">Tier: PC (80+)</div>
+                </div>
+                <div class="card">
+                    <div class="metric-label">Missing Tests</div>
+                    <div class="metric-value">${m.withoutAnyTests}</div>
+                    <div class="metric-sub">Apps with 0 tests</div>
+                </div>
+            `;
+        }
+
+        function renderClusterOverview() {
+            const container = document.getElementById('criticalFindings');
+            container.innerHTML = '';
+            Object.entries(data.clusterGaps).forEach(([name, gap]) => {
+                const li = document.createElement('li');
+                if (typeof gap === 'string') {
+                    li.innerHTML = `<span class="sev p1">Planned</span> <b>${name}</b>: Spec written, pending build.`;
+                } else {
+                    li.innerHTML = `<span class="sev ${gap.avgScore > 75 ? 'p2' : 'p1'}">${gap.avgScore}</span> <b>${name}</b>: ${gap.appCount}/${gap.targetCount} apps. Primary gap: ${gap.primaryGap}.`;
+                }
+                container.appendChild(li);
+            });
+        }
+
+        function renderApps() {
+            const container = document.getElementById('appsContainer');
+            container.innerHTML = '';
+            container.style.display = 'block';
+
+            const clusters = [...new Set(data.apps.map(a => a.cluster))].sort();
+            
+            clusters.forEach(cluster => {
+                const clusterApps = data.apps.filter(a => a.cluster === cluster);
+                const clusterHeader = document.createElement('div');
+                clusterHeader.innerHTML = `<h2 style="margin-top: 3rem; margin-bottom: 1.5rem; color: #083344; border-bottom: 2px solid #d9e2e1; padding-bottom: 0.5rem;">${cluster}</h2>`;
+                container.appendChild(clusterHeader);
+
+                const grid = document.createElement('div');
+                grid.className = 'apps';
+                clusterApps.forEach(app => {
+                    const card = document.createElement('details');
+                    card.style.marginBottom = '12px';
+                    card.innerHTML = `
+                        <summary style="padding: 12px; background: #fff; border: 1px solid #d9e2e1; border-radius: 10px; cursor: pointer;">
+                            <div class="app-head" style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <div class="app-name" style="font-weight: 700; font-size: 1.1rem;">${app.app}</div>
+                                    <div class="chips" style="display: flex; gap: 8px; margin-top: 6px;">
+                                        <span class="chip tier-${app.tier.toLowerCase().replace(/ /g, '')}" style="padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; border: 1px solid;">${app.tier}</span>
+                                        <span class="chip" style="padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; border: 1px solid #d9e2e1; background: #f8fbfb;">${app.depth} Depth</span>
+                                    </div>
+                                </div>
+                                <div class="score" style="font-weight: 700; font-size: 1.2rem; color: ${app.score > 80 ? '#1e8e5a' : app.score > 60 ? '#b7791f' : '#c53030'};">${app.score}</div>
+                            </div>
+                        </summary>
+                        <div class="body" style="padding: 16px; background: #fcfefe; border: 1px solid #d9e2e1; border-top: none; border-radius: 0 0 10px 10px;">
+                            <div class="section" style="margin-bottom: 16px;">
+                                <h4 style="margin: 0 0 4px; font-size: 0.8rem; color: #5b6b75; text-transform: uppercase;">Vision</h4>
+                                <p style="margin: 0; color: #1a2730; font-weight: 500;">${app.vision}</p>
+                            </div>
+                            <div class="section" style="margin-bottom: 16px;">
+                                <h4 style="margin: 0 0 4px; font-size: 0.8rem; color: #5b6b75; text-transform: uppercase;">Current Functionality</h4>
+                                <p style="margin: 0; color: #5b6b75;">${app.doesNow}</p>
+                            </div>
+                            <div class="section" style="margin-bottom: 16px;">
+                                <h4 style="margin: 0 0 4px; font-size: 0.8rem; color: #5b6b75; text-transform: uppercase;">Target End-State</h4>
+                                <p style="margin: 0; color: #5b6b75;">${app.endState}</p>
+                            </div>
+                            <div class="section" style="margin-bottom: 16px;">
+                                <h4 style="margin: 0 0 4px; font-size: 0.8rem; color: #5b6b75; text-transform: uppercase;">Gaps to Close</h4>
+                                <ul style="margin: 4px 0 0; padding-left: 20px; color: #5b6b75;">${app.shouldDo.map(s => `<li>${s}</li>`).join('')}</ul>
+                            </div>
+                        </div>
+                    `;
+                    grid.appendChild(card);
+                });
+                container.appendChild(grid);
+            });
+        }
+
+        renderMetrics();
+        renderClusterOverview();
+        renderApps();
+    }, 100);
+})();
+</script>
+</body>
+</html>

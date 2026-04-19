@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro-SaaS Ecosystem Hub</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --sidebar: #1e293b;
+            --card: #334155;
+            --accent: #38bdf8;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --success: #22c55e;
+            --warning: #eab308;
+            --danger: #ef4444;
+            --pc: #10b981;
+            --beta: #0ea5e9;
+            --alpha: #f59e0b;
+            --inc: #64748b;
+        }
+
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        nav {
+            width: 300px;
+            background: var(--sidebar);
+            border-right: 1px solid #334155;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-box {
+            background: #0f172a;
+            border: 1px solid #334155;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            color: white;
+            width: 100%;
+            margin-bottom: 1.5rem;
+        }
+
+        .cluster-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cluster-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .cluster-item:hover, .cluster-item.active {
+            background: #334155;
+            color: white;
+        }
+
+        .cluster-item.active {
+            border-left: 3px solid var(--accent);
+        }
+
+        /* Main Content */
+        main {
+            flex-grow: 1;
+            padding: 2rem 3rem;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 { margin: 0; font-size: 2rem; }
+
+        .stats-strip {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            background: var(--sidebar);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid #334155;
+        }
+
+        .stat-val { font-size: 1.5rem; font-weight: 700; color: var(--accent); }
+        .stat-lbl { font-size: 0.75rem; text-transform: uppercase; color: var(--text-dim); }
+
+        /* Grid */
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .app-card {
+            background: var(--sidebar);
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+            position: relative;
+        }
+
+        .app-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent);
+        }
+
+        .tier-badge {
+            font-size: 0.65rem;
+            padding: 0.125rem 0.5rem;
+            border-radius: 999px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .tier-productioncandidate { background: #065f46; color: #a7f3d0; }
+        .tier-beta { background: #075985; color: #e0f2fe; }
+        .tier-alpha { background: #92400e; color: #fef3c7; }
+        .tier-incubating { background: #1e293b; color: #cbd5e1; }
+
+        .app-name { font-weight: 700; font-size: 1.1rem; margin: 0.5rem 0; }
+        .app-vision { font-size: 0.85rem; color: var(--text-dim); height: 3rem; overflow: hidden; }
+
+        /* Modal / Detail View */
+        #detailOverlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            padding: 2rem;
+        }
+
+        .detail-panel {
+            background: var(--sidebar);
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            overflow-y: auto;
+            position: relative;
+            border: 1px solid #334155;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1.5rem; right: 1.5rem;
+            cursor: pointer;
+            color: var(--text-dim);
+            font-size: 1.5rem;
+        }
+
+        .section-title {
+            color: var(--accent);
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            margin-top: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .gap-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .gap-item {
+            background: #0f172a;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            border-left: 4px solid var(--warning);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            SaaS Hub
+        </div>
+        <input type="text" class="search-box" id="appSearch" placeholder="Search 100 apps...">
+        <ul class="cluster-list" id="clusterList">
+            <li class="cluster-item active" data-cluster="all">All Clusters</li>
+            <li class="cluster-item" data-cluster="Cluster A: Dev Intelligence">Cluster A: Dev Intelligence</li>
+            <li class="cluster-item" data-cluster="Cluster B: Legal & Compliance">Cluster B: Legal & Compliance</li>
+            <li class="cluster-item" data-cluster="Cluster C: Finance & Operations">Cluster C: Finance & Operations</li>
+            <li class="cluster-item" data-cluster="Cluster D: HR & Talent">Cluster D: HR & Talent</li>
+            <li class="cluster-item" data-cluster="Cluster E: Creator & Media">Cluster E: Creator & Media</li>
+            <li class="cluster-item" data-cluster="Other / Platform">Platform & Infrastructure</li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="header">
+            <div>
+                <h1 id="viewTitle">All Applications</h1>
+                <p id="viewDesc" style="color: var(--text-dim);">Overview of the 100-app AI-native ecosystem maturity and functional status.</p>
+            </div>
+            <div id="clusterStatus" class="tier-badge" style="display: none;"></div>
+        </div>
+
+        <div class="stats-strip" id="statsStrip">
+            <div><div class="stat-lbl">Apps Applied</div><div class="stat-val" id="statCount">0</div></div>
+            <div><div class="stat-lbl">Avg Maturity</div><div class="stat-val" id="statMaturity">0%</div></div>
+            <div><div class="stat-lbl">Prod Ready</div><div class="stat-val" id="statProd">0</div></div>
+            <div><div class="stat-lbl">Primary Gap</div><div class="stat-val" id="statGap" style="font-size: 1rem; margin-top: 0.4rem;">N/A</div></div>
+        </div>
+
+        <div class="app-grid" id="appGrid"></div>
+    </main>
+
+    <div id="detailOverlay">
+        <div class="detail-panel">
+            <span class="close-btn" id="closeDetail">&times;</span>
+            <div id="detailContent"></div>
+        </div>
+    </div>
+
+    <script id="embeddedData" type="application/json">
+    {
+        "clusters": {
+            "Cluster A: Dev Intelligence": {
+                "apps": ["incidentbrain", "dependencyradar", "deploysignal", "apievolver", "securitypulse"],
+                "vision": "Automating the software lifecycle from security to incidents.",
+                "target": 5
+            },
+            "Cluster B: Legal & Compliance": {
+                "apps": ["contractsense", "complianceradar", "policyforge", "auditready", "licenseguard", "ndaflow", "regulatoryfiling", "contractportfolio", "dataprivacyai", "legalresearch"],
+                "vision": "AI-native risk management and regulatory automation.",
+                "target": 10
+            },
+            "Cluster C: Finance & Operations": {
+                "apps": ["cashflowai", "financenarrator", "expenseintelligence", "vendoriq", "invoiceprocessor", "runwaymodeler", "procurebot", "budgetpilot", "taxdataorganizer", "equityintelligence"],
+                "vision": "Autonomous financial planning and strategic ops.",
+                "target": 10
+            },
+            "Cluster D: HR & Talent": {
+                "apps": ["hiresignal", "interviewos", "performancenarrative", "retentionsignal", "compbenchmark", "onboardflow", "jobcraftai", "peopleanalytics"],
+                "vision": "Data-driven workforce intelligence and employee experience.",
+                "target": 8
+            },
+            "Cluster E: Creator & Media": {
+                "apps": ["contentos", "brandvoice", "videonarrator", "seointelligence", "ghostwriter", "socialintelligence", "creatoranalytics", "copyoptimizer", "localizationos", "podcastos", "visualcontext"],
+                "vision": "Scaling creative output via AI-assisted production.",
+                "target": 11
+            }
+        },
+        "visions": {
+            "incidentbrain": "Central nervous system for incident response, automating root cause analysis.",
+            "contractsense": "AI-powered legal co-pilot reducing review time and identifying risks.",
+            "cashflowai": "Predictive financial intelligence eliminating cash flow surprises.",
+            "hiresignal": "AI recruiting intelligence for high-confidence candidate sourcing.",
+            "brandvoice": "AI guardian of brand consistency across all communication channels.",
+            "nexus-hub": "The ecosystem backbone: App Registry, Event Bus, and Workflow Engine."
+        }
+    }
+    </script>
+
+    <script>
+    (async function() {
+        const rawData = JSON.parse(document.getElementById('embeddedData').textContent);
+        
+        // Fetch the latest report data
+        let report;
+        try {
+            const response = await fetch('.app-report-data.json');
+            report = await response.json();
+        } catch (e) {
+            console.error("Could not fetch report data, using fallback UI.");
+            return;
+        }
+
+        const appMap = {};
+        report.apps.forEach(a => {
+            const clusterName = Object.keys(rawData.clusters).find(c => rawData.clusters[c].apps.includes(a.app)) || "Other / Platform";
+            appMap[a.app] = {
+                ...a,
+                cluster: clusterName,
+                vision: rawData.visions[a.app] || `AI-native ${a.app.title} service for the 100-app ecosystem.`,
+                endState: `A fully autonomous, multi-tenant ${a.app.replace(/os|ai|iq|hub/g, '').toUpperCase()} platform integrated with Nexus Hub.`
+            };
+        });
+
+        const state = {
+            currentCluster: 'all',
+            searchQuery: ''
+        };
+
+        function updateUI() {
+            const filteredApps = Object.values(appMap).filter(app => {
+                const matchesCluster = state.currentCluster === 'all' || app.cluster === state.currentCluster;
+                const matchesSearch = app.app.toLowerCase().includes(state.searchQuery.toLowerCase());
+                return matchesCluster && matchesSearch;
+            });
+
+            // Update stats
+            document.getElementById('statCount').textContent = filteredApps.length;
+            const avgMaturity = filteredApps.reduce((acc, a) => acc + a.score, 0) / (filteredApps.length || 1);
+            document.getElementById('statMaturity').textContent = avgMaturity.toFixed(0) + '%';
+            document.getElementById('statProd').textContent = filteredApps.filter(a => a.score >= 80).length;
+            
+            const missingTests = filteredApps.filter(a => a.backendTests === 0).length;
+            document.getElementById('statGap').textContent = missingTests > 0 ? 'Testing Coverage' : 'Feature Depth';
+
+            // Update Grid
+            const grid = document.getElementById('appGrid');
+            grid.innerHTML = '';
+            filteredApps.sort((a,b) => b.score - a.score).forEach(app => {
+                const card = document.createElement('div');
+                card.className = 'app-card';
+                card.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                        <span class="tier-badge tier-${app.tier.toLowerCase().replace(/ /g, '')}">${app.tier}</span>
+                        <span style="font-weight: 800; color: ${app.score > 80 ? 'var(--success)' : 'var(--warning)'}">${app.score}</span>
+                    </div>
+                    <div class="app-name">${app.app}</div>
+                    <div class="app-vision">${app.vision}</div>
+                    <div style="margin-top: 1rem; font-size: 0.7rem; color: var(--text-dim); display: flex; gap: 1rem;">
+                        <span>B-Tests: ${app.backendTests}</span>
+                        <span>F-Tests: ${app.frontendTests}</span>
+                    </div>
+                `;
+                card.onclick = () => showDetail(app.app);
+                grid.appendChild(card);
+            });
+        }
+
+        function showDetail(appId) {
+            const app = appMap[appId];
+            const content = document.getElementById('detailContent');
+            content.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <h1 style="margin: 0;">${app.app}</h1>
+                    <span class="tier-badge tier-${app.tier.toLowerCase().replace(/ /g, '')}">${app.tier}</span>
+                </div>
+                <p style="color: var(--text-dim); margin-bottom: 2rem;">Cluster: ${app.cluster}</p>
+                
+                <div class="section-title">Vision</div>
+                <p style="font-size: 1.1rem; line-height: 1.6;">${app.vision}</p>
+                
+                <div class="section-title">Current Functional Status</div>
+                <p>${app.doesNow}</p>
+                
+                <div class="section-title">Target End-State</div>
+                <p>${app.endState}</p>
+                
+                <div class="section-title">Gaps (Next Stage)</div>
+                <ul class="gap-list">
+                    ${app.shouldDo.map(g => `<li class="gap-item">${g}</li>`).join('')}
+                </ul>
+
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 3rem;">
+                    <div style="background: #0f172a; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                        <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Maturity Score</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent);">${app.score}</div>
+                    </div>
+                    <div style="background: #0f172a; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                        <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Backend Depth</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--accent);">${app.depth}</div>
+                    </div>
+                    <div style="background: #0f172a; padding: 1rem; border-radius: 0.5rem; text-align: center;">
+                        <div style="font-size: 0.7rem; color: var(--text-dim); text-transform: uppercase;">Risks Flagged</div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--danger);">${app.risks.length}</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('detailOverlay').style.display = 'flex';
+        }
+
+        // Event Listeners
+        document.getElementById('appSearch').oninput = (e) => {
+            state.searchQuery = e.target.value;
+            updateUI();
+        };
+
+        document.querySelectorAll('.cluster-item').forEach(item => {
+            item.onclick = () => {
+                document.querySelectorAll('.cluster-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                state.currentCluster = item.dataset.cluster;
+                
+                document.getElementById('viewTitle').textContent = state.currentCluster === 'all' ? 'All Applications' : state.currentCluster;
+                const clusterInfo = rawData.clusters[state.currentCluster];
+                document.getElementById('viewDesc').textContent = clusterInfo ? clusterInfo.vision : "Overview of ecosystem infrastructure and platform services.";
+                
+                updateUI();
+            };
+        });
+
+        document.getElementById('closeDetail').onclick = () => {
+            document.getElementById('detailOverlay').style.display = 'none';
+        };
+
+        window.onclick = (e) => {
+            if (e.target.id === 'detailOverlay') document.getElementById('detailOverlay').style.display = 'none';
+        };
+
+        String.prototype.title = function() {
+            return this.charAt(0).toUpperCase() + this.slice(1);
+        }
+
+        updateUI();
+    })();
+    </script>
+</body>
+</html>

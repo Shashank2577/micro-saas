@@ -1,0 +1,70 @@
+{
+  "app_id": "contractportfolio",
+  "title": "ContractPortfolio",
+  "domain": "Legal Intelligence",
+  "intent": "Portfolio-wide contract extraction, risk indexing, and renewal intelligence",
+  "maturity": {
+    "score": 55,
+    "tier": "Alpha",
+    "depth": "Shallow",
+    "risks": [
+      "no-frontend",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "requirements": [
+    "contracts module fully implemented with backend, frontend, tests",
+    "clause-extraction module fully implemented with backend, frontend, tests",
+    "obligations module fully implemented with backend, frontend, tests",
+    "risk-scoring module fully implemented with backend, frontend, tests",
+    "renewals module fully implemented with backend, frontend, tests",
+    "counterparties module fully implemented with backend, frontend, tests"
+  ],
+  "constraints": [
+    "No user feedback loops; autonomous operation only",
+    "No TODO/stub placeholders in production paths",
+    "All queries are tenant-scoped",
+    "OpenAPI must include every endpoint",
+    "integration-manifest emits/consumes must be implemented",
+    "Unit + integration + UI tests required"
+  ],
+  "acceptance_criteria": [
+    "All listed modules available in UI + API",
+    "All required endpoints implemented",
+    "Events emitted/consumed according to manifest",
+    "Backend and frontend tests pass",
+    "PR submitted with .jules documentation bundle"
+  ],
+  "architecture": {
+    "entities": [
+      "ContractRecord",
+      "ClauseExtraction",
+      "RenewalAlert",
+      "RiskScore",
+      "ObligationItem",
+      "CounterpartyProfile"
+    ],
+    "services": [
+      "contractsService",
+      "clause-extractionService",
+      "obligationsService",
+      "risk-scoringService",
+      "renewalsService",
+      "counterpartiesService"
+    ],
+    "route_prefix": "/api/v1/contracts"
+  },
+  "events": {
+    "emits": [
+      "contractportfolio.contract.indexed",
+      "contractportfolio.renewal.alerted",
+      "contractportfolio.risk.updated"
+    ],
+    "consumes": [
+      "documentvault.document.uploaded",
+      "contractsense.contract.analyzed",
+      "regulatoryfiling.filing.submitted"
+    ]
+  }
+}

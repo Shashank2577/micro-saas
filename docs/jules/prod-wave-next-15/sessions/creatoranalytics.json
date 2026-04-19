@@ -1,0 +1,50 @@
+{
+  "app_id": "creatoranalytics",
+  "title": "CreatorAnalytics",
+  "domain": "Creator Intelligence",
+  "intent": "Content performance attribution and ROI insights for creator teams",
+  "maturity": {
+    "score": 60,
+    "tier": "Beta",
+    "depth": "Medium",
+    "risks": [
+      "no-backend-tests",
+      "no-frontend-tests",
+      "no-backend-dockerfile",
+      "no-readme"
+    ]
+  },
+  "modules": [
+    "assets",
+    "metrics",
+    "attribution",
+    "roi",
+    "segments",
+    "insights"
+  ],
+  "entities": [
+    "ContentAsset",
+    "ChannelMetric",
+    "AttributionModel",
+    "ROISnapshot",
+    "AudienceSegment",
+    "PerformanceInsight"
+  ],
+  "emits": [
+    "creatoranalytics.roi.updated",
+    "creatoranalytics.insight.generated",
+    "creatoranalytics.segment.identified"
+  ],
+  "consumes": [
+    "contentos.asset.published",
+    "socialintelligence.signal.detected",
+    "seointelligence.rank.alerted"
+  ],
+  "route_prefix": "/api/v1/creator-analytics",
+  "acceptance_criteria": [
+    "All modules implemented end-to-end with tests",
+    "OpenAPI and integration-manifest aligned with implementation",
+    "No TODO/stub logic in production paths",
+    "PR submitted with .jules documentation bundle"
+  ]
+}
