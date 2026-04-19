@@ -1,59 +1,65 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8132';
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8090';
 
 const headers = {
   'Content-Type': 'application/json',
   'X-Tenant-ID': '00000000-0000-0000-0000-000000000001',
 };
 
-export interface VideoAsset {
+export interface EcosystemApp {
   id: string;
-  tenantId: string;
-  title: string;
-  fileUrl: string;
-  durationSeconds: number;
-  status: 'UPLOADED' | 'PROCESSING' | 'DONE' | 'FAILED';
+  name: string;
+  displayName: string;
+  baseUrl: string;
+  status: 'ACTIVE' | 'INACTIVE' | 'ERROR';
+  lastHeartbeatAt: string | null;
+  registeredAt: string;
+  manifest: Record<string, unknown>;
+}
+
+export interface EcosystemEvent {
+  id: string;
+  sourceApp: string;
+  eventType: string;
+  payload: Record<string, unknown>;
   createdAt: string;
 }
 
-export interface RegisterVideoRequest {
-  title: string;
-  fileUrl: string;
-  durationSeconds?: number;
+export interface Workflow {
+  id: string;
+  name: string;
+  enabled: boolean;
+  lastRunAt: string | null;
+  triggerCondition: Record<string, unknown>;
+  steps: Record<string, unknown>[];
 }
 
 export const api = {
-  videos: {
-    list: async (): Promise<VideoAsset[]> => {
-      const res = await fetch(`${BASE_URL}/api/v1/videos`, { headers, cache: 'no-store' });
-      if (!res.ok) throw new Error(`Failed to fetch videos: ${res.status}`);
+  apps: {
+    list: async (): Promise<EcosystemApp[]> => {
+      const res = await fetch(`${BASE_URL}/api/v1/apps`, { headers });
+      if (!res.ok) throw new Error(`Failed to fetch apps: ${res.status}`);
       return res.json();
     },
-    register: async (data: RegisterVideoRequest): Promise<VideoAsset> => {
-      const res = await fetch(`${BASE_URL}/api/v1/videos`, {
+    register: async (data: Omit<EcosystemApp, 'id' | 'status' | 'lastHeartbeatAt' | 'registeredAt'>): Promise<EcosystemApp> => {
+      const res = await fetch(`${BASE_URL}/api/v1/apps/register`, {
         method: 'POST', headers, body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error(`Failed to register video: ${res.status}`);
+      if (!res.ok) throw new Error(`Failed to register app: ${res.status}`);
       return res.json();
     },
-    transcribe: async (id: string) => {
-        const res = await fetch(`${BASE_URL}/api/v1/videos/${id}/transcribe`, { method: 'POST', headers });
-        if (!res.ok) throw new Error(`Failed to transcribe video: ${res.status}`);
-        return res.json();
+  },
+  events: {
+    list: async (limit = 50): Promise<EcosystemEvent[]> => {
+      const res = await fetch(`${BASE_URL}/api/v1/events?limit=${limit}`, { headers });
+      if (!res.ok) throw new Error(`Failed to fetch events: ${res.status}`);
+      return res.json();
     },
-    generateChapters: async (id: string) => {
-        const res = await fetch(`${BASE_URL}/api/v1/videos/${id}/chapters`, { method: 'POST', headers });
-        if (!res.ok) throw new Error(`Failed to generate chapters: ${res.status}`);
-        return res.json();
+  },
+  workflows: {
+    list: async (): Promise<Workflow[]> => {
+      const res = await fetch(`${BASE_URL}/api/v1/workflows`, { headers });
+      if (!res.ok) throw new Error(`Failed to fetch workflows: ${res.status}`);
+      return res.json();
     },
-    deriveContent: async (id: string) => {
-        const res = await fetch(`${BASE_URL}/api/v1/videos/${id}/derive`, { method: 'POST', headers });
-        if (!res.ok) throw new Error(`Failed to derive content: ${res.status}`);
-        return res.json();
-    },
-    getClips: async (id: string) => {
-        const res = await fetch(`${BASE_URL}/api/v1/videos/${id}/clips`, { headers });
-        if (!res.ok) throw new Error(`Failed to get clips: ${res.status}`);
-        return res.json();
-    }
-  }
+  },
 };
