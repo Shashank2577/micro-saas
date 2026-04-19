@@ -1,33 +1,27 @@
-# Billing AI (billingai)
+# BillingAI
 
-> **Tier:** Beta | **Score:** 60/100
+Subscription billing orchestration, dunning, and revenue leakage prevention for Revenue Operations.
 
-A micro-saas ecosystem application.
+## Setup
 
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
+1. Requires Java 21+ and Node.js 20+.
+2. Database: PostgreSQL 15+.
+3. Start dependencies (e.g., using docker-compose).
 
-## Integration
-This application integrates with the Nexus Hub.
+## Environment Variables
 
-### Emits Events:
-None
+- `DB_URL`: JDBC URL for PostgreSQL
+- `DB_USER`: Database user
+- `DB_PASS`: Database password
+- `LITELLM_API_KEY`: API key for AI features
 
-### Consumes Events:
-None
+## Runbook
 
-## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
+- Start Backend: `mvn -pl billingai/backend spring-boot:run`
+- Start Frontend: `npm --prefix billingai/frontend run dev`
+- Run Backend Tests: `mvn -pl billingai/backend clean verify`
+- Run Frontend Tests: `npm --prefix billingai/frontend test`
 
-# Frontend
-cd frontend && npm run dev
-```
+## Docker
 
-## Docker Deployment
-```bash
-docker build -t billingai-backend ./backend
-docker build -t billingai-frontend ./frontend
-```
+A Dockerfile is provided in `backend/Dockerfile`. It uses `eclipse-temurin:21-jre-alpine`.
