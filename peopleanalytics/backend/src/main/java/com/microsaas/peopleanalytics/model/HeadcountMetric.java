@@ -7,23 +7,22 @@ import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.UUID;
-import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "workforce_scenario")
-public class WorkforceScenario {
+@Table(name = "headcount_metrics")
+public class HeadcountMetric {
     @Id
     private UUID id;
     private UUID tenantId;
     private String name;
-    private Integer baselineHeadcount;
-    private Integer projectedHeadcount;
-    private BigDecimal burnRateMonthly;
-    private BigDecimal runwayMonths;
-    
+    private String status;
+
     @JdbcTypeCode(SqlTypes.JSON)
-    private String assumptions;
+    private String metadataJson;
+
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

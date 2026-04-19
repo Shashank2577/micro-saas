@@ -1,33 +1,31 @@
-# People Analytics (peopleanalytics)
+# People Analytics App
 
-> **Tier:** Beta | **Score:** 60/100
+This application provides analytics on workforce health, productivity, and org planning.
 
-A micro-saas ecosystem application.
+## Backend
+Built with Java 21, Spring Boot, and PostgreSQL.
 
-## Architecture
-- **Backend:** Spring Boot (Port: 8080)
-- **Frontend:** Next.js (Port: 3000)
+### Setup and Running
+1. Make sure you have Docker running.
+2. In the `backend` directory, run: `mvn clean package`
+3. Run the application: `java -jar target/peopleanalytics-0.0.1-SNAPSHOT.jar`
 
-## Integration
-This application integrates with the Nexus Hub.
+### Env Vars
+- `SPRING_DATASOURCE_URL`: The JDBC URL for PostgreSQL.
+- `SPRING_DATASOURCE_USERNAME`: PostgreSQL username.
+- `SPRING_DATASOURCE_PASSWORD`: PostgreSQL password.
+- `SPRING_DATA_REDIS_HOST`: Redis host.
+- `SPRING_DATA_REDIS_PORT`: Redis port.
 
-### Emits Events:
-None
+## Frontend
+Built with Next.js 15.
 
-### Consumes Events:
-None
+### Setup and Running
+1. In the `frontend` directory, run: `npm install`
+2. Run the application: `npm run dev`
 
-## Development
-```bash
-# Backend
-cd backend && mvn spring-boot:run
+### Env Vars
+None required out of the box, relies on proxying requests to the backend.
 
-# Frontend
-cd frontend && npm run dev
-```
-
-## Docker Deployment
-```bash
-docker build -t peopleanalytics-backend ./backend
-docker build -t peopleanalytics-frontend ./frontend
-```
+## Runbook
+If tests fail in the backend, verify PostgreSQL and Redis are running. The backend relies heavily on `X-Tenant-ID` header for multi-tenancy.
