@@ -1,0 +1,40 @@
+spring:
+  application:
+    name: revopsai
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:revopsai}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_URL:http://localhost:8180}/realms/${KEYCLOAK_REALM:cc}
+
+server:
+  port: 8147
+
+cc:
+  ai:
+    gateway-url: ${AI_GATEWAY_URL:http://localhost:4000}
+    api-key: ${AI_API_KEY:mock-key}
+  tenancy:
+    enabled: true
+  webhook:
+    enabled: true
+
+logging:
+  level:
+    com.microsaas.revopsai: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
