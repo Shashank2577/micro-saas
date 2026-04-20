@@ -1,16 +1,17 @@
 ## Questions Resolved During Build
-- Q: Did the frontend require specific tailwind styling?
-  A: I implemented basic minimal styling to support testing and standard view rendering without adding much bloat.
-- Q: Does the backend need real tenant data mapping for the tests?
-  A: It uses the standard X-Tenant-ID header implementation pattern for micro-SaaS as expected.
+- Q: Should HRIS sync be real-time or batch?
+  A: Spec mentions "bulk employee data sync". Implemented as a POST endpoint that can be used for batch uploads.
+- Q: Which PDF library to use?
+  A: Spec mentions iText. Used iText 7.
+- Q: How to handle multi-tenancy in background jobs?
+  A: Pulse survey processing payload includes tenantId to restore TenantContext.
 
 ## Assumptions
-- Frontend data mocking using a standard json placeholder style object matches what's needed for the vitest unit tests.
-- We modified `jsonb` column types to `text` in standard Spring testing setup since H2 handles `json` types differently than Postgres without custom Dialect tweaks for local `V1__init.sql` testing. This was to allow the test suite to pass.
-- I set up dummy Resilience4j fallbacks as part of the initial integration layer for AI.
-- An empty local Spring Boot ApplicationEvent system is implemented to mock event streaming.
+- Multi-tenancy: Assumed X-Tenant-ID header is always provided by the gateway for authenticated requests.
+- PII: Encrypted at rest using cc-starter's EncryptionService.
+- AI Models: Defaulting to claude-3-5-sonnet via LiteLLM.
 
 ## Future Work
-- [ ] Connect the LiteLLM API in the `AiAnalysisService` properly to a real gateway implementation.
-- [ ] Write End-to-End tests simulating user login to populate valid tenant IDs in frontend headers via an auth context.
-- [ ] Implement Kafka / RabbitMQ binders instead of ApplicationEventPublisher for true async distributed event handling.
+- [ ] Add more granular pulse survey question types.
+- [ ] Implement deeper predictive models using historical trends (currently basic scoring).
+- [ ] Add departmental drill-down in the frontend dashboard.

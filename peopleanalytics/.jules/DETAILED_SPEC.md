@@ -1,165 +1,127 @@
-# PeopleAnalytics — Detailed Specification
+# Detailed Specification - PeopleAnalytics
 
-## 1. Database Schema
-```sql
-CREATE TABLE IF NOT EXISTS org_snapshots (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    name VARCHAR(180) NOT NULL,
-    status VARCHAR(40) NOT NULL,
-    metadata_json JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_org_snapshots_tenant ON org_snapshots(tenant_id);
+## 1. Overview
+PeopleAnalytics is an employee analytics and performance insights platform. It aggregates HR data to provide insights on performance, engagement, retention, and team dynamics.
 
-CREATE TABLE IF NOT EXISTS headcount_metrics (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    name VARCHAR(180) NOT NULL,
-    status VARCHAR(40) NOT NULL,
-    metadata_json JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_headcount_metrics_tenant ON headcount_metrics(tenant_id);
+## 2. Data Model (Entities)
+All entities will include `tenant_id` for multi-tenancy.
 
-CREATE TABLE IF NOT EXISTS attrition_signals (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    name VARCHAR(180) NOT NULL,
-    status VARCHAR(40) NOT NULL,
-    metadata_json JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_attrition_signals_tenant ON attrition_signals(tenant_id);
+- **Employee**
+  - `id`: UUID (Primary Key)
+  - `tenant_id`: UUID
+  - `external_id`: String (HRIS ID)
+  - `first_name`: String (Encrypted)
+  - `last_name`: String (Encrypted)
+  - `email`: String (Encrypted)
+  - `department`: String
+  - `role`: String
+  - `manager_id`: UUID (Self-reference)
+  - `hire_date`: LocalDate
+  - `status`: String (ACTIVE, INACTIVE)
+  - `created_at`: OffsetDateTime
+  - `updated_at`: OffsetDateTime
 
-CREATE TABLE IF NOT EXISTS engagement_indicators (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    name VARCHAR(180) NOT NULL,
-    status VARCHAR(40) NOT NULL,
-    metadata_json JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_engagement_indicators_tenant ON engagement_indicators(tenant_id);
+- **PerformanceMetric**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `employee_id`: UUID
+  - `metric_type`: String (GOAL, REVIEW, KPI)
+  - `value`: Double
+  - `target`: Double
+  - `period`: String (e.g., "2024-Q1")
+  - `date`: LocalDate
+  - `metadata`: JSONB
 
-CREATE TABLE IF NOT EXISTS performance_trends (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    name VARCHAR(180) NOT NULL,
-    status VARCHAR(40) NOT NULL,
-    metadata_json JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_performance_trends_tenant ON performance_trends(tenant_id);
+- **EngagementScore**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `employee_id`: UUID
+  - `score`: Double (0-100)
+  - `calculated_at`: OffsetDateTime
+  - `source`: String (SURVEY, ACTIVITY, etc.)
 
-CREATE TABLE IF NOT EXISTS planning_scenarios (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    name VARCHAR(180) NOT NULL,
-    status VARCHAR(40) NOT NULL,
-    metadata_json JSONB,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-CREATE INDEX idx_planning_scenarios_tenant ON planning_scenarios(tenant_id);
-```
+- **PulseSurvey**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `title`: String
+  - `description`: String
+  - `status`: String (DRAFT, ACTIVE, CLOSED)
+  - `created_at`: OffsetDateTime
 
-## 2. API Endpoints
-All endpoints are prefixed with `/api/v1/people-analytics`.
-They must ensure multi-tenant isolation by using a `X-Tenant-ID` header.
+- **SurveyResponse**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `survey_id`: UUID
+  - `employee_id`: UUID
+  - `score`: Integer
+  - `feedback`: String (Encrypted)
+  - `submitted_at`: OffsetDateTime
 
-### Org Snapshots
-- `GET /org-snapshots` - List org snapshots for tenant
-- `POST /org-snapshots` - Create org snapshot
-- `GET /org-snapshots/{id}` - Get org snapshot by ID
-- `PATCH /org-snapshots/{id}` - Update org snapshot
-- `POST /org-snapshots/{id}/validate` - Validate org snapshot logic
+- **TeamHealthMetric**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `department`: String
+  - `team_id`: String
+  - `collaboration_score`: Double
+  - `productivity_signal`: Double
+  - `measured_at`: OffsetDateTime
 
-### Headcount Metrics
-- `GET /headcount-metrics`
-- `POST /headcount-metrics`
-- `GET /headcount-metrics/{id}`
-- `PATCH /headcount-metrics/{id}`
-- `POST /headcount-metrics/{id}/validate`
+- **RetentionPrediction**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `employee_id`: UUID
+  - `risk_score`: Double (0.0 to 1.0)
+  - `risk_level`: String (LOW, MEDIUM, HIGH)
+  - `factors`: JSONB (AI-generated reasons)
+  - `predicted_at`: OffsetDateTime
 
-### Attrition Signals
-- `GET /attrition-signals`
-- `POST /attrition-signals`
-- `GET /attrition-signals/{id}`
-- `PATCH /attrition-signals/{id}`
-- `POST /attrition-signals/{id}/validate`
+- **AnalyticsCache**
+  - `id`: UUID
+  - `tenant_id`: UUID
+  - `cache_key`: String
+  - `cache_value`: JSONB
+  - `expires_at`: OffsetDateTime
 
-### Engagement Indicators
-- `GET /engagement-indicators`
-- `POST /engagement-indicators`
-- `GET /engagement-indicators/{id}`
-- `PATCH /engagement-indicators/{id}`
-- `POST /engagement-indicators/{id}/validate`
+## 3. API Endpoints
+Base path: `/api/v1/people-analytics`
 
-### Performance Trends
-- `GET /performance-trends`
-- `POST /performance-trends`
-- `GET /performance-trends/{id}`
-- `PATCH /performance-trends/{id}`
-- `POST /performance-trends/{id}/validate`
+- **Employee API**
+  - `GET /employees`: List employees
+  - `POST /employees/sync`: HRIS bulk sync
+- **Performance API**
+  - `GET /performance/dashboard`: KPI trends (90 days)
+  - `POST /performance/metrics`: Ingest metrics
+- **Engagement API**
+  - `GET /engagement/scores`: Get engagement scores
+  - `POST /engagement/surveys`: Create pulse survey
+  - `POST /engagement/surveys/{id}/respond`: Submit response
+- **Retention API**
+  - `GET /retention/risk`: Identify high-risk employees
+  - `GET /retention/forecasting`: Turnover probability
+- **Reporting API**
+  - `GET /reports/team-health`: Departmental health reports
+  - `GET /reports/export/pdf`: PDF export
+  - `GET /reports/export/csv`: CSV export
 
-### Planning Scenarios (Added for completeness based on domain model)
-- `GET /planning-scenarios`
-- `POST /planning-scenarios`
-- `GET /planning-scenarios/{id}`
-- `PATCH /planning-scenarios/{id}`
-- `POST /planning-scenarios/{id}/validate`
+## 4. Services
+- `PerformanceAggregationService`: Aggregates metrics into KPI trends.
+- `EngagementScoringService`: Weekly calculation of scores from survey/activity data.
+- `RetentionPredictionService`: Flight risk predictive modeling via LiteLLM.
+- `TeamHealthAnalysisService`: Generates team health signals.
+- `PulseSurveyService`: Handles survey lifecycle and async response processing (pgmq).
+- `InsightsGenerationService`: AI-powered narrative generation from data.
 
-### Global Endpoints
-- `POST /ai/analyze` - Request payload: `{ "query": "string", "context": "object" }`
-- `POST /workflows/execute` - Request payload: `{ "workflow_id": "string", "parameters": "object" }`
-- `GET /metrics/summary` - Returns aggregated metrics for the tenant
+## 5. Technology Stack
+- **Backend**: Spring Boot 3.3.5, Hibernate, PostgreSQL, Flyway, pgmq, Spring Batch.
+- **Frontend**: Next.js 15, React Query, Chart.js, Tailwind CSS.
+- **AI**: LiteLLM (Claude/GPT).
+- **Security**: Keycloak (RBAC), PII encryption at rest.
 
-## 3. Services
-- `OrgSnapshotService`
-- `HeadcountMetricService`
-- `AttritionSignalService`
-- `EngagementIndicatorService`
-- `PerformanceTrendService`
-- `PlanningScenarioService`
-- `AiAnalysisService` - Calls LiteLLM with timeout/retry/circuit breaker
-- `WorkflowExecutionService`
-
-## 4. Frontend Application
-- Next.js 15
-- Testing with React Testing Library / Jest
-- Pages for each domain entity:
-  - `/org-snapshots`
-  - `/headcount-metrics`
-  - `/attrition-signals`
-  - `/engagement-indicators`
-  - `/performance-trends`
-  - `/planning-scenarios`
-- Each page lists the entities and allows creating/updating them.
-- AI analysis view.
-
-## 5. Event Contract
-Emits:
-- `peopleanalytics.org.signal.updated`
-- `peopleanalytics.attrition.risk.detected`
-- `peopleanalytics.scenario.generated`
-
-Consumes:
-- `performancenarrative.review.finalized`
-- `retentionsignal.risk.detected`
-- `onboardflow.milestone.completed`
-
-## 6. Testing
-- Backend unit tests using JUnit & Mockito (Service layer ≥ 80% coverage)
-- Controller integration tests
-- Frontend component tests
-
-## 7. Assumptions
-- For frontend testing, `vitest` with `@testing-library/react` will be used instead of Jest to match typical modern setups.
-- A basic Mock LLM implementation is used for the AI endpoint to demonstrate the structure without external API calls blocking the tests.
-- Global `X-Tenant-ID` header is required for all backend endpoints.
+## 6. Acceptance Criteria Verification
+- [ ] Performance dashboard displays last 90 days KPI trends.
+- [ ] Weekly engagement score updates.
+- [ ] 70%+ accuracy in retention risk identification (tested via mock AI data).
+- [ ] Pulse survey creation and analysis workflow.
+- [ ] Bulk HRIS data sync endpoint.
+- [ ] PDF/CSV export functionality.
+- [ ] Multi-tenant isolation verified in all queries.

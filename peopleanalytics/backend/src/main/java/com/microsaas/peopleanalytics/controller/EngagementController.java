@@ -1,44 +1,47 @@
 package com.microsaas.peopleanalytics.controller;
 
-import com.microsaas.peopleanalytics.dto.ValidateResponse;
-import com.microsaas.peopleanalytics.model.EngagementIndicator;
-import com.microsaas.peopleanalytics.service.EngagementIndicatorService;
+import com.microsaas.peopleanalytics.model.EngagementScore;
+import com.microsaas.peopleanalytics.model.PulseSurvey;
+import com.microsaas.peopleanalytics.service.EngagementScoringService;
+import com.microsaas.peopleanalytics.service.PulseSurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/engagement-metrics")
+@RequestMapping("/api/v1/people-analytics/engagement")
 @RequiredArgsConstructor
 public class EngagementController {
+    private final EngagementScoringService engagementScoringService;
+    private final PulseSurveyService pulseSurveyService;
 
-    private final EngagementIndicatorService service;
-
-    @GetMapping
-    public ResponseEntity<List<EngagementIndicator>> findAll(@RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return ResponseEntity.ok(service.findAll(tenantId));
+    @GetMapping("/scores")
+    @PreAuthorize("hasAnyRole('HR', 'MANAGER', 'EXECUTIVE')")
+    public List<EngagementScore> getScores() {
+        return engagementScoringService.getScores();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EngagementIndicator> findById(@PathVariable UUID id, @RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return ResponseEntity.ok(service.findById(id, tenantId));
+    @GetMapping("/surveys")
+    @PreAuthorize("hasAnyRole('HR', 'MANAGER', 'EXECUTIVE')")
+    public List<PulseSurvey> getSurveys() {
+        return pulseSurveyService.getAllSurveys();
     }
 
-    @PostMapping
-    public ResponseEntity<EngagementIndicator> create(@RequestBody EngagementIndicator entity, @RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return ResponseEntity.ok(service.create(entity, tenantId));
+    @PostMapping("/surveys")
+    @PreAuthorize("hasRole('HR')")
+    public PulseSurvey createSurvey(@RequestBody PulseSurvey survey) {
+        return pulseSurveyService.createSurvey(survey.getTitle(), survey.getDescription());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EngagementIndicator> update(@PathVariable UUID id, @RequestBody EngagementIndicator entity, @RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return ResponseEntity.ok(service.update(id, entity, tenantId));
+    @PostMapping("/surveys/{id}/respond")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> respond(@PathVariable UUID id, @RequestBody SurveyResponseRequest request) {
+        pulseSurveyService.submitResponse(id, request.employeeId(), request.score(), request.feedback());
+        return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/{id}/validate")
-    public ResponseEntity<ValidateResponse> validate(@PathVariable UUID id, @RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return ResponseEntity.ok(service.validate(id, tenantId));
-    }
+    public record SurveyResponseRequest(UUID employeeId, Integer score, String feedback) {}
 }
