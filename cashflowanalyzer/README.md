@@ -1,32 +1,25 @@
 # CashflowAnalyzer
 
-## Purpose
-CashflowAnalyzer provides historical cashflow diagnostics, forecasting, and anomaly explanations for finance analysts, CFOs, and controllers.
+CashflowAnalyzer is a personal cash flow analysis and optimization platform. It provides deep visibility into income and spending patterns, identifies optimization opportunities, and recommends actions to improve financial health.
 
-## API Contracts
-- `/api/v1/cashflow/cashflow-periods`
-- `/api/v1/cashflow/cash-movements`
-- `/api/v1/cashflow/trend-signals`
-- `/api/v1/cashflow/forecast-runs`
-- `/api/v1/cashflow/anomaly-flags`
-- `/api/v1/cashflow/ai/analyze`
-- `/api/v1/cashflow/ai/recommendations`
-- `/api/v1/cashflow/workflows/execute`
-- `/api/v1/cashflow/health/contracts`
+## Core Features
+- Connect bank accounts via Plaid integration (mocked).
+- Sync transactions and categorize them using AI/ML.
+- Generate cash flow statements and analyze spending patterns.
+- Budget comparison and trend analysis.
+- Identify optimization opportunities and recommend savings.
 
-## Setup & Running Locally
-Backend:
-`mvn -pl cashflowanalyzer/backend spring-boot:run`
-Frontend:
-`npm --prefix cashflowanalyzer/frontend run dev`
+## Architecture
+- **Backend:** Spring Boot 3.3.5 (Java 21), PostgreSQL, LiteLLM (mocked).
+- **Frontend:** Next.js (App Router), TypeScript, Tailwind CSS.
+- Uses `cc-starter` for common configurations (tenant logic, security).
 
-## Event Integrations
-**Emits:**
-- cashflowanalyzer.forecast.generated
-- cashflowanalyzer.anomaly.detected
-- cashflowanalyzer.insight.published
+## Getting Started
 
-**Consumes:**
-- invoiceprocessor.invoice.approved
-- budgetpilot.reforecast.completed
-- financenarrator.summary.requested
+### Prerequisites
+- Java 21
+- Node.js 18+
+- Maven
+
+### Running
+Run backend with `mvn spring-boot:run`. Run frontend with `npm run build && npm start`.
