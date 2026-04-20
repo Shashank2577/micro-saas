@@ -51,45 +51,4 @@ public class CareerPathController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/employees/{id}/skill-gaps")
-    @Operation(summary = "Calculate skill gaps")
-    public ResponseEntity<List<SkillGapDto>> getSkillGaps(@PathVariable UUID id, @RequestParam UUID targetRoleId) {
-        return ResponseEntity.ok(careerPathService.calculateSkillGaps(id, targetRoleId));
-    }
-
-    @PostMapping("/employees/{id}/recommend-roles")
-    @Operation(summary = "Generate role recommendations")
-    public ResponseEntity<Map<String, String>> recommendRoles(@PathVariable UUID id) {
-        String result = careerPathService.generateRoleRecommendations(id);
-        return ResponseEntity.ok(Map.of("recommendations", result));
-    }
-
-    @PostMapping("/employees/{id}/learning-paths")
-    @Operation(summary = "Generate learning paths")
-    public ResponseEntity<Map<String, String>> generateLearningPaths(@PathVariable UUID id) {
-        String result = careerPathService.generateLearningPaths(id);
-        return ResponseEntity.ok(Map.of("learningPaths", result));
-    }
-
-    @PostMapping("/mentors/match")
-    @Operation(summary = "Recommend mentors")
-    public ResponseEntity<Map<String, String>> matchMentor(@RequestBody Map<String, String> request) {
-        String goals = request.getOrDefault("careerGoals", "");
-        String result = careerPathService.generateMentorMatch(goals);
-        return ResponseEntity.ok(Map.of("match", result));
-    }
-
-    @PostMapping("/employees/{id}/assess-promotion")
-    @Operation(summary = "Assess promotion readiness")
-    public ResponseEntity<Map<String, String>> assessPromotion(@PathVariable UUID id) {
-        String result = careerPathService.assessPromotionReadiness(id);
-        return ResponseEntity.ok(Map.of("assessment", result));
-    }
-
-    @PostMapping("/managers/{id}/coaching-guidance")
-    @Operation(summary = "Get coaching guidance")
-    public ResponseEntity<Map<String, String>> getCoachingGuidance(@PathVariable UUID id, @RequestParam UUID employeeId) {
-        String result = careerPathService.getCoachingGuidance(id, employeeId);
-        return ResponseEntity.ok(Map.of("guidance", result));
-    }
 }
