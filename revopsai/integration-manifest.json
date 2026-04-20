@@ -1,0 +1,26 @@
+{
+  "appId": "revopsai",
+  "appName": "RevOpsAI",
+  "version": "1.0.0",
+  "description": "AI revenue operations platform",
+  "apiFingerprints": {
+    "PostgreSQL": [
+      "pipeline_metrics",
+      "cac_calculations",
+      "ltv_models",
+      "sales_velocity",
+      "forecast_accuracy",
+      "gtm_gaps"
+    ]
+  },
+  "emits": [
+    "metrics.updated",
+    "forecast.generated",
+    "anomaly.detected",
+    "gap.identified"
+  ],
+  "consumes": [],
+  "aiProviders": [
+    "Claude"
+  ]
+}
