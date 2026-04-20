@@ -6,16 +6,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "pricing_experiments")
+@Table(name = "customer_segments")
 @Data
-public class PricingExperiment {
+public class CustomerSegment {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -26,22 +25,17 @@ public class PricingExperiment {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
-
-    @Column(nullable = false)
-    private String status;
-
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(columnDefinition = "jsonb")
-    private List<String> variants;
+    private List<String> criteria;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private Map<String, Object> results;
+    private Integer size;
+
+    @Column(name = "avg_ltv")
+    private BigDecimal avgLtv;
+
+    @Column(name = "churn_rate")
+    private Double churnRate;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

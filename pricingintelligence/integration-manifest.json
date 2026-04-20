@@ -1,12 +1,20 @@
 {
   "app": "pricingintelligence",
-  "displayName": "PricingIntelligence",
+  "displayName": "Pricing Intelligence",
   "version": "0.0.1",
   "baseUrl": "http://localhost:8174",
   "emits": [
     {
-      "type": "pricingintelligence.experiment.completed",
+      "type": "pricing-experiment.created",
+      "description": "Fired when a pricing experiment is created."
+    },
+    {
+      "type": "pricing-experiment.completed",
       "description": "Fired when a pricing experiment is completed."
+    },
+    {
+      "type": "price-recommendation.generated",
+      "description": "Fired when a new price recommendation is created."
     }
   ],
   "consumes": [

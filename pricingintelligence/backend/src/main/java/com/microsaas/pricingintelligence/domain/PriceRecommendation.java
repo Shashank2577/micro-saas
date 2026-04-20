@@ -9,9 +9,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "elasticity_models")
+@Table(name = "price_recommendations")
 @Data
-public class ElasticityModel {
+public class PriceRecommendation {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -22,17 +22,20 @@ public class ElasticityModel {
     @Column(name = "segment_id", nullable = false)
     private UUID segmentId;
 
-    @Column(name = "price_range_min", nullable = false)
-    private BigDecimal priceRangeMin;
+    @Column(name = "current_price", nullable = false)
+    private BigDecimal currentPrice;
 
-    @Column(name = "price_range_max", nullable = false)
-    private BigDecimal priceRangeMax;
+    @Column(name = "recommended_price", nullable = false)
+    private BigDecimal recommendedPrice;
 
-    @Column(name = "elasticity_coefficient")
-    private Double elasticityCoefficient;
+    @Column(name = "confidence_score")
+    private Double confidenceScore;
 
-    @Column(name = "r_squared")
-    private Double rSquared;
+    @Column(name = "estimated_revenue_lift")
+    private Double estimatedRevenueLift;
+
+    @Column(columnDefinition = "text")
+    private String rationale;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

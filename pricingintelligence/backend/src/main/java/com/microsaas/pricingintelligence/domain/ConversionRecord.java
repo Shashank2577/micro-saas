@@ -6,16 +6,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
-import java.time.LocalDate;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "pricing_experiments")
+@Table(name = "conversion_records")
 @Data
-public class PricingExperiment {
+public class ConversionRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -23,25 +22,21 @@ public class PricingExperiment {
     @Column(name = "tenant_id", nullable = false)
     private UUID tenantId;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(name = "customer_id", nullable = false)
+    private String customerId;
 
-    @Column(name = "start_date", nullable = false)
-    private LocalDate startDate;
-
-    @Column(name = "end_date", nullable = false)
-    private LocalDate endDate;
-
-    @Column(nullable = false)
-    private String status;
+    @Column(name = "price_offered", nullable = false)
+    private BigDecimal priceOffered;
 
     @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private List<String> variants;
+    @Column(name = "features_included", columnDefinition = "jsonb")
+    private List<String> featuresIncluded;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @Column(columnDefinition = "jsonb")
-    private Map<String, Object> results;
+    @Column(nullable = false)
+    private Boolean converted;
+
+    @Column(nullable = false)
+    private Instant timestamp;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
