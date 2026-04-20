@@ -1,10 +1,10 @@
-import { api } from '@/lib/api';
+import { api, EcosystemApp, EcosystemEvent, Workflow } from '@/lib/api';
 import { AppCard } from '@/components/AppCard';
 
 export default async function DashboardPage() {
-  let apps = [];
-  let events = [];
-  let workflows = [];
+  let apps: EcosystemApp[] = [];
+  let events: EcosystemEvent[] = [];
+  let workflows: Workflow[] = [];
 
   try {
     [apps, events, workflows] = await Promise.all([
