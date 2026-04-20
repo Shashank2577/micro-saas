@@ -1,8 +1,8 @@
 package com.microsaas.onboardflow.service;
 
-import com.microsaas.onboardflow.dto.TaskAssignmentRequest;
-import com.microsaas.onboardflow.model.TaskAssignment;
-import com.microsaas.onboardflow.repository.TaskAssignmentRepository;
+import com.microsaas.onboardflow.dto.BuddyPairRequest;
+import com.microsaas.onboardflow.model.BuddyPair;
+import com.microsaas.onboardflow.repository.BuddyPairRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,24 +12,24 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TaskAssignmentService {
+public class BuddyPairService {
 
-    private final TaskAssignmentRepository repository;
+    private final BuddyPairRepository repository;
 
     @Transactional(readOnly = true)
-    public List<TaskAssignment> findAll(UUID tenantId) {
+    public List<BuddyPair> findAll(UUID tenantId) {
         return repository.findByTenantId(tenantId);
     }
 
     @Transactional(readOnly = true)
-    public TaskAssignment findById(UUID id, UUID tenantId) {
+    public BuddyPair findById(UUID id, UUID tenantId) {
         return repository.findByIdAndTenantId(id, tenantId)
-                .orElseThrow(() -> new RuntimeException("TaskAssignment not found"));
+                .orElseThrow(() -> new RuntimeException("BuddyPair not found"));
     }
 
     @Transactional
-    public TaskAssignment create(UUID tenantId, TaskAssignmentRequest request) {
-        TaskAssignment entity = TaskAssignment.builder()
+    public BuddyPair create(UUID tenantId, BuddyPairRequest request) {
+        BuddyPair entity = BuddyPair.builder()
                 .tenantId(tenantId)
                 .name(request.getName())
                 .status(request.getStatus() != null ? request.getStatus() : "DRAFT")
@@ -39,8 +39,8 @@ public class TaskAssignmentService {
     }
 
     @Transactional
-    public TaskAssignment update(UUID id, UUID tenantId, TaskAssignmentRequest request) {
-        TaskAssignment entity = findById(id, tenantId);
+    public BuddyPair update(UUID id, UUID tenantId, BuddyPairRequest request) {
+        BuddyPair entity = findById(id, tenantId);
         if (request.getName() != null) entity.setName(request.getName());
         if (request.getStatus() != null) entity.setStatus(request.getStatus());
         if (request.getMetadataJson() != null) entity.setMetadataJson(request.getMetadataJson());
@@ -48,7 +48,7 @@ public class TaskAssignmentService {
     }
 
     public void validate(UUID id, UUID tenantId) {
-        TaskAssignment entity = findById(id, tenantId);
+        BuddyPair entity = findById(id, tenantId);
         // Add business validation logic here
     }
 }
