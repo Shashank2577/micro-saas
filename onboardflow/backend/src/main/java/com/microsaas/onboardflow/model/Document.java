@@ -12,13 +12,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity
-@Table(name = "task_assignments")
+@Table(name = "documents")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskAssignment {
+public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -1,8 +1,8 @@
 package com.microsaas.onboardflow.service;
 
-import com.microsaas.onboardflow.dto.TaskAssignmentRequest;
-import com.microsaas.onboardflow.model.TaskAssignment;
-import com.microsaas.onboardflow.repository.TaskAssignmentRepository;
+import com.microsaas.onboardflow.dto.SystemProvisioningRequestRequest;
+import com.microsaas.onboardflow.model.SystemProvisioningRequest;
+import com.microsaas.onboardflow.repository.SystemProvisioningRequestRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,24 +12,24 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class TaskAssignmentService {
+public class SystemProvisioningRequestService {
 
-    private final TaskAssignmentRepository repository;
+    private final SystemProvisioningRequestRepository repository;
 
     @Transactional(readOnly = true)
-    public List<TaskAssignment> findAll(UUID tenantId) {
+    public List<SystemProvisioningRequest> findAll(UUID tenantId) {
         return repository.findByTenantId(tenantId);
     }
 
     @Transactional(readOnly = true)
-    public TaskAssignment findById(UUID id, UUID tenantId) {
+    public SystemProvisioningRequest findById(UUID id, UUID tenantId) {
         return repository.findByIdAndTenantId(id, tenantId)
-                .orElseThrow(() -> new RuntimeException("TaskAssignment not found"));
+                .orElseThrow(() -> new RuntimeException("SystemProvisioningRequest not found"));
     }
 
     @Transactional
-    public TaskAssignment create(UUID tenantId, TaskAssignmentRequest request) {
-        TaskAssignment entity = TaskAssignment.builder()
+    public SystemProvisioningRequest create(UUID tenantId, SystemProvisioningRequestRequest request) {
+        SystemProvisioningRequest entity = SystemProvisioningRequest.builder()
                 .tenantId(tenantId)
                 .name(request.getName())
                 .status(request.getStatus() != null ? request.getStatus() : "DRAFT")
@@ -39,8 +39,8 @@ public class TaskAssignmentService {
     }
 
     @Transactional
-    public TaskAssignment update(UUID id, UUID tenantId, TaskAssignmentRequest request) {
-        TaskAssignment entity = findById(id, tenantId);
+    public SystemProvisioningRequest update(UUID id, UUID tenantId, SystemProvisioningRequestRequest request) {
+        SystemProvisioningRequest entity = findById(id, tenantId);
         if (request.getName() != null) entity.setName(request.getName());
         if (request.getStatus() != null) entity.setStatus(request.getStatus());
         if (request.getMetadataJson() != null) entity.setMetadataJson(request.getMetadataJson());
@@ -48,7 +48,7 @@ public class TaskAssignmentService {
     }
 
     public void validate(UUID id, UUID tenantId) {
-        TaskAssignment entity = findById(id, tenantId);
+        SystemProvisioningRequest entity = findById(id, tenantId);
         // Add business validation logic here
     }
 }
