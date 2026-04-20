@@ -1,11 +1,3 @@
-import type { Metadata } from 'next';
-import './globals.css';
-
-export const metadata: Metadata = {
-  title: 'Nexus Hub',
-  description: 'Ecosystem orchestrator for micro-SaaS portfolio',
-};
-
 export default function RootLayout({
   children,
 }: {
@@ -13,7 +5,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <div className="min-h-screen bg-gray-50 flex flex-col">
+          <header className="bg-white shadow-sm py-4 px-6 border-b">
+            <h1 className="text-xl font-bold text-gray-800">VideoNarrator</h1>
+          </header>
+          <main className="flex-grow p-6">
+            {children}
+          </main>
+        </div>
+      </body>
     </html>
   );
 }

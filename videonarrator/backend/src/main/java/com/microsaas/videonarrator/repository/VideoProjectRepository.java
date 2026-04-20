@@ -1,6 +1,6 @@
 package com.microsaas.videonarrator.repository;
 
-import com.microsaas.videonarrator.model.VideoProject;
+import com.microsaas.videonarrator.domain.VideoProject;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

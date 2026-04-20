@@ -1,15 +1,14 @@
 package com.microsaas.videonarrator.controller;
 
+import com.microsaas.videonarrator.domain.SubtitleTrack;
+import com.microsaas.videonarrator.domain.Transcription;
 import com.microsaas.videonarrator.dto.SubtitleUpdateRequest;
-import com.microsaas.videonarrator.dto.TranscriptionRequest;
-import com.microsaas.videonarrator.model.SubtitleTrack;
-import com.microsaas.videonarrator.model.Transcription;
+import com.microsaas.videonarrator.dto.TranscribeRequest;
 import com.microsaas.videonarrator.service.TranscriptionService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.crosscutting.starter.tenancy.TenantContext;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,43 +16,37 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
-@Tag(name = "Transcriptions & Subtitles")
 public class TranscriptionController {
 
-    private final TranscriptionService service;
+    private final TranscriptionService transcriptionService;
 
     @PostMapping("/projects/{projectId}/transcribe")
-    @Operation(summary = "Start video transcription")
     public ResponseEntity<Transcription> transcribe(
-            @RequestHeader("X-Tenant-ID") String tenantId,
             @PathVariable UUID projectId,
-            @RequestBody TranscriptionRequest request) {
-        return ResponseEntity.ok(service.startTranscription(tenantId, projectId, request.getLanguageCode()));
+            @RequestBody TranscribeRequest request) {
+        String tenantId = TenantContext.require().toString();
+        Transcription transcription = transcriptionService.startTranscription(projectId, tenantId, request.getLanguageCode());
+        return ResponseEntity.ok(transcription);
     }
 
     @GetMapping("/projects/{projectId}/transcriptions")
-    @Operation(summary = "Get transcriptions for a project")
-    public ResponseEntity<List<Transcription>> getTranscriptions(
-            @RequestHeader("X-Tenant-ID") String tenantId,
-            @PathVariable UUID projectId) {
-        return ResponseEntity.ok(service.getTranscriptions(tenantId, projectId));
+    public ResponseEntity<List<Transcription>> getTranscriptions(@PathVariable UUID projectId) {
+        String tenantId = TenantContext.require().toString();
+        return ResponseEntity.ok(transcriptionService.getTranscriptions(projectId, tenantId));
     }
 
     @GetMapping("/transcriptions/{transcriptionId}/subtitles")
-    @Operation(summary = "Get subtitles for a transcription")
-    public ResponseEntity<List<SubtitleTrack>> getSubtitles(
-            @RequestHeader("X-Tenant-ID") String tenantId,
-            @PathVariable UUID transcriptionId) {
-        return ResponseEntity.ok(service.getSubtitles(tenantId, transcriptionId));
+    public ResponseEntity<List<SubtitleTrack>> getSubtitles(@PathVariable UUID transcriptionId) {
+        String tenantId = TenantContext.require().toString();
+        return ResponseEntity.ok(transcriptionService.getSubtitles(transcriptionId, tenantId));
     }
 
     @PutMapping("/subtitles/{subtitleId}")
-    @Operation(summary = "Update a subtitle track")
     public ResponseEntity<SubtitleTrack> updateSubtitle(
-            @RequestHeader("X-Tenant-ID") String tenantId,
             @PathVariable UUID subtitleId,
             @RequestBody SubtitleUpdateRequest request) {
-        return ResponseEntity.ok(service.updateSubtitle(
-                tenantId, subtitleId, request.getStartTimeMs(), request.getEndTimeMs(), request.getContent()));
+        String tenantId = TenantContext.require().toString();
+        SubtitleTrack track = transcriptionService.updateSubtitle(subtitleId, tenantId, request);
+        return ResponseEntity.ok(track);
     }
 }

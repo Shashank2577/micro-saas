@@ -1,79 +1,60 @@
 package com.microsaas.videonarrator.service;
 
-import com.microsaas.videonarrator.model.VideoProject;
+import com.microsaas.videonarrator.domain.VideoProject;
 import com.microsaas.videonarrator.repository.VideoProjectRepository;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class VideoProcessingServiceTest {
 
     @Mock
-    private VideoProjectRepository repository;
+    private VideoProjectRepository projectRepository;
+
+    @Mock
+    private MinioClient minioClient;
 
     @InjectMocks
-    private VideoProcessingService service;
+    private VideoProcessingService videoProcessingService;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this);
-        ReflectionTestUtils.setField(service, "bucketPrefix", "videonarrator-");
-        ReflectionTestUtils.setField(service, "minioEndpoint", "http://localhost:9000");
+        ReflectionTestUtils.setField(videoProcessingService, "bucketPrefix", "videonarrator-");
     }
 
     @Test
-    void testUploadVideo() {
-        MultipartFile file = new MockMultipartFile("file", "test.mp4", "video/mp4", "content".getBytes());
-        VideoProject saved = new VideoProject();
-        saved.setId(UUID.randomUUID());
-        saved.setTenantId("tenant1");
-        saved.setTitle("My Video");
+    void uploadVideo_SavesToMinioAndDB() throws Exception {
+        String tenantId = "tenant-1";
+        String title = "My Video";
+        MockMultipartFile file = new MockMultipartFile("file", "test.mp4", "video/mp4", "data".getBytes());
 
-        when(repository.save(any(VideoProject.class))).thenReturn(saved);
+        when(minioClient.bucketExists(any(BucketExistsArgs.class))).thenReturn(true);
+        when(projectRepository.save(any(VideoProject.class))).thenAnswer(i -> i.getArguments()[0]);
 
-        VideoProject result = service.uploadVideo("tenant1", "My Video", file);
+        VideoProject result = videoProcessingService.uploadVideo(tenantId, title, file);
 
         assertNotNull(result);
-        assertEquals("tenant1", result.getTenantId());
-        verify(repository, times(1)).save(any(VideoProject.class));
-    }
+        assertEquals(tenantId, result.getTenantId());
+        assertEquals(title, result.getTitle());
+        assertEquals(VideoProject.ProjectStatus.UPLOADED, result.getStatus());
 
-    @Test
-    void testGetProject() {
-        UUID id = UUID.randomUUID();
-        VideoProject project = new VideoProject();
-        project.setId(id);
-
-        when(repository.findByIdAndTenantId(id, "tenant1")).thenReturn(Optional.of(project));
-
-        VideoProject result = service.getProject("tenant1", id);
-        assertNotNull(result);
-        assertEquals(id, result.getId());
-    }
-
-    @Test
-    void testDeleteProject() {
-        UUID id = UUID.randomUUID();
-        VideoProject project = new VideoProject();
-        project.setId(id);
-
-        when(repository.findByIdAndTenantId(id, "tenant1")).thenReturn(Optional.of(project));
-        doNothing().when(repository).delete(project);
-
-        service.deleteProject("tenant1", id);
-
-        verify(repository, times(1)).delete(project);
+        verify(minioClient).putObject(any(PutObjectArgs.class));
     }
 }

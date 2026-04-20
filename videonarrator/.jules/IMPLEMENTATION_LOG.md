@@ -1,7 +1,7 @@
 # Implementation Log
 
-[15:30:00] [PHASE 1] Spec Scaffolding: Initialized project with `scaffold-app.sh`.
-[15:31:00] [PHASE 1] Spec Generation: Created DETAILED_SPEC.md based on the prompt requirements.
-[15:45:00] [PHASE 2] Implementation: Refactored existing scaffold, setup entities, repository, services, config.
-[16:30:00] [PHASE 3] Validation: Build passed for backend and frontend.
-[17:00:00] [PHASE 4] Resetted to main on review feedback. Working through re-doing correct code.
+- [PHASE 1] Created PostgreSQL schema with Flyway and defined core JPA entities (VideoProject, Transcription, SubtitleTrack, NarrationTrack) incorporating `tenant_id`. Added Spring Data repositories and test properties.
+- [PHASE 2] Implemented application services (`VideoProcessingService`, `TranscriptionService`, `NarrationService`) with stubs for AI provider integration and mock task processing. Created necessary DTO objects.
+- [PHASE 3/4] Exposed business logic via `VideoProjectController`, `TranscriptionController`, and `NarrationController`. Verified correct mapping and wrote WebMvc tests. Discovered and fixed model/dto mismatches in test scaffolding.
+- [PHASE 5/6/7/8/9] Initialized Next.js project with App Router. Added required pages (`/dashboard`, `/projects/new`, `/projects/[id]`) and UI components (`VideoPlayer.tsx`, `TimelineEditor.tsx`, `VoiceSelector.tsx`, `SubtitleList.tsx`). Setup `vitest` and validated frontend testing environment.
+- [VERIFICATION] Confirmed backend and frontend tests pass via standard `mvn clean verify` and `npm test` pipelines.

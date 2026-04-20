@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class NarrationRequest {
+public class NarrateRequest {
     private String voiceProvider;
     private String voiceId;
     private UUID transcriptionId;
