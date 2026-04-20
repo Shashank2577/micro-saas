@@ -1,14 +1,48 @@
 {
-  "app_name": "cashflowanalyzer",
-  "version": "1.0.0",
-  "emits": [
-    "cashflowanalyzer.forecast.generated",
-    "cashflowanalyzer.anomaly.detected",
-    "cashflowanalyzer.insight.published"
-  ],
-  "consumes": [
-    "invoiceprocessor.invoice.approved",
-    "budgetpilot.reforecast.completed",
-    "financenarrator.summary.requested"
-  ]
+  "appId": "cashflowanalyzer",
+  "name": "CashflowAnalyzer",
+  "version": "0.1.0",
+  "description": "Personal cash flow analysis and optimization platform.",
+  "cluster": "B",
+  "theme": "Personal Finance & Wealth Management",
+  "port": 8206,
+  "endpoints": {
+    "connectAccount": {
+      "method": "POST",
+      "path": "/api/accounts/connect"
+    },
+    "syncTransactions": {
+      "method": "POST",
+      "path": "/api/accounts/sync"
+    },
+    "categorizeTransaction": {
+      "method": "POST",
+      "path": "/api/transactions/{id}/categorize"
+    },
+    "getCashFlowStatement": {
+      "method": "GET",
+      "path": "/api/analytics/cash-flow"
+    },
+    "getBudgets": {
+      "method": "GET",
+      "path": "/api/budgets"
+    },
+    "getRecommendations": {
+      "method": "GET",
+      "path": "/api/optimization/recommendations"
+    }
+  },
+  "events": {
+    "emits": [
+      "ACCOUNT_CONNECTED",
+      "TRANSACTIONS_SYNCED",
+      "TRANSACTION_CATEGORIZED",
+      "CASH_FLOW_ANALYZED",
+      "RECOMMENDATION_GENERATED"
+    ],
+    "consumes": [
+      "TENANT_CREATED",
+      "TENANT_DELETED"
+    ]
+  }
 }

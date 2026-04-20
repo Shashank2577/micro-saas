@@ -1,35 +1,28 @@
 server:
   port: 8206
+  forward-headers-strategy: framework
 
 spring:
   application:
     name: cashflowanalyzer
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/ecosystem}
-    username: ${DB_USER:postgres}
-    password: ${DB_PASS:postgres}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/microsaas}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
   jpa:
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,metrics
-
-springdoc:
-  api-docs:
-    path: /v3/api-docs
-  swagger-ui:
-    path: /swagger-ui.html
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
 
 cc:
+  auth:
+    realm: microsaas
   tenancy:
+    mode: header
+  webhooks:
     enabled: true
-  ai:
-    provider: litellm
-    base-url: ${LITELLM_URL:http://localhost:4000}
