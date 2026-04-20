@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: featureflagai
+  datasource:
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: false
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
+cc:
+  tenancy:
+    enabled: false
+  ai:
+    enabled: false
+    gateway-url: http://localhost:4000
+    api-key: test-key
