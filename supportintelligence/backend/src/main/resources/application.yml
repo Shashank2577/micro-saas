@@ -2,40 +2,27 @@ spring:
   application:
     name: supportintelligence
   datasource:
-    url: jdbc:h2:mem:cc
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:supportintelligence}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:postgres}
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
-        default_schema: public
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: false
   flyway:
-    locations: classpath:db/migration
-    default-schema: public
-    schemas: public
+    enabled: true
+    baseline-on-migrate: true
 
 server:
-  port: 8155
+  port: 8154
 
-cc:
-  tenancy:
-    mode: header
-    header-name: X-Tenant-ID
-  auth:
-    keycloak-url: http://localhost:8180
-    realm: cc
-    client-id: cc-backend
-  ai:
-    gateway-url: http://localhost:4000
-    api-key: sk-local-dev-key
-    default-model: claude-sonnet-4-6
-
-springdoc:
-  api-docs:
-    path: /api-docs
-  swagger-ui:
-    path: /swagger-ui.html
+ai:
+  provider: litellm
+  litellm:
+    base-url: ${LITELLM_BASE_URL:http://localhost:4000}
+    api-key: ${LITELLM_API_KEY:sk-mock-key}
+    model: ${LITELLM_MODEL:claude-3-sonnet}

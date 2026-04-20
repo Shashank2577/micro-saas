@@ -1,21 +1,57 @@
 {
-  "app": "supportintelligence",
-  "displayName": "SupportIntelligence",
-  "version": "0.0.1",
-  "baseUrl": "https://api-supportintelligence.YOURDOMAIN.com",
-  "emits": [
-    "ticket.created",
-    "ticket.escalated",
-    "ticket.resolved"
-  ],
-  "consumes": [
-    "product.updated",
-    "feature.released"
-  ],
-  "capabilities": [
-    "suggest-response",
-    "detect-escalation",
-    "mine-ticket-patterns"
-  ],
-  "healthEndpoint": "/actuator/health"
+  "app-id": "supportintelligence",
+  "app-name": "SupportIntelligence",
+  "version": "0.1.0",
+  "description": "AI support co-pilot grounded in knowledge base and past tickets",
+  "port": 8154,
+  "theme": "Operations & Automation",
+  "auth": {
+    "type": "keycloak",
+    "required-roles": ["agent", "supervisor", "exec"]
+  },
+  "database": {
+    "type": "postgres",
+    "requires-pgvector": true
+  },
+  "events": {
+    "emits": [
+      {
+        "topic": "ticket.created",
+        "description": "Emitted when a new support ticket is synced or created"
+      },
+      {
+        "topic": "suggestion.generated",
+        "description": "Emitted when an AI response suggestion is generated"
+      },
+      {
+        "topic": "escalation.detected",
+        "description": "Emitted when an escalation signal is identified"
+      },
+      {
+        "topic": "ticket.resolved",
+        "description": "Emitted when a ticket is resolved"
+      },
+      {
+        "topic": "pattern.identified",
+        "description": "Emitted when a recurring issue pattern is identified"
+      }
+    ],
+    "consumes": [
+      {
+        "topic": "tenant.created",
+        "description": "Provision support resources for new tenant"
+      }
+    ]
+  },
+  "api-contracts": {
+    "base-path": "/api/v1",
+    "endpoints": [
+      "/tickets",
+      "/tickets/{id}",
+      "/tickets/{id}/suggestions",
+      "/escalations",
+      "/insights/patterns",
+      "/metrics"
+    ]
+  }
 }
