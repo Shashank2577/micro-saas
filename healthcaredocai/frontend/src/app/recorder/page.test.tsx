@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import RecorderPage from './page';
 import { api } from '../../lib/api';
 
@@ -23,14 +23,15 @@ describe('RecorderPage', () => {
     expect(screen.getByText('Recording...')).toBeInTheDocument();
 
     // Fast-forward the timeout
-    jest.advanceTimersByTime(2000);
+    act(() => {
+      jest.advanceTimersByTime(2000);
+    });
 
     await waitFor(() => {
       expect(screen.getByText('Start Recording')).toBeInTheDocument();
+      expect(screen.getByText('Test transcription')).toBeInTheDocument();
+      expect(screen.getByText(/enc-123/)).toBeInTheDocument();
     });
-
-    expect(screen.getByText('Test transcription')).toBeInTheDocument();
-    expect(screen.getByText(/enc-123/)).toBeInTheDocument();
 
     jest.useRealTimers();
   });

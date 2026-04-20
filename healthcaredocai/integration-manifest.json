@@ -1,0 +1,14 @@
+{
+  "appId": "healthcaredocai",
+  "name": "HealthcareDocAI",
+  "description": "AI clinical documentation assistant",
+  "emits": [
+    "healthcaredocai.note.generated"
+  ],
+  "consumes": [],
+  "capabilities": [
+    "transcribe-encounters",
+    "generate-notes",
+    "sync-ehr"
+  ]
+}
