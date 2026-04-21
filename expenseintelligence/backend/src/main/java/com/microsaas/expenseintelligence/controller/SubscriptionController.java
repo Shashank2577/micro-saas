@@ -1,6 +1,6 @@
 package com.microsaas.expenseintelligence.controller;
 
-import com.crosscutting.tenancy.context.TenantContext;
+import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.expenseintelligence.model.Subscription;
 import com.microsaas.expenseintelligence.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ public class SubscriptionController {
 
     @GetMapping("/spend")
     public ResponseEntity<BigDecimal> getSubscriptionSpend() {
-        UUID tenantId = UUID.fromString(TenantContext.getCurrentTenantId());
+        UUID tenantId = TenantContext.require();
         return ResponseEntity.ok(subscriptionService.getSubscriptionSpend(tenantId));
     }
 }
