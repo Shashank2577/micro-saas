@@ -29,6 +29,9 @@ class FlagEvaluationServiceTest {
     private FlagEvaluationRepository evaluationRepository;
 
     @Mock
+    private SegmentTargetingService segmentService;
+
+    @Mock
     private QueueService queueService;
 
     @Mock
@@ -80,6 +83,7 @@ class FlagEvaluationServiceTest {
         flag.setEnabled(true);
         flag.setRolloutPct(100);
         when(flagRepository.findByIdAndTenantId(flagId, tenantId)).thenReturn(Optional.of(flag));
+        when(segmentService.evaluateSegments(any(), any())).thenReturn(false);
         when(objectMapper.writeValueAsString(any())).thenReturn("{}");
 
         boolean result = flagEvaluationService.evaluate(flagId, "user1", null);

@@ -1,16 +1,14 @@
 package com.microsaas.featureflagai.service;
 
-import com.crosscutting.starter.ai.AiService;
-import com.crosscutting.starter.ai.ChatMessage;
-import com.crosscutting.starter.ai.ChatRequest;
 import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.featureflagai.domain.FeatureFlag;
+import com.microsaas.featureflagai.domain.RolloutMetrics;
 import com.microsaas.featureflagai.repository.FeatureFlagRepository;
+import com.microsaas.featureflagai.repository.RolloutMetricsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,7 +18,9 @@ import java.util.UUID;
 public class RolloutService {
 
     private final FeatureFlagRepository flagRepository;
-    private final AiService aiService;
+    private final RolloutMetricsRepository metricsRepository;
+
+    private static final double ERROR_RATE_THRESHOLD = 0.05; // 5%
 
     public void controlRollout(UUID flagId, int newPct, boolean enabled) {
         UUID tenantId = TenantContext.require();
@@ -35,25 +35,19 @@ public class RolloutService {
         }
     }
 
-    public String analyzeImpact(UUID flagId, String metricsData) {
+    public void recordMetricsAndCheckAutoPause(UUID flagId, double errorRate) {
         UUID tenantId = TenantContext.require();
-        Optional<FeatureFlag> flagOpt = flagRepository.findByIdAndTenantId(flagId, tenantId);
 
-        if (flagOpt.isEmpty()) {
-            return "Flag not found";
+        RolloutMetrics metrics = RolloutMetrics.builder()
+                .tenantId(tenantId)
+                .flagId(flagId)
+                .errorRate(errorRate)
+                .build();
+        metricsRepository.save(metrics);
+
+        if (errorRate > ERROR_RATE_THRESHOLD) {
+            log.warn("Error rate {} exceeds threshold {} for flag {}, auto-pausing rollout", errorRate, ERROR_RATE_THRESHOLD, flagId);
+            controlRollout(flagId, 0, false);
         }
-
-        String prompt = "Analyze the impact of feature flag '" + flagOpt.get().getName() +
-                        "' based on the following metrics data: " + metricsData +
-                        ". Summarize if the flag caused positive or negative effects.";
-
-        ChatRequest request = new ChatRequest(
-            "claude-3-5-sonnet-20240620",
-            List.of(new ChatMessage("user", prompt)),
-            null,
-            null
-        );
-
-        return aiService.chat(request).content();
     }
 }
