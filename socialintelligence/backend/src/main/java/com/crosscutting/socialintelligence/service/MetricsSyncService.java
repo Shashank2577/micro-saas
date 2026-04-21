@@ -2,13 +2,12 @@ package com.crosscutting.socialintelligence.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Map;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AnalyticsService {
-    public Map<String, Object> getDashboardMetrics(UUID tenantId) {
-        return Map.of("totalFollowers", 10000, "avgEngagementRate", 4.5);
+public class MetricsSyncService {
+    public void syncMetrics(UUID tenantId) {
+        // Stub implementation
     }
 }

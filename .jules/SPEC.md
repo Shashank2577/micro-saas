@@ -1,44 +1,33 @@
-# ContextLayer - Unified Customer Context for AI Apps
-
-## Overview
-Build ContextLayer, a unified context management platform that shares customer knowledge across all AI applications in real-time.
+# SocialIntelligence Base Specification
 
 ## Requirements
-- Unified customer context store (JSONB)
-- Real-time context sync
-- Context versioning
-- Preference learning (AI-driven)
-- Privacy controls & Consent management
-- Context enrichment
-- Conflict resolution
+- OAuth integration: Instagram, TikTok, YouTube, Twitter/X, LinkedIn
+- Unified analytics dashboard (cross-platform metrics)
+- Engagement rate trends (30/90/365 day views)
+- Audience demographics aggregation
+- Top-performing content analysis
+- AI growth intelligence engine
+- Content calendar with performance prediction
+- Audience insights (overlap, sentiment, influencers)
+- Competitor benchmarking
+- Growth trajectory projections
 
-## Domain Entities
-- CustomerContext
-- ContextVersion
-- InteractionHistory
-- CustomerPreference
-- ConsentRecord
+## Constraints
+- OAuth refresh tokens securely stored
+- API rate limits respected (batch requests, cache)
+- Metrics synced max every 15 minutes
+- Historical data retained for 2 years
+- No hardcoded API keys
+- GDPR compliant (encryption at rest)
 
-## Services
-- ContextRetrievalService
-- ContextUpdateService
-- PreferenceLearningService (uses LiteLLM/Claude)
-- ContextEnrichmentService
-- PrivacyEnforcementService
-- RealtimeSyncService (WebSocket/pgmq)
-
-## Endpoints
-- GET /api/customers/{customerId}/context
-- PUT /api/customers/{customerId}/context
-- GET /api/customers/{customerId}/context/{attribute}
-- PATCH /api/customers/{customerId}/context/{attribute}
-- POST /api/customers/{customerId}/context/version
-- GET /api/customers/{customerId}/context/versions
-- POST /api/customers/{customerId}/context/rollback
-- GET /api/customers/{customerId}/preferences
-- PUT /api/customers/{customerId}/preferences/{key}
-- POST /api/customers/{customerId}/consent
-- GET /api/customers/{customerId}/audit-log
-- POST /api/customers/{customerId}/context/export
-- DELETE /api/customers/{customerId}/context
-- GET /api/context-sync/watch?customerId=X
+## Acceptance Criteria
+- User can connect Instagram, TikTok, YouTube, Twitter/X, LinkedIn
+- Dashboard displays unified metrics across platforms
+- AI provides 5+ growth recommendations
+- Engagement trends visualized (30/90/365 days)
+- Content calendar with platform-specific scheduling
+- Audience demographics shown (aggregate + per-platform)
+- Top-performing content flagged with pattern analysis
+- Growth projection for next 30 days
+- Integration manifest defines metrics API
+- Multi-tenant isolation enforced
