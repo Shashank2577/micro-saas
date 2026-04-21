@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8205:8205"
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/goaltracker
+      - DB_USER=goaltracker_user
+      - DB_PASSWORD=goaltracker_password
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=goaltracker_user
+      - POSTGRES_PASSWORD=goaltracker_password
+      - POSTGRES_DB=goaltracker
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

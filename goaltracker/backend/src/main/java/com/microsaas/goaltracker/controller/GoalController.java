@@ -34,4 +34,15 @@ public class GoalController {
     public ResponseEntity<Goal> getGoal(@PathVariable UUID id) {
         return ResponseEntity.ok(goalService.getGoal(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Goal> updateGoal(@PathVariable UUID id, @RequestBody Goal goal) {
+        return ResponseEntity.ok(goalService.updateGoal(id, goal));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteGoal(@PathVariable UUID id) {
+        goalService.deleteGoal(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -55,4 +55,21 @@ public class GoalService {
         return goalRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Goal not found"));
     }
+
+    @Transactional
+    public Goal updateGoal(UUID id, Goal goalDetails) {
+        Goal goal = getGoal(id);
+        goal.setTitle(goalDetails.getTitle());
+        goal.setCategory(goalDetails.getCategory());
+        goal.setTargetAmount(goalDetails.getTargetAmount());
+        goal.setDeadline(goalDetails.getDeadline());
+        goal.setPriority(goalDetails.getPriority());
+        goal.setStatus(goalDetails.getStatus());
+        return goalRepository.save(goal);
+    }
+
+    @Transactional
+    public void deleteGoal(UUID id) {
+        goalRepository.deleteById(id);
+    }
 }
