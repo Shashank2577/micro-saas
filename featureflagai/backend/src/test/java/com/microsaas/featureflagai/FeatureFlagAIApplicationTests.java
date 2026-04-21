@@ -10,6 +10,10 @@ import org.springframework.test.context.TestPropertySource;
 })
 class FeatureFlagAIApplicationTests {
 
+    @org.springframework.boot.test.mock.mockito.MockBean
+    private org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder;
+
+
     @Test
     void contextLoads() {
     }
