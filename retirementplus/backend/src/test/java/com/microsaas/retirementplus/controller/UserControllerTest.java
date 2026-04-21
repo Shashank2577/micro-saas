@@ -1,8 +1,8 @@
 package com.microsaas.retirementplus.controller;
 
-import com.microsaas.retirementplus.domain.UserProfile;
-import com.microsaas.retirementplus.dto.ProfileDto;
-import com.microsaas.retirementplus.service.ProfileService;
+import com.microsaas.retirementplus.domain.User;
+import com.microsaas.retirementplus.dto.UserDto;
+import com.microsaas.retirementplus.service.UserService;
 import com.crosscutting.starter.tenancy.TenantContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,14 +26,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = ProfileController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
-class ProfileControllerTest {
+@WebMvcTest(controllers = UserController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private ProfileService profileService;
+    private UserService userService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -49,28 +48,50 @@ class ProfileControllerTest {
     }
 
     @Test
-    void createOrUpdateProfile() throws Exception {
-        ProfileDto dto = new ProfileDto();
-        dto.setUserId(userId);
-        dto.setCurrentAge(60);
-        dto.setRetirementAge(67);
-        dto.setCurrentSavings(new BigDecimal("500000.00"));
-        dto.setDesiredIncome(new BigDecimal("60000.00"));
+    void createUser() throws Exception {
+        UserDto dto = new UserDto();
+        dto.setFirstName("John");
+        dto.setLastName("Doe");
+        dto.setEmail("john.doe@example.com");
 
-        UserProfile profile = new UserProfile();
-        profile.setId(UUID.randomUUID());
-        profile.setUserId(userId);
-        profile.setCurrentAge(60);
+        User user = new User();
+        user.setId(userId);
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setEmail("john.doe@example.com");
 
         try (MockedStatic<TenantContext> mockedTenantContext = Mockito.mockStatic(TenantContext.class)) {
             mockedTenantContext.when(TenantContext::require).thenReturn(tenantId);
-            when(profileService.createOrUpdateProfile(any(ProfileDto.class), any(UUID.class))).thenReturn(profile);
+            when(userService.createUser(any(UserDto.class), any(UUID.class))).thenReturn(user);
 
-            mockMvc.perform(post("/api/profiles")
+            mockMvc.perform(post("/api/users")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(dto)))
                     .andExpect(status().isCreated())
-                    .andExpect(jsonPath("$.currentAge").value(60));
+                    .andExpect(jsonPath("$.firstName").value("John"))
+                    .andExpect(jsonPath("$.email").value("john.doe@example.com"));
         }
+    }
+
+    @Test
+    void getUser() throws Exception {
+        User user = new User();
+        user.setId(userId);
+        user.setFirstName("John");
+        user.setLastName("Doe");
+
+        when(userService.getUserById(userId)).thenReturn(Optional.of(user));
+
+        mockMvc.perform(get("/api/users/" + userId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName").value("John"));
+    }
+
+    @Test
+    void getUserNotFound() throws Exception {
+        when(userService.getUserById(any(UUID.class))).thenReturn(Optional.empty());
+
+        mockMvc.perform(get("/api/users/" + UUID.randomUUID()))
+                .andExpect(status().isNotFound());
     }
 }
