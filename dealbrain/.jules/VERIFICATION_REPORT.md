@@ -20,3 +20,4 @@
 - **Build Status:** SUCCESS
 
 All components are verified and operational.
+- [frontend] Visually verified the layout of the dashboard and various sub-pages.

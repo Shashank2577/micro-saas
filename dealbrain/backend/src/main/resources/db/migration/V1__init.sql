@@ -78,3 +78,29 @@ CREATE TABLE historical_deals (
 );
 
 CREATE INDEX idx_historical_tenant ON historical_deals(tenant_id);
+
+CREATE TABLE competitors (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    deal_id UUID NOT NULL REFERENCES deals(id),
+    name VARCHAR(255),
+    strength_level VARCHAR(100),
+    weakness_notes TEXT,
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP
+);
+
+CREATE INDEX idx_competitors_tenant_deal ON competitors(tenant_id, deal_id);
+
+CREATE TABLE sales_strategies (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    deal_id UUID NOT NULL REFERENCES deals(id),
+    strategy_name VARCHAR(255),
+    description TEXT,
+    status VARCHAR(100),
+    created_at TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP
+);
+
+CREATE INDEX idx_sales_strategies_tenant_deal ON sales_strategies(tenant_id, deal_id);

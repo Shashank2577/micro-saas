@@ -3,11 +3,25 @@
   "displayName": "DealBrain",
   "version": "0.0.1",
   "baseUrl": "https://api-dealbrain.YOURDOMAIN.com",
-  "emits": [],
+  "emits": [
+    "dealbrain.recommendation.created"
+  ],
   "consumes": [],
   "capabilities": [
     "DEAL_INTELLIGENCE",
     "PIPELINE_ANALYSIS"
   ],
-  "healthEndpoint": "/actuator/health"
+  "healthEndpoint": "/actuator/health",
+  "endpoints": {
+    "dealController": [
+      "GET /api/deals/{id}/health-score",
+      "GET /api/deals/{id}/close-probability",
+      "GET /api/deals/{id}/risk-signals",
+      "GET /api/deals/{id}/recommendations",
+      "POST /api/deals/{id}/activities"
+    ],
+    "pipelineController": [
+      "GET /api/pipeline/dashboard"
+    ]
+  }
 }

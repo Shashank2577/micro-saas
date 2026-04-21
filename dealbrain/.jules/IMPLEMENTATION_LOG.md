@@ -11,3 +11,17 @@
 - Phase 9: Set up Vitest on the frontend and wrote unit tests for the dashboard view rendering.
 - Phase 10: Final verification confirmed all backend and frontend tests passed successfully.
 - Phase 11: Addressed code review feedback: configured backend application port to `8142`, configured a `next.config.js` proxy route, and deleted unrelated leftover code from the `nexus-hub` scaffold (`AppCard.tsx` and `api.ts`).
+- [backend] Added Competitor and SalesStrategy entities to satisfy 8+ requirement.
+- [backend] Added CompetitorRepository and SalesStrategyRepository.
+- [backend] Updated V1__init.sql with new tables.
+- [backend] Integrated AiService and WebhookService in NextActionRecommendationService.
+- [infra] Created backend/Dockerfile with multi-stage build.
+- [infra] Created docker-compose.yml for backend, frontend, and database services.
+- [frontend] Scaffolded pages for deals/[id], competitors, strategies, stakeholders, and activities.
+- [frontend] Updated dashboard to include navigation and better styling.
+- [frontend] Updated next.config.mjs to use 'standalone' output.
+- [docs] Updated integration-manifest.json with controller endpoints and recommendation webhook.
+- [test] Added NextActionRecommendationServiceTest with Mockito.
+- [test] Updated frontend DashboardPage test to pass with new number formatting.
+- [fix] Updated NextActionRecommendationService to use ObjectMapper for payload generation safely.
+- [fix] Updated NextActionRecommendationServiceTest to mock ObjectMapper.
