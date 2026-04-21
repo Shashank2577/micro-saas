@@ -2,13 +2,7 @@ package com.microsaas.documentintelligence.controller;
 
 import com.microsaas.documentintelligence.dto.DocumentDTO;
 import com.microsaas.documentintelligence.dto.DocumentExtractionDTO;
-import com.microsaas.documentintelligence.dto.QAQuery;
-import com.microsaas.documentintelligence.dto.QAResponse;
-import com.microsaas.documentintelligence.dto.SearchQuery;
-import com.microsaas.documentintelligence.model.DocumentChunk;
 import com.microsaas.documentintelligence.service.DocumentService;
-import com.microsaas.documentintelligence.service.QAService;
-import com.microsaas.documentintelligence.service.SearchService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +22,6 @@ import java.util.UUID;
 public class DocumentController {
 
     private final DocumentService documentService;
-    private final QAService qaService;
-    private final SearchService searchService;
 
     @PostMapping("/upload")
     @Operation(summary = "Upload a document")
@@ -55,15 +47,4 @@ public class DocumentController {
         return ResponseEntity.ok(documentService.getExtractions(id));
     }
 
-    @PostMapping("/search")
-    @Operation(summary = "Semantic search across documents")
-    public ResponseEntity<List<DocumentChunk>> search(@RequestBody SearchQuery query) {
-        return ResponseEntity.ok(searchService.search(query));
-    }
-
-    @PostMapping("/{id}/qa")
-    @Operation(summary = "Ask question about a document")
-    public ResponseEntity<QAResponse> askQuestion(@PathVariable UUID id, @RequestBody QAQuery query) {
-        return ResponseEntity.ok(qaService.answerQuestion(id, query));
-    }
 }
