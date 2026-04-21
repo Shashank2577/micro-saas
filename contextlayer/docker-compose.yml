@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports: ["8160:8160"]
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/contextlayer
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on: [db]
+  frontend:
+    build: ./frontend
+    ports: ["3000:3000"]
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8160
+  db:
+    image: postgres:16-alpine
+    environment: [POSTGRES_DB=contextlayer, POSTGRES_USER=postgres, POSTGRES_PASSWORD=postgres]
+    volumes: [contextlayer_data:/var/lib/postgresql/data]
+volumes:
+  contextlayer_data:
