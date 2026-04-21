@@ -72,3 +72,41 @@ CREATE TABLE IF NOT EXISTS audit_package (
 CREATE INDEX idx_audit_package_tenant ON audit_package(tenant_id);
 CREATE INDEX idx_audit_package_framework ON audit_package(framework_id);
 
+
+CREATE TABLE IF NOT EXISTS framework_requirement (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    framework_id UUID NOT NULL REFERENCES framework(id) ON DELETE CASCADE,
+    requirement_code VARCHAR(100) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_framework_requirement_tenant ON framework_requirement(tenant_id);
+
+CREATE TABLE IF NOT EXISTS evidence_request (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    control_id UUID NOT NULL REFERENCES control(id) ON DELETE CASCADE,
+    requested_by VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    due_date TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_evidence_request_tenant ON evidence_request(tenant_id);
+
+CREATE TABLE IF NOT EXISTS compliance_finding (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    control_id UUID NOT NULL REFERENCES control(id) ON DELETE CASCADE,
+    severity VARCHAR(50) NOT NULL,
+    description TEXT,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_compliance_finding_tenant ON compliance_finding(tenant_id);
