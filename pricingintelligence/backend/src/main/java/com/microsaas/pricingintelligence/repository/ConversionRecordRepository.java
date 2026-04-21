@@ -1,6 +1,6 @@
 package com.microsaas.pricingintelligence.repository;
 
-import com.microsaas.pricingintelligence.domain.PricingExperiment;
+import com.microsaas.pricingintelligence.domain.ConversionRecord;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface PricingExperimentRepository extends JpaRepository<PricingExperiment, UUID> {
-    List<PricingExperiment> findByTenantId(UUID tenantId);
+public interface ConversionRecordRepository extends JpaRepository<ConversionRecord, UUID> {
+    List<ConversionRecord> findByTenantId(UUID tenantId);
 }

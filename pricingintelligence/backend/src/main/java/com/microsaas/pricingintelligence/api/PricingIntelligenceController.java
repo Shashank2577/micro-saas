@@ -1,57 +1,69 @@
 package com.microsaas.pricingintelligence.api;
 
 import com.microsaas.pricingintelligence.domain.*;
-import com.microsaas.pricingintelligence.service.PricingIntelligenceService;
+import com.microsaas.pricingintelligence.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/pricingintelligence")
+@RequestMapping("/api/pricing")
 @RequiredArgsConstructor
 public class PricingIntelligenceController {
 
-    private final PricingIntelligenceService pricingIntelligenceService;
+    private final SegmentationService segmentationService;
+    private final ElasticityModelingService elasticityModelingService;
+    private final PriceOptimizationService priceOptimizationService;
+    private final ExperimentDesignService experimentDesignService;
+    private final WhatIfAnalysisService whatIfAnalysisService;
+    private final DiscountAnalysisService discountAnalysisService;
 
-    @GetMapping("/models")
-    public List<ElasticityModel> getModels(@RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return pricingIntelligenceService.getElasticityModels(tenantId);
+    @GetMapping("/segments")
+    public ResponseEntity<List<CustomerSegment>> getSegments() {
+        return ResponseEntity.ok(segmentationService.getSegments());
     }
 
-    @GetMapping("/models/{segment}")
-    public ElasticityModel getModelBySegment(@RequestHeader("X-Tenant-ID") UUID tenantId, @PathVariable String segment) {
-        return pricingIntelligenceService.getElasticityModelBySegment(tenantId, segment);
+    @PostMapping("/elasticity/calculate")
+    public ResponseEntity<ElasticityModel> calculateElasticity(@RequestBody Map<String, String> payload) {
+        UUID segmentId = UUID.fromString(payload.get("segmentId"));
+        return ResponseEntity.ok(elasticityModelingService.calculateElasticity(segmentId));
     }
 
-    @PostMapping("/models/generate")
-    public ElasticityModel generateModel(@RequestHeader("X-Tenant-ID") UUID tenantId, @RequestParam String segment) {
-        return pricingIntelligenceService.generateElasticityModel(tenantId, segment);
+    @GetMapping("/recommendations")
+    public ResponseEntity<List<PriceRecommendation>> getRecommendations() {
+        return ResponseEntity.ok(priceOptimizationService.getRecommendations());
+    }
+
+    @PostMapping("/recommendations/generate")
+    public ResponseEntity<PriceRecommendation> generateRecommendation(@RequestBody Map<String, String> payload) {
+        UUID segmentId = UUID.fromString(payload.get("segmentId"));
+        return ResponseEntity.ok(priceOptimizationService.generateRecommendation(segmentId));
     }
 
     @GetMapping("/experiments")
-    public List<PricingExperiment> getExperiments(@RequestHeader("X-Tenant-ID") UUID tenantId) {
-        return pricingIntelligenceService.getPricingExperiments(tenantId);
+    public ResponseEntity<List<PricingExperiment>> getExperiments() {
+        return ResponseEntity.ok(experimentDesignService.getExperiments());
     }
 
     @PostMapping("/experiments")
-    public PricingExperiment createExperiment(@RequestHeader("X-Tenant-ID") UUID tenantId,
-                                              @RequestParam String name,
-                                              @RequestParam String segment,
-                                              @RequestParam BigDecimal controlPrice,
-                                              @RequestParam BigDecimal variantPrice) {
-        return pricingIntelligenceService.createExperiment(tenantId, name, segment, controlPrice, variantPrice);
+    public ResponseEntity<PricingExperiment> createExperiment(@RequestBody PricingExperiment experiment) {
+        return ResponseEntity.ok(experimentDesignService.createExperiment(experiment));
     }
 
-    @PostMapping("/experiments/{experimentId}/results")
-    public ExperimentResult recordResult(@RequestHeader("X-Tenant-ID") UUID tenantId,
-                                         @PathVariable UUID experimentId,
-                                         @RequestParam String variantType,
-                                         @RequestParam BigDecimal conversionRate,
-                                         @RequestParam BigDecimal revenueImpact,
-                                         @RequestParam Boolean isSignificant) {
-        return pricingIntelligenceService.recordExperimentResult(tenantId, experimentId, variantType, conversionRate, revenueImpact, isSignificant);
+    @PostMapping("/what-if")
+    public ResponseEntity<BigDecimal> simulateRevenue(@RequestBody Map<String, String> payload) {
+        UUID segmentId = UUID.fromString(payload.get("segmentId"));
+        BigDecimal newPrice = new BigDecimal(payload.get("newPrice"));
+        return ResponseEntity.ok(whatIfAnalysisService.simulateRevenue(segmentId, newPrice));
+    }
+
+    @GetMapping("/discounts/analyze")
+    public ResponseEntity<Map<String, String>> analyzeDiscounts() {
+        return ResponseEntity.ok(Map.of("result", discountAnalysisService.analyzeDiscountEffectiveness()));
     }
 }
