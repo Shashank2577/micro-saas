@@ -1,7 +1,7 @@
 package com.microsaas.brandvoice.controller;
 
-import com.microsaas.brandvoice.entity.BrandProfile;
-import com.microsaas.brandvoice.service.BrandProfileService;
+import com.microsaas.brandvoice.entity.BrandGuideline;
+import com.microsaas.brandvoice.service.BrandGuidelineService;
 import com.crosscutting.starter.tenancy.TenantContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/brandprofiles")
+@RequestMapping("/api/v1/brandguidelines")
 @RequiredArgsConstructor
-public class BrandProfileController {
-    private final BrandProfileService service;
+public class BrandGuidelineController {
+    private final BrandGuidelineService service;
 
     @GetMapping
-    public List<BrandProfile> getAll() {
+    public List<BrandGuideline> getAll() {
         return service.findAllByTenant(TenantContext.require());
     }
 
     @PostMapping
-    public BrandProfile create(@RequestBody BrandProfile entity) {
+    public BrandGuideline create(@RequestBody BrandGuideline entity) {
         entity.setTenantId(TenantContext.require());
         return service.save(entity);
     }

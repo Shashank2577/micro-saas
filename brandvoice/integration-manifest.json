@@ -3,8 +3,16 @@
   "displayName": "BrandVoice",
   "version": "0.0.1",
   "baseUrl": "https://api-brandvoice.YOURDOMAIN.com",
-  "emits": [],
-  "consumes": [],
-  "capabilities": [],
+  "emits": [
+    "brandvoice.BrandProfile.created",
+    "brandvoice.AnalysisReport.generated"
+  ],
+  "consumes": [
+    "contentos.Content.created"
+  ],
+  "capabilities": [
+    "content-analysis",
+    "brand-guidelines"
+  ],
   "healthEndpoint": "/actuator/health"
 }

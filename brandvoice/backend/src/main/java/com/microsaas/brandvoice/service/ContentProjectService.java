@@ -1,7 +1,7 @@
 package com.microsaas.brandvoice.service;
 
-import com.microsaas.brandvoice.entity.BrandProfile;
-import com.microsaas.brandvoice.repository.BrandProfileRepository;
+import com.microsaas.brandvoice.entity.ContentProject;
+import com.microsaas.brandvoice.repository.ContentProjectRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +10,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class BrandProfileService {
-    private final BrandProfileRepository repository;
+public class ContentProjectService {
+    private final ContentProjectRepository repository;
 
-    public List<BrandProfile> findAllByTenant(UUID tenantId) {
+    public List<ContentProject> findAllByTenant(UUID tenantId) {
         return repository.findByTenantId(tenantId);
     }
 
-    public BrandProfile save(BrandProfile entity) {
+    public ContentProject save(ContentProject entity) {
         return repository.save(entity);
     }
 
