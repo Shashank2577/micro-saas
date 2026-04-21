@@ -18,7 +18,7 @@ public class GoalController {
 
     @PostMapping
     public ResponseEntity<Goal> createGoal(@RequestHeader("X-Tenant-ID") String tenantId,
-                                           @RequestBody Goal goal) {
+                                           @jakarta.validation.Valid @RequestBody Goal goal) {
         goal.setTenantId(tenantId);
         goal.setUserId("user-123");
         goal.setStatus("ACTIVE");
