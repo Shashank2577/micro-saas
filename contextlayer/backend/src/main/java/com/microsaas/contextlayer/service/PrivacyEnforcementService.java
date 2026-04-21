@@ -35,4 +35,20 @@ public class PrivacyEnforcementService {
         Optional<ConsentRecord> record = consentRecordRepository.findByCustomerIdAndTenantIdAndConsentType(customerId, TenantContext.require(), type);
         return record.map(ConsentRecord::getGranted).orElse(false);
     }
+
+    public Optional<ConsentRecord> getConsent(String customerId, String type) {
+        return consentRecordRepository.findByCustomerIdAndTenantIdAndConsentType(customerId, TenantContext.require(), type);
+    }
+
+    public void revokeConsent(String customerId) {
+        List<ConsentRecord> records = consentRecordRepository.findByCustomerIdAndTenantId(customerId, TenantContext.require());
+        for (ConsentRecord record : records) {
+            record.setGranted(false);
+            consentRecordRepository.save(record);
+        }
+    }
+
+    public List<ConsentRecord> getConsentHistory(String customerId) {
+        return consentRecordRepository.findByCustomerIdAndTenantId(customerId, TenantContext.require());
+    }
 }
