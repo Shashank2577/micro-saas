@@ -3,8 +3,61 @@
   "displayName": "RetirementPlus",
   "version": "0.0.1",
   "baseUrl": "https://api-retirementplus.YOURDOMAIN.com",
-  "emits": [],
+  "emits": [
+    {
+      "event": "retirementplus.profile_created",
+      "description": "Emitted when a user profile is created or updated"
+    },
+    {
+      "event": "retirementplus.projection_generated",
+      "description": "Emitted when a retirement projection is generated"
+    }
+  ],
   "consumes": [],
-  "capabilities": [],
+  "capabilities": [
+    {
+      "name": "User Management",
+      "description": "Manage retirement platform users",
+      "endpoints": [
+        {
+          "path": "/api/users",
+          "method": "POST",
+          "description": "Create a new user"
+        },
+        {
+          "path": "/api/users/{id}",
+          "method": "GET",
+          "description": "Get user details"
+        }
+      ]
+    },
+    {
+      "name": "Profile Management",
+      "description": "Manage user retirement profiles",
+      "endpoints": [
+        {
+          "path": "/api/profiles",
+          "method": "POST",
+          "description": "Create or update a user profile"
+        },
+        {
+          "path": "/api/profiles/{userId}",
+          "method": "GET",
+          "description": "Get user profile"
+        }
+      ]
+    },
+    {
+      "name": "Projection Analysis",
+      "description": "Generate retirement projections",
+      "endpoints": [
+        {
+          "path": "/api/projections/analyze/{userId}",
+          "method": "POST",
+          "description": "Generate retirement projections for a user"
+        }
+      ]
+    }
+  ],
   "healthEndpoint": "/actuator/health"
 }

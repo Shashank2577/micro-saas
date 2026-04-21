@@ -1,14 +1,30 @@
 package com.microsaas.retirementplus.dto;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import java.util.UUID;
 import java.math.BigDecimal;
 
 public class ProfileDto {
+    @NotNull(message = "User ID is required")
     private UUID userId;
+
+    @NotNull(message = "Current age is required")
+    @Min(value = 0, message = "Current age must be at least 0")
     private Integer currentAge;
+
+    @NotNull(message = "Retirement age is required")
+    @Min(value = 0, message = "Retirement age must be at least 0")
     private Integer retirementAge;
+
+    @NotNull(message = "Current savings is required")
+    @Min(value = 0, message = "Current savings must be at least 0")
     private BigDecimal currentSavings;
+
+    @NotNull(message = "Desired income is required")
+    @Min(value = 0, message = "Desired income must be at least 0")
     private BigDecimal desiredIncome;
+
     private String gender;
     private String healthStatus;
     private String familyHistory;
