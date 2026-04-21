@@ -41,6 +41,12 @@ public class FunnelService {
                 .orElseThrow(() -> new RuntimeException("Funnel not found"));
     }
 
+    @Transactional
+    public void deleteFunnel(UUID id) {
+        Funnel funnel = getFunnel(id);
+        funnelRepository.delete(funnel);
+    }
+
     @Transactional(readOnly = true)
     public Map<String, Object> analyzeFunnel(UUID id) {
         Funnel funnel = getFunnel(id);
