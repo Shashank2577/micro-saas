@@ -1,12 +1,7 @@
 package com.microsaas.constructioniq.project;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 import java.util.UUID;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,35 +9,37 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 
 @Entity
-@Table(name = "construction_projects", schema = "tenant")
+@Table(name = "construction_tasks", schema = "tenant")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class Task {
     @Id
     private UUID id = UUID.randomUUID();
+
+    @Column(name = "project_id", nullable = false)
+    private UUID projectId;
 
     @Column(name = "tenant_id", nullable = false)
     private UUID tenantId;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     private String description;
+
+    @Column(name = "assigned_to")
+    private String assignedTo;
 
     @Column(nullable = false)
     private String status;
 
-    private BigDecimal budget;
+    @Column(nullable = false)
+    private String priority;
 
-    @Column(name = "start_date")
-    private LocalDate startDate;
-
-    @Column(name = "end_date")
-    private LocalDate endDate;
-
-    private String location;
+    @Column(name = "due_date")
+    private OffsetDateTime dueDate;
 
     @Column(name = "created_at")
     private OffsetDateTime createdAt = OffsetDateTime.now();

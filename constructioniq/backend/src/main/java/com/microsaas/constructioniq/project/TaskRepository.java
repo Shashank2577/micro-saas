@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.Optional;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, UUID> {
-    List<Project> findByTenantId(UUID tenantId);
-    Optional<Project> findByIdAndTenantId(UUID id, UUID tenantId);
+public interface TaskRepository extends JpaRepository<Task, UUID> {
+    List<Task> findByProjectIdAndTenantId(UUID projectId, UUID tenantId);
+    Optional<Task> findByIdAndTenantId(UUID id, UUID tenantId);
 }

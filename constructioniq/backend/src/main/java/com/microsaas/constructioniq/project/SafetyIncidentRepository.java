@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.Optional;
 
 @Repository
-public interface ProjectRepository extends JpaRepository<Project, UUID> {
-    List<Project> findByTenantId(UUID tenantId);
-    Optional<Project> findByIdAndTenantId(UUID id, UUID tenantId);
+public interface SafetyIncidentRepository extends JpaRepository<SafetyIncident, UUID> {
+    List<SafetyIncident> findByProjectIdAndTenantId(UUID projectId, UUID tenantId);
+    Optional<SafetyIncident> findByIdAndTenantId(UUID id, UUID tenantId);
 }
