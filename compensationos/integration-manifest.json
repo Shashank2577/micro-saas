@@ -4,7 +4,9 @@
   "description": "Compensation Benchmark & Planning Platform",
   "emits": [
     "compensation.cycle.created",
-    "compensation.cycle.completed"
+    "compensation.cycle.completed",
+    "department.budget.created",
+    "benefit.plan.created"
   ],
   "consumes": [
     "tenant.created",
@@ -14,6 +16,11 @@
   "capabilities": [
     "CompensationBenchmarking",
     "PayEquityAnalysis",
-    "BudgetForecasting"
+    "BudgetForecasting",
+    "EquityModeling",
+    "PeerCompanyAnalysis",
+    "BenefitPlanManagement",
+    "DepartmentBudgeting",
+    "MarketDataAnalysis"
   ]
 }

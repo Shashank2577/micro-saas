@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  compensationos-backend:
+    build:
+      context: ..
+      dockerfile: compensationos/backend/Dockerfile
+    ports:
+      - "8147:8090"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://compensationos-db:5432/cc
+      - SPRING_DATASOURCE_USERNAME=cc
+      - SPRING_DATASOURCE_PASSWORD=cc
+    depends_on:
+      - compensationos-db
+
+  compensationos-db:
+    image: postgres:15-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=cc
+      - POSTGRES_USER=cc
+      - POSTGRES_PASSWORD=cc
+    volumes:
+      - compensationos-db-data:/var/lib/postgresql/data
+
+volumes:
+  compensationos-db-data:
