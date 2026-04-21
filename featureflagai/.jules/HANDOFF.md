@@ -1,21 +1,12 @@
-# FeatureFlagAI Handoff
+## Questions Resolved During Build
+- Q: Do we need full business logic and AI integration for this phase?
+  A: No, the instructions explicitly state "STUB/INITIAL implementation" and "basic Spring Boot backend... basic CRUD". The implementation handles core entity setup but defers complex evaluation/AI logic to future phases.
 
-## Summary
-Successfully implemented the full-stack feature flag management platform.
+## Assumptions
+- H2 is an acceptable database for testing when a real Postgres instance isn't available.
+- Security configurations are skipped initially as per the test properties to allow endpoints to be accessed unauthenticated while standing up the stub application.
 
-### Backend
-- Entities: `RolloutMetrics`, `FlagSegment`, `FlagAuditLog`, `FeatureFlag`, `FlagEvaluation`.
-- Services: `RolloutService` (auto-pause on error spike), `ImpactAnalysisService` (conversion tracking using `cc-starter` AiService), `SegmentTargetingService` (evaluates JSON user attributes against JSON conditions), `FlagCleanupService` (>90 days unused checks).
-- API configured to port 8147.
-
-### Frontend
-- Next.js UI using Tailwind CSS.
-- Pages: `/` (list dashboard), `/flags/[id]` (detail management & segments), `/impact` (AI analysis page), `/cleanup` (stale flag dashboard).
-
-### Pre-commit
-- Backend tests running and compiling with multi-tenant mock configs.
-- Frontend builds passing.
-- Visual verification using Playwright successful.
-- Addressed code review feedback (fixed JSON payload parsing, fixed port proxy configuration, fixed segment targeting mock logic, resolved bean definition conflicts).
-
-Ready for PR.
+## Future Work
+- [ ] Implement AI logic using LiteLLM/Claude for targeting rules.
+- [ ] Establish metrics monitoring using pgmq/Datadog.
+- [ ] Add explicit testing for AI logic and endpoints (no tests implemented in this initial pass to prioritize stub stability).
