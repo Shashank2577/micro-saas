@@ -1,9 +1,7 @@
 package com.microsaas.datagovernance.controller;
 
 import com.microsaas.datagovernance.model.*;
-import com.microsaas.datagovernance.dto.*;
 import com.microsaas.datagovernance.service.DataGovernanceService;
-import com.microsaas.datagovernance.service.PiiDetectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +17,6 @@ public class DataGovernanceController {
 
     @Autowired
     private DataGovernanceService service;
-
-    @Autowired
-    private PiiDetectionService piiService;
 
     @Operation(summary = "Get all retention policies")
     @GetMapping("/policies")
@@ -65,9 +60,4 @@ public class DataGovernanceController {
         return service.getAuditLogs();
     }
 
-    @Operation(summary = "Detect PII in text using AI")
-    @PostMapping("/pii/detect")
-    public PiiDetectResponse detectPii(@RequestBody PiiDetectRequest request) {
-        return piiService.detectPii(request);
-    }
 }

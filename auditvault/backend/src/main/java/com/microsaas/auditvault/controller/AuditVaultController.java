@@ -27,26 +27,6 @@ public class AuditVaultController {
         return auditVaultService.listControls(id);
     }
 
-    @PostMapping("/evidence")
-    public Evidence ingestEvidence(@RequestBody EvidenceIngestRequest request) {
-        return auditVaultService.ingestEvidence(request);
-    }
-
-    @GetMapping("/evidence")
-    public List<Evidence> listEvidence() {
-        return auditVaultService.listEvidence();
-    }
-
-    @GetMapping("/evidence/{id}")
-    public Evidence getEvidence(@PathVariable UUID id) {
-        return auditVaultService.getEvidence(id);
-    }
-
-    @PostMapping("/evidence/{id}/map")
-    public EvidenceMapping mapEvidence(@PathVariable UUID id, @RequestParam UUID frameworkId) {
-        return auditVaultService.mapEvidence(id, frameworkId);
-    }
-
     @PostMapping("/mappings/{id}/approve")
     public EvidenceMapping approveMapping(@PathVariable UUID id) {
         return auditVaultService.approveMapping(id);
@@ -55,20 +35,5 @@ public class AuditVaultController {
     @PostMapping("/mappings/{id}/reject")
     public EvidenceMapping rejectMapping(@PathVariable UUID id) {
         return auditVaultService.rejectMapping(id);
-    }
-
-    @PostMapping("/packages")
-    public AuditPackage generatePackage(@RequestBody PackageGenerateRequest request) {
-        return auditVaultService.generatePackage(request);
-    }
-
-    @GetMapping("/packages")
-    public List<AuditPackage> listPackages() {
-        return auditVaultService.listPackages();
-    }
-
-    @GetMapping("/packages/{id}")
-    public AuditPackage getPackage(@PathVariable UUID id) {
-        return auditVaultService.getPackage(id);
     }
 }

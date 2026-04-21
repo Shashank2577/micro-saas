@@ -1,6 +1,6 @@
 package com.microsaas.expenseintelligence.controller;
 
-import com.crosscutting.tenancy.context.TenantContext;
+import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.expenseintelligence.model.Expense;
 import com.microsaas.expenseintelligence.service.ExpenseService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class ExpenseController {
 
     @PostMapping
     public ResponseEntity<Expense> submitExpense(@RequestBody Expense expense) {
-        UUID tenantId = UUID.fromString(TenantContext.getCurrentTenantId());
+        UUID tenantId = TenantContext.require();
         expense.setTenantId(tenantId);
         return ResponseEntity.ok(expenseService.submitExpense(expense));
     }
@@ -32,13 +32,13 @@ public class ExpenseController {
 
     @GetMapping
     public ResponseEntity<List<Expense>> listExpenses() {
-        UUID tenantId = UUID.fromString(TenantContext.getCurrentTenantId());
+        UUID tenantId = TenantContext.require();
         return ResponseEntity.ok(expenseService.listExpenses(tenantId));
     }
 
     @GetMapping("/monthly-total")
     public ResponseEntity<BigDecimal> getMonthlyTotal(@RequestParam int year, @RequestParam int month) {
-        UUID tenantId = UUID.fromString(TenantContext.getCurrentTenantId());
+        UUID tenantId = TenantContext.require();
         return ResponseEntity.ok(expenseService.getMonthlyTotal(tenantId, year, month));
     }
 }

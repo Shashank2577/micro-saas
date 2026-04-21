@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  backend:
+    build: ./backend
+    ports: ["8091:8091"]
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/legalresearch
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on: [db]
+  frontend:
+    build: ./frontend
+    ports: ["3000:3000"]
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8091
+  db:
+    image: postgres:16-alpine
+    environment: [POSTGRES_DB=legalresearch, POSTGRES_USER=postgres, POSTGRES_PASSWORD=postgres]
+    volumes: [legalresearch_data:/var/lib/postgresql/data]
+volumes:
+  legalresearch_data:

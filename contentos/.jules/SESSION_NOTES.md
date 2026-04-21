@@ -1,0 +1,3 @@
+- Setup contentos/backend with basic Spring Boot structure
+- Local `cc-starter` was missing, created stub to satisfy dependencies
+- Compilation succeeded.

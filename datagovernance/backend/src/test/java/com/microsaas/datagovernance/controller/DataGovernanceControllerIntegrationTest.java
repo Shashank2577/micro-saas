@@ -41,7 +41,7 @@ class DataGovernanceControllerIntegrationTest {
         headers.set("X-Tenant-ID", "00000000-0000-0000-0000-000000000001");
         HttpEntity<PiiDetectRequest> entity = new HttpEntity<>(req, headers);
 
-        ResponseEntity<String> response = restTemplate.exchange("/api/v1/pii/detect", HttpMethod.POST, entity, String.class);
+        ResponseEntity<String> response = restTemplate.exchange("/api/pii/detect", HttpMethod.POST, entity, String.class);
         
         // As auth might fail because we didn't mock tokens properly in security, let's just assert it doesn't crash context
         assertNotNull(response);

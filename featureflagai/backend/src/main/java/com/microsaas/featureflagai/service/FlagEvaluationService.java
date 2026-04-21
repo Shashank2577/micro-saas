@@ -26,6 +26,7 @@ public class FlagEvaluationService {
 
     private final FeatureFlagRepository flagRepository;
     private final FlagEvaluationRepository evaluationRepository;
+    private final SegmentTargetingService segmentService;
     private final QueueService queueService;
     private final ObjectMapper objectMapper;
 
@@ -43,13 +44,19 @@ public class FlagEvaluationService {
             return false;
         }
 
-        // Basic hashing logic for rollout percentage
         boolean result = false;
-        if (flag.getRolloutPct() == 100) {
+
+        // Evaluate segment overrides first
+        if (segmentService.evaluateSegments(flagId, context)) {
             result = true;
-        } else if (flag.getRolloutPct() > 0) {
-            int bucket = getHashBucket(userId + flagId.toString());
-            result = bucket < flag.getRolloutPct();
+        } else {
+            // Basic hashing logic for rollout percentage
+            if (flag.getRolloutPct() == 100) {
+                result = true;
+            } else if (flag.getRolloutPct() > 0) {
+                int bucket = getHashBucket(userId + flagId.toString());
+                result = bucket < flag.getRolloutPct();
+            }
         }
 
         // Record evaluation asynchronously/event

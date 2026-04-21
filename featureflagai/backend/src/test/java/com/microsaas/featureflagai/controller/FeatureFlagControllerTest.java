@@ -3,8 +3,11 @@ package com.microsaas.featureflagai.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsaas.featureflagai.domain.FeatureFlag;
 import com.microsaas.featureflagai.repository.FeatureFlagRepository;
+import com.microsaas.featureflagai.service.FlagCleanupService;
 import com.microsaas.featureflagai.service.FlagEvaluationService;
+import com.microsaas.featureflagai.service.ImpactAnalysisService;
 import com.microsaas.featureflagai.service.RolloutService;
+import com.microsaas.featureflagai.service.SegmentTargetingService;
 import com.crosscutting.starter.tenancy.TenantContext;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -26,7 +28,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(controllers = FeatureFlagController.class, excludeAutoConfiguration = {
-    org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class
+    org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+    com.crosscutting.starter.ai.AiAutoConfiguration.class,
+    com.crosscutting.starter.queue.QueueAutoConfiguration.class
 })
 class FeatureFlagControllerTest {
 
@@ -44,6 +48,15 @@ class FeatureFlagControllerTest {
 
     @MockBean
     private RolloutService rolloutService;
+
+    @MockBean
+    private ImpactAnalysisService impactAnalysisService;
+
+    @MockBean
+    private FlagCleanupService flagCleanupService;
+
+    @MockBean
+    private SegmentTargetingService segmentTargetingService;
 
     private UUID tenantId;
 
