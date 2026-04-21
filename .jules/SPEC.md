@@ -1,132 +1,44 @@
-# SupportIntelligence App Specification
+# ContextLayer - Unified Customer Context for AI Apps
 
-## 1. Overview
-SupportIntelligence is an AI support co-pilot. It gives support agents AI-suggested responses grounded in knowledge base, past tickets, and product docs. It detects escalation signals, mines ticket patterns for product issues, measures deflection rate, and tracks agent efficiency.
+## Overview
+Build ContextLayer, a unified context management platform that shares customer knowledge across all AI applications in real-time.
 
-## 2. Dependencies
-*   Backend: Spring Boot 3.3.5 (Java 21), PostgreSQL 16 (with pgvector), cc-starter, LiteLLM
-*   Frontend: Next.js 14, TypeScript, Tailwind CSS, React Real-time
-*   External Integrations: Zendesk, Intercom, Freshdesk, Slack, GitHub
+## Requirements
+- Unified customer context store (JSONB)
+- Real-time context sync
+- Context versioning
+- Preference learning (AI-driven)
+- Privacy controls & Consent management
+- Context enrichment
+- Conflict resolution
 
-## 3. Database Schema
+## Domain Entities
+- CustomerContext
+- ContextVersion
+- InteractionHistory
+- CustomerPreference
+- ConsentRecord
 
-```sql
-CREATE TABLE support_tickets (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    external_ticket_id VARCHAR(255),
-    category VARCHAR(255),
-    urgency VARCHAR(50),
-    sentiment_score FLOAT,
-    status VARCHAR(50),
-    resolved_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+## Services
+- ContextRetrievalService
+- ContextUpdateService
+- PreferenceLearningService (uses LiteLLM/Claude)
+- ContextEnrichmentService
+- PrivacyEnforcementService
+- RealtimeSyncService (WebSocket/pgmq)
 
-CREATE TABLE response_suggestions (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    ticket_id UUID NOT NULL REFERENCES support_tickets(id),
-    suggested_text TEXT,
-    confidence_score FLOAT,
-    accepted_by_agent BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE escalation_signals (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    ticket_id UUID NOT NULL REFERENCES support_tickets(id),
-    signal_type VARCHAR(255),
-    severity VARCHAR(50),
-    escalated_to VARCHAR(255),
-    resolved_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE ticket_patterns (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    pattern_type VARCHAR(255),
-    occurrence_count INT,
-    first_seen TIMESTAMP,
-    last_seen TIMESTAMP,
-    product_issue_id UUID,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE product_issues (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    title VARCHAR(255),
-    description TEXT,
-    ticket_count INT,
-    status VARCHAR(50),
-    assigned_to_product_team VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE agent_metrics (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    agent_id UUID NOT NULL,
-    period VARCHAR(50),
-    tickets_resolved INT,
-    avg_resolution_time FLOAT,
-    csat_score FLOAT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Additional table for Knowledge Base if needed, keeping simple for now
-CREATE TABLE knowledge_base (
-    id UUID PRIMARY KEY,
-    tenant_id UUID NOT NULL,
-    title VARCHAR(255),
-    content TEXT,
-    embedding VECTOR(1536),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-```
-
-## 4. API Endpoints
-*   `GET /api/tickets` - List tickets
-*   `GET /api/tickets/{id}` - Get ticket details
-*   `POST /api/tickets/{id}/suggestions` - Generate a response suggestion
-*   `POST /api/tickets/{id}/suggestions/{suggestionId}/accept` - Mark suggestion as accepted
-*   `GET /api/escalations` - List escalation signals
-*   `GET /api/patterns` - List ticket patterns
-*   `GET /api/product-issues` - List product issues
-*   `GET /api/metrics` - List agent metrics
-
-## 5. Services
-*   `ResponseSuggestionService`: Calls LiteLLM for suggestions
-*   `KnowledgeBaseService`: Manages KB articles and embeddings
-*   `EscalationDetectionService`: Detects escalation signals
-*   `TicketClassificationService`: Classifies tickets
-*   `SentimentAnalysisService`: Extracts sentiment
-*   `PatternMiningService`: Mines patterns
-*   `ProductInsightService`: Aggregates issues
-*   `AgentProductivityService`: Calculates metrics
-*   `TicketIntegrationService`: Syncs with platforms
-
-## 6. Frontend Pages
-*   `/dashboard`: Agent metrics and summary
-*   `/tickets`: Ticket list
-*   `/tickets/[id]`: Ticket detail with AI suggestions side-panel
-*   `/escalations`: Escalation signals
-*   `/insights`: Ticket patterns and product issues
-
-## 7. Plan
-1.  Setup base Spring Boot + Next.js structure.
-2.  Add dependencies (cc-starter, flyway, pgvector, LiteLLM, WebSocket).
-3.  Implement Backend entities, repositories, and services.
-4.  Implement Backend controllers and API documentation.
-5.  Implement Frontend pages and components.
-6.  Test and verify.
+## Endpoints
+- GET /api/customers/{customerId}/context
+- PUT /api/customers/{customerId}/context
+- GET /api/customers/{customerId}/context/{attribute}
+- PATCH /api/customers/{customerId}/context/{attribute}
+- POST /api/customers/{customerId}/context/version
+- GET /api/customers/{customerId}/context/versions
+- POST /api/customers/{customerId}/context/rollback
+- GET /api/customers/{customerId}/preferences
+- PUT /api/customers/{customerId}/preferences/{key}
+- POST /api/customers/{customerId}/consent
+- GET /api/customers/{customerId}/audit-log
+- POST /api/customers/{customerId}/context/export
+- DELETE /api/customers/{customerId}/context
+- GET /api/context-sync/watch?customerId=X
