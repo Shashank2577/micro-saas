@@ -27,4 +27,31 @@ public class ProjectService {
     public List<Project> getProjects() {
         return projectRepository.findByTenantId(TenantContext.require());
     }
+
+    @Transactional(readOnly = true)
+    public Project getProjectById(UUID id) {
+        Project project = projectRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Project not found"));
+
+        if (!project.getTenantId().equals(TenantContext.require())) {
+            throw new RuntimeException("Project not found");
+        }
+        return project;
+    }
+
+    public Project updateProject(UUID id, Project projectDetails) {
+        Project project = getProjectById(id);
+        project.setName(projectDetails.getName());
+        project.setStatus(projectDetails.getStatus());
+        project.setBudget(projectDetails.getBudget());
+        project.setStartDate(projectDetails.getStartDate());
+        project.setEndDate(projectDetails.getEndDate());
+        project.setUpdatedAt(OffsetDateTime.now());
+        return projectRepository.save(project);
+    }
+
+    public void deleteProject(UUID id) {
+        Project project = getProjectById(id);
+        projectRepository.delete(project);
+    }
 }
