@@ -16,8 +16,10 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
         "spring.jpa.hibernate.ddl-auto=create-drop",
         "spring.flyway.enabled=false",
         "crosscutting.security.enabled=false",
-        "crosscutting.tenancy.enabled=false"
+        "crosscutting.tenancy.enabled=false",
+        "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration,org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration,org.springframework.boot.autoconfigure.security.oauth2.resource.servlet.OAuth2ResourceServerAutoConfiguration"
 })
+@org.springframework.test.context.ActiveProfiles("test")
 class MarketplaceHubApplicationTests {
 
     @MockBean

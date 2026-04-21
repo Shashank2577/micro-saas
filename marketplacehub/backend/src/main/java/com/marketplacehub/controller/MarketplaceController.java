@@ -38,36 +38,6 @@ public class MarketplaceController {
         return marketplaceService.registerApp(app);
     }
 
-    @PostMapping("/apps/{id}/install")
-    @Operation(summary = "Install an app")
-    public AppInstallation installApp(@PathVariable UUID id, @RequestBody InstallRequest request) {
-        return marketplaceService.installApp(id, request);
-    }
-
-    @GetMapping("/installations/workspace/{workspaceId}")
-    @Operation(summary = "Get installations for a workspace")
-    public List<AppInstallation> getInstallations(@PathVariable String workspaceId) {
-        return marketplaceService.getWorkspaceInstallations(workspaceId);
-    }
-
-    @PostMapping("/apps/{id}/reviews")
-    @Operation(summary = "Submit an app review")
-    public AppReview submitReview(@PathVariable UUID id, @RequestBody AppReview review) {
-        return marketplaceService.submitReview(id, review);
-    }
-
-    @GetMapping("/apps/{id}/reviews")
-    @Operation(summary = "Get approved reviews for an app")
-    public List<AppReview> getReviews(@PathVariable UUID id) {
-        return marketplaceService.getApprovedReviews(id);
-    }
-
-    @PutMapping("/reviews/{reviewId}/status")
-    @Operation(summary = "Update review status")
-    public AppReview updateReviewStatus(@PathVariable UUID reviewId, @RequestParam String status) {
-        return marketplaceService.updateReviewStatus(reviewId, status);
-    }
-
     @GetMapping("/apps/trending")
     @Operation(summary = "Get trending apps")
     public List<App> getTrendingApps() {
