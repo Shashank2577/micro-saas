@@ -40,5 +40,6 @@
     <modules>
         <module>../auditready/backend</module>
         <module>cc-starter</module>
+        <module>../socialintelligence/backend</module>
     </modules>
 </project>
