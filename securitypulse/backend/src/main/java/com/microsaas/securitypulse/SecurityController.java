@@ -1,5 +1,6 @@
 package com.microsaas.securitypulse;
 
+import com.crosscutting.starter.tenancy.TenantContext;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -7,73 +8,94 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api")
 public class SecurityController {
 
+    private final ScanJobRepository scanJobRepository;
     private final FindingRepository findingRepository;
     private final PolicyRepository policyRepository;
+    private final PolicyDecisionRepository policyDecisionRepository;
+    private final TriagedReportRepository triagedReportRepository;
     private final ScanService scanService;
     private final PolicyEngine policyEngine;
 
-    public SecurityController(FindingRepository findingRepository, PolicyRepository policyRepository, ScanService scanService, PolicyEngine policyEngine) {
+    public SecurityController(ScanJobRepository scanJobRepository,
+                              FindingRepository findingRepository,
+                              PolicyRepository policyRepository,
+                              PolicyDecisionRepository policyDecisionRepository,
+                              TriagedReportRepository triagedReportRepository,
+                              ScanService scanService,
+                              PolicyEngine policyEngine) {
+        this.scanJobRepository = scanJobRepository;
         this.findingRepository = findingRepository;
         this.policyRepository = policyRepository;
+        this.policyDecisionRepository = policyDecisionRepository;
+        this.triagedReportRepository = triagedReportRepository;
         this.scanService = scanService;
         this.policyEngine = policyEngine;
     }
 
-    @PostMapping("/scan")
-    public ScanResult scan(@RequestBody Map<String, String> payload, @RequestHeader(value = "X-Tenant-ID", required = false) UUID tenantId) {
-        if (tenantId == null) {
-            tenantId = UUID.randomUUID(); // Fallback for testing if not provided
-        }
-        
+    @PostMapping("/scans")
+    public ScanJob triggerScan(@RequestBody Map<String, String> payload) {
+        UUID tenantId = TenantContext.require();
         String prUrl = payload.get("prUrl");
-        List<Finding> findings = scanService.scan(prUrl, tenantId);
-        
-        // Save findings
-        findingRepository.saveAll(findings);
-        
-        // Get policies for tenant
-        List<Policy> policies = policyRepository.findByTenantId(tenantId);
-        
-        // Evaluate
-        String decision = policyEngine.evaluate(findings, policies);
-        
-        return new ScanResult(findings, decision);
+        ScanJob job = scanService.createScan(prUrl, tenantId);
+        // In a real app, this would be async. For the stub, we run it synchronously.
+        scanService.runScan(job.getId(), tenantId);
+        return scanJobRepository.findById(job.getId()).orElse(job);
     }
 
-    @GetMapping("/findings")
-    public List<Finding> getFindings(@RequestHeader(value = "X-Tenant-ID", required = false) UUID tenantId) {
-        if (tenantId == null) {
-            return findingRepository.findAll();
-        }
-        return findingRepository.findByTenantId(tenantId);
+    @GetMapping("/scans/{id}")
+    public ScanJob getScan(@PathVariable UUID id) {
+        UUID tenantId = TenantContext.require();
+        return scanJobRepository.findByIdAndTenantId(id, tenantId)
+                .orElseThrow(() -> new RuntimeException("Scan job not found"));
+    }
+
+    @GetMapping("/scans/{id}/findings")
+    public List<Finding> getScanFindings(@PathVariable UUID id) {
+        UUID tenantId = TenantContext.require();
+        return findingRepository.findByScanJobIdAndTenantId(id, tenantId);
+    }
+
+    @PostMapping("/scans/{id}/triage")
+    public TriagedReport triageScan(@PathVariable UUID id) {
+        UUID tenantId = TenantContext.require();
+        List<Finding> findings = findingRepository.findByScanJobIdAndTenantId(id, tenantId);
+
+        TriagedReport report = TriagedReport.builder()
+                .id(UUID.randomUUID())
+                .scanJobId(id)
+                .summary("Triaged " + findings.size() + " findings.")
+                .priorityLevel(findings.stream().anyMatch(f -> "CRITICAL".equals(f.getSeverity())) ? "URGENT" : "NORMAL")
+                .tenantId(tenantId)
+                .build();
+
+        return triagedReportRepository.save(report);
     }
 
     @PostMapping("/policies")
-    public Policy createPolicy(@RequestBody Policy policy, @RequestHeader(value = "X-Tenant-ID", required = false) UUID tenantId) {
-        if (policy.getId() == null) {
-            policy.setId(UUID.randomUUID());
-        }
-        if (policy.getTenantId() == null && tenantId != null) {
-            policy.setTenantId(tenantId);
-        } else if (policy.getTenantId() == null) {
-            policy.setTenantId(UUID.randomUUID()); // Fallback
-        }
+    public Policy createPolicy(@RequestBody Policy policy) {
+        UUID tenantId = TenantContext.require();
+        policy.setId(UUID.randomUUID());
+        policy.setTenantId(tenantId);
         return policyRepository.save(policy);
     }
-    
-    public static class ScanResult {
-        private List<Finding> findings;
-        private String policyDecision;
+
+    @GetMapping("/policies")
+    public List<Policy> listPolicies() {
+        UUID tenantId = TenantContext.require();
+        return policyRepository.findByTenantId(tenantId);
+    }
+
+    @PostMapping("/policies/enforce")
+    public PolicyDecision enforcePolicy(@RequestBody Map<String, UUID> payload) {
+        UUID tenantId = TenantContext.require();
+        UUID scanJobId = payload.get("scanJobId");
         
-        public ScanResult(List<Finding> findings, String policyDecision) {
-            this.findings = findings;
-            this.policyDecision = policyDecision;
-        }
+        List<Finding> findings = findingRepository.findByScanJobIdAndTenantId(scanJobId, tenantId);
+        List<Policy> policies = policyRepository.findByTenantId(tenantId);
         
-        public List<Finding> getFindings() { return findings; }
-        public String getPolicyDecision() { return policyDecision; }
+        return policyEngine.evaluate(scanJobId, findings, policies, tenantId);
     }
 }

@@ -8,22 +8,21 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "findings")
+@Table(name = "scan_jobs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Finding {
+public class ScanJob {
     @Id
     private UUID id;
-    private UUID scanJobId;
     private String prUrl;
-    private String tool;
-    private String severity;
-    private String message;
     private String status;
+    private Instant createdAt;
+    private Instant completedAt;
     private UUID tenantId;
 }

@@ -11,19 +11,16 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "findings")
+@Table(name = "triaged_reports")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Finding {
+public class TriagedReport {
     @Id
     private UUID id;
     private UUID scanJobId;
-    private String prUrl;
-    private String tool;
-    private String severity;
-    private String message;
-    private String status;
+    private String summary;
+    private String priorityLevel;
     private UUID tenantId;
 }

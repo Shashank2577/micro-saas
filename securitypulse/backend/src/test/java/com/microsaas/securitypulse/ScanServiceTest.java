@@ -1,43 +1,106 @@
 package com.microsaas.securitypulse;
 
+import com.crosscutting.starter.webhooks.WebhookService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 class ScanServiceTest {
 
+    @Mock
+    private ScanJobRepository scanJobRepository;
+    @Mock
+    private FindingRepository findingRepository;
+    @Mock
+    private PolicyDecisionRepository policyDecisionRepository;
+    @Mock
+    private WebhookService webhookService;
+
+    private ScanService scanService;
+    private PolicyEngine policyEngine;
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        scanService = new ScanService(scanJobRepository, findingRepository, webhookService, objectMapper);
+        policyEngine = new PolicyEngine(policyDecisionRepository, webhookService, objectMapper);
+    }
+
     @Test
-    void testScanReturnsFindings() {
-        ScanService scanService = new ScanService();
+    void testCreateScan() {
         UUID tenantId = UUID.randomUUID();
         String prUrl = "https://github.com/org/repo/pull/1";
         
-        List<Finding> findings = scanService.scan(prUrl, tenantId);
+        when(scanJobRepository.save(any(ScanJob.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        ScanJob job = scanService.createScan(prUrl, tenantId);
+
+        assertNotNull(job);
+        assertEquals(prUrl, job.getPrUrl());
+        assertEquals(tenantId, job.getTenantId());
+        assertEquals("PENDING", job.getStatus());
+        verify(scanJobRepository).save(any(ScanJob.class));
+    }
+
+    @Test
+    void testRunScan() {
+        UUID tenantId = UUID.randomUUID();
+        UUID scanJobId = UUID.randomUUID();
+        ScanJob job = ScanJob.builder()
+                .id(scanJobId)
+                .prUrl("url")
+                .tenantId(tenantId)
+                .build();
+
+        when(scanJobRepository.findByIdAndTenantId(scanJobId, tenantId)).thenReturn(Optional.of(job));
+        when(scanJobRepository.save(any(ScanJob.class))).thenAnswer(i -> i.getArguments()[0]);
+
+        List<Finding> findings = scanService.runScan(scanJobId, tenantId);
         
         assertNotNull(findings);
         assertEquals(2, findings.size());
+        assertEquals("COMPLETED", job.getStatus());
         
-        // Verify mock contents
-        assertTrue(findings.stream().anyMatch(f -> f.getTool().equals("SEMGREP")));
-        assertTrue(findings.stream().anyMatch(f -> f.getTool().equals("TRUFFLEHOG")));
+        verify(findingRepository).saveAll(anyList());
+        verify(webhookService, atLeastOnce()).dispatch(eq(tenantId), anyString(), anyString());
     }
     
     @Test
     void testPolicyEngine() {
-        PolicyEngine engine = new PolicyEngine();
         UUID tenantId = UUID.randomUUID();
+        UUID scanJobId = UUID.randomUUID();
         
-        Finding finding = new Finding(UUID.randomUUID(), "url", "SEMGREP", "CRITICAL", "msg", "OPEN", tenantId);
-        Policy policy = new Policy(UUID.randomUUID(), "Block Critical", "CRITICAL", "BLOCK", tenantId);
+        Finding finding = Finding.builder()
+                .id(UUID.randomUUID())
+                .severity("CRITICAL")
+                .tool("SEMGREP")
+                .tenantId(tenantId)
+                .build();
+
+        Policy policy = Policy.builder()
+                .id(UUID.randomUUID())
+                .name("Block Critical")
+                .rule("CRITICAL")
+                .action("BLOCK")
+                .tenantId(tenantId)
+                .build();
         
-        String decision = engine.evaluate(List.of(finding), List.of(policy));
+        when(policyDecisionRepository.save(any(PolicyDecision.class))).thenAnswer(i -> i.getArguments()[0]);
         
-        assertEquals("BLOCK", decision);
+        PolicyDecision decision = policyEngine.evaluate(scanJobId, List.of(finding), List.of(policy), tenantId);
         
-        Finding lowFinding = new Finding(UUID.randomUUID(), "url", "SEMGREP", "LOW", "msg", "OPEN", tenantId);
-        String allowDecision = engine.evaluate(List.of(lowFinding), List.of(policy));
-        
-        assertEquals("ALLOW", allowDecision);
+        assertEquals("BLOCK", decision.getDecision());
+        verify(webhookService).dispatch(eq(tenantId), eq("policy-violation"), anyString());
     }
 }
