@@ -1,0 +1,13 @@
+{
+  "app": "dealbrain",
+  "displayName": "DealBrain",
+  "version": "0.0.1",
+  "baseUrl": "https://api-dealbrain.YOURDOMAIN.com",
+  "emits": [],
+  "consumes": [],
+  "capabilities": [
+    "DEAL_INTELLIGENCE",
+    "PIPELINE_ANALYSIS"
+  ],
+  "healthEndpoint": "/actuator/health"
+}
