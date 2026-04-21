@@ -32,6 +32,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     com.crosscutting.starter.ai.AiAutoConfiguration.class,
     com.crosscutting.starter.queue.QueueAutoConfiguration.class
 })
+
+
 class FeatureFlagControllerTest {
 
     @Autowired
