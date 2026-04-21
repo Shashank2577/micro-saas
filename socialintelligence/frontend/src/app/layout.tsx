@@ -1,6 +1,6 @@
-import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,18 +17,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="flex h-screen bg-gray-100">
-          <nav className="w-64 bg-white border-r">
-            <div className="p-4 text-xl font-bold border-b">SocialIntelligence</div>
-            <ul className="p-4 space-y-2">
-              <li><a href="/dashboard" className="block p-2 hover:bg-gray-100 rounded">Dashboard</a></li>
-              <li><a href="/platforms" className="block p-2 hover:bg-gray-100 rounded">Platforms</a></li>
-              <li><a href="/audience" className="block p-2 hover:bg-gray-100 rounded">Audience</a></li>
-              <li><a href="/content" className="block p-2 hover:bg-gray-100 rounded">Content</a></li>
-              <li><a href="/growth" className="block p-2 hover:bg-gray-100 rounded">Growth AI</a></li>
-            </ul>
-          </nav>
-          <main className="flex-1 overflow-y-auto p-8">
+        <div className="flex h-screen bg-gray-50">
+          <div className="w-64 bg-white shadow-md p-4">
+            <h1 className="text-xl font-bold mb-6">SocialIntelligence</h1>
+            <nav className="space-y-2">
+              <a href="/" className="block p-2 hover:bg-gray-100 rounded">Dashboard</a>
+              <a href="/connect" className="block p-2 hover:bg-gray-100 rounded">Connect Platforms</a>
+              <a href="/content" className="block p-2 hover:bg-gray-100 rounded">Top Content</a>
+              <a href="/audience" className="block p-2 hover:bg-gray-100 rounded">Audience</a>
+              <a href="/recommendations" className="block p-2 hover:bg-gray-100 rounded">Recommendations</a>
+              <a href="/growth" className="block p-2 hover:bg-gray-100 rounded">Growth Projection</a>
+            </nav>
+          </div>
+          <main className="flex-1 p-8 overflow-auto">
             {children}
           </main>
         </div>

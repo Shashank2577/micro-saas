@@ -1,227 +1,205 @@
 import os
 
-models = [
-    ("PurchaseRequest", "purchase-requests", "purchase_requests"),
-    ("ApprovalFlow", "approval-flows", "approval_flows"),
-    ("PurchaseOrder", "purchase-orders", "purchase_orders"),
-    ("VendorOffer", "vendor-offers", "vendor_offers"),
-    ("SpendControlRule", "spend-control-rules", "spend_control_rules"),
-    ("ProcurementEvent", "events", "procurement_events") # the spec actually says events endpoint but its procurement_events table, let's stick to spec. actually spec doesn't list events endpoints explicitly, wait. It says "6. events: backend service + API + frontend page + tests" in Scope. I'll add endpoints for events.
-]
+base_pkg = 'socialintelligence/backend/src/main/java/com/crosscutting/socialintelligence'
+domain_dir = f'{base_pkg}/domain'
+repo_dir = f'{base_pkg}/repository'
+service_dir = f'{base_pkg}/service'
+controller_dir = f'{base_pkg}/controller'
+dto_dir = f'{base_pkg}/dto'
 
-base_dir = "procurebot/backend/src/main/java/com/microsaas/procurebot"
+os.makedirs(domain_dir, exist_ok=True)
+os.makedirs(repo_dir, exist_ok=True)
+os.makedirs(service_dir, exist_ok=True)
+os.makedirs(controller_dir, exist_ok=True)
+os.makedirs(dto_dir, exist_ok=True)
 
-os.makedirs(f"{base_dir}/model", exist_ok=True)
-os.makedirs(f"{base_dir}/repository", exist_ok=True)
-os.makedirs(f"{base_dir}/service", exist_ok=True)
-os.makedirs(f"{base_dir}/controller", exist_ok=True)
-os.makedirs(f"{base_dir}/dto", exist_ok=True)
+# Delete old domain entities that don't match
+for f in os.listdir(domain_dir):
+    if f.endswith('.java'):
+        os.remove(os.path.join(domain_dir, f))
 
-# Generate Entities
-for model_name, api_path, table_name in models:
-    content = f"""package com.microsaas.procurebot.model;
+# 1. PlatformAccount
+with open(f'{domain_dir}/PlatformAccount.java', 'w') as f:
+    f.write('''package com.crosscutting.socialintelligence.domain;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.ZonedDateTime;
-import java.util.Map;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "{table_name}")
-@Getter
-@Setter
+@Table(name = "platform_accounts")
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class {model_name} {{
-
+public class PlatformAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Column(name = "tenant_id", nullable = false)
     private UUID tenantId;
+    private String platform;
+    private String accountName;
+    private String accountIdExternal;
+    private String accessTokenEncrypted;
+    private String refreshTokenEncrypted;
+    private LocalDateTime tokenExpiresAt;
+    @Builder.Default
+    private Boolean isActive = true;
+    @Builder.Default
+    private LocalDateTime connectedAt = LocalDateTime.now();
+}
+''')
 
-    @Column(name = "name", nullable = false, length = 180)
-    private String name;
+# 2. EngagementMetric
+with open(f'{domain_dir}/EngagementMetric.java', 'w') as f:
+    f.write('''package com.crosscutting.socialintelligence.domain;
 
-    @Column(name = "status", nullable = false, length = 40)
-    private String status;
-
-    @Type(JsonType.class)
-    @Column(name = "metadata_json", columnDefinition = "jsonb")
-    private Map<String, Object> metadataJson;
-
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private ZonedDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "created_at", nullable = false) // Fixing copy paste bug: should be updated_at
-    private ZonedDateTime updatedAt;
-}}
-"""
-    # Replace the bug
-    content = content.replace('@Column(name = "created_at", nullable = false) // Fixing copy paste bug: should be updated_at\n    private ZonedDateTime updatedAt;', '@Column(name = "updated_at", nullable = false)\n    private ZonedDateTime updatedAt;')
-    with open(f"{base_dir}/model/{model_name}.java", "w") as f:
-        f.write(content)
-
-# Generate Repositories
-for model_name, api_path, table_name in models:
-    content = f"""package com.microsaas.procurebot.repository;
-
-import com.microsaas.procurebot.model.{model_name};
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
-@Repository
-public interface {model_name}Repository extends JpaRepository<{model_name}, UUID> {{
-    List<{model_name}> findByTenantId(UUID tenantId);
-    Optional<{model_name}> findByIdAndTenantId(UUID id, UUID tenantId);
-}}
-"""
-    with open(f"{base_dir}/repository/{model_name}Repository.java", "w") as f:
-        f.write(content)
-
-# Generate DTOs
-for model_name, api_path, table_name in models:
-    content = f"""package com.microsaas.procurebot.dto;
-
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import java.util.Map;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Entity
+@Table(name = "engagement_metrics")
 @Data
-public class {model_name}Request {{
-    private String name;
-    private String status;
-    private Map<String, Object> metadataJson;
-}}
-"""
-    with open(f"{base_dir}/dto/{model_name}Request.java", "w") as f:
-        f.write(content)
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class EngagementMetric {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private UUID tenantId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private PlatformAccount account;
+    private LocalDate metricDate;
+    private Long followersCount;
+    private Long impressions;
+    private Long reach;
+    private Long likes;
+    private Long comments;
+    private Long shares;
+    private BigDecimal engagementRate;
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
+}
+''')
 
-# Generate Services
-for model_name, api_path, table_name in models:
-    content = f"""package com.microsaas.procurebot.service;
+# 3. ContentPost
+with open(f'{domain_dir}/ContentPost.java', 'w') as f:
+    f.write('''package com.crosscutting.socialintelligence.domain;
 
-import com.microsaas.procurebot.dto.{model_name}Request;
-import com.microsaas.procurebot.model.{model_name};
-import com.microsaas.procurebot.repository.{model_name}Repository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Service
-@RequiredArgsConstructor
-public class {model_name}Service {{
+@Entity
+@Table(name = "content_posts")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ContentPost {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private UUID tenantId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private PlatformAccount account;
+    private String externalPostId;
+    private String contentType;
+    private String caption;
+    private LocalDateTime postedAt;
+    private Long likes;
+    private Long comments;
+    private Long shares;
+    private Long views;
+    private BigDecimal engagementRate;
+}
+''')
 
-    private final {model_name}Repository repository;
+# 4. AudienceDemographic
+with open(f'{domain_dir}/AudienceDemographic.java', 'w') as f:
+    f.write('''package com.crosscutting.socialintelligence.domain;
 
-    @Transactional(readOnly = true)
-    public List<{model_name}> findAll(UUID tenantId) {{
-        return repository.findByTenantId(tenantId);
-    }}
-
-    @Transactional(readOnly = true)
-    public {model_name} findById(UUID id, UUID tenantId) {{
-        return repository.findByIdAndTenantId(id, tenantId)
-                .orElseThrow(() -> new RuntimeException("{model_name} not found"));
-    }}
-
-    @Transactional
-    public {model_name} create(UUID tenantId, {model_name}Request request) {{
-        {model_name} entity = {model_name}.builder()
-                .tenantId(tenantId)
-                .name(request.getName())
-                .status(request.getStatus() != null ? request.getStatus() : "DRAFT")
-                .metadataJson(request.getMetadataJson())
-                .build();
-        return repository.save(entity);
-    }}
-
-    @Transactional
-    public {model_name} update(UUID id, UUID tenantId, {model_name}Request request) {{
-        {model_name} entity = findById(id, tenantId);
-        if (request.getName() != null) entity.setName(request.getName());
-        if (request.getStatus() != null) entity.setStatus(request.getStatus());
-        if (request.getMetadataJson() != null) entity.setMetadataJson(request.getMetadataJson());
-        return repository.save(entity);
-    }}
-
-    public void validate(UUID id, UUID tenantId) {{
-        {model_name} entity = findById(id, tenantId);
-        // Add business validation logic here
-    }}
-}}
-"""
-    with open(f"{base_dir}/service/{model_name}Service.java", "w") as f:
-        f.write(content)
-
-# Generate Controllers
-for model_name, api_path, table_name in models:
-    content = f"""package com.microsaas.procurebot.controller;
-
-import com.microsaas.procurebot.dto.{model_name}Request;
-import com.microsaas.procurebot.model.{model_name};
-import com.microsaas.procurebot.service.{model_name}Service;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
-@RestController
-@RequestMapping("/api/v1/procurement/{api_path}")
-@RequiredArgsConstructor
-public class {model_name}Controller {{
+@Entity
+@Table(name = "audience_demographics")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class AudienceDemographic {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private UUID tenantId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private PlatformAccount account;
+    private String ageRange;
+    private String gender;
+    private String country;
+    private BigDecimal percentage;
+    @Builder.Default
+    private LocalDateTime recordedAt = LocalDateTime.now();
+}
+''')
 
-    private final {model_name}Service service;
+# 5. GrowthRecommendation
+with open(f'{domain_dir}/GrowthRecommendation.java', 'w') as f:
+    f.write('''package com.crosscutting.socialintelligence.domain;
 
-    // TODO: Fetch tenantId from authentication context, currently hardcoded or passed as header for MVP
-    private UUID getTenantId() {{
-        return UUID.fromString("00000000-0000-0000-0000-000000000001");
-    }}
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
-    @GetMapping
-    public ResponseEntity<List<{model_name}>> getAll() {{
-        return ResponseEntity.ok(service.findAll(getTenantId()));
-    }}
-
-    @PostMapping
-    public ResponseEntity<{model_name}> create(@RequestBody {model_name}Request request) {{
-        return ResponseEntity.ok(service.create(getTenantId(), request));
-    }}
-
-    @GetMapping("/{{id}}")
-    public ResponseEntity<{model_name}> getById(@PathVariable UUID id) {{
-        return ResponseEntity.ok(service.findById(id, getTenantId()));
-    }}
-
-    @PatchMapping("/{{id}}")
-    public ResponseEntity<{model_name}> update(@PathVariable UUID id, @RequestBody {model_name}Request request) {{
-        return ResponseEntity.ok(service.update(id, getTenantId(), request));
-    }}
-
-    @PostMapping("/{{id}}/validate")
-    public ResponseEntity<Void> validate(@PathVariable UUID id) {{
-        service.validate(id, getTenantId());
-        return ResponseEntity.ok().build();
-    }}
-}}
-"""
-    with open(f"{base_dir}/controller/{model_name}Controller.java", "w") as f:
-        f.write(content)
+@Entity
+@Table(name = "growth_recommendations")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class GrowthRecommendation {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private UUID tenantId;
+    private String recommendationText;
+    private String platform;
+    private String category;
+    private Integer priority;
+    @Builder.Default
+    private LocalDateTime generatedAt = LocalDateTime.now();
+    @Builder.Default
+    private Boolean isActioned = false;
+}
+''')

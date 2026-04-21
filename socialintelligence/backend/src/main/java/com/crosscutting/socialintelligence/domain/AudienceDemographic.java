@@ -1,46 +1,32 @@
-
-
-
-
 package com.crosscutting.socialintelligence.domain;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 
 import jakarta.persistence.*;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
+@Table(name = "audience_demographics")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "audience_demographics")
 public class AudienceDemographic {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
-    @Column(name = "tenant_id", nullable = false)
-    private String tenantId;
-
+    private UUID tenantId;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "account_id", nullable = false)
+    @JoinColumn(name = "account_id")
     private PlatformAccount account;
-
-    @Column(name = "demographic_type", nullable = false)
-    private String demographicType;
-
-    @Column(name = "demographic_value", nullable = false)
-    private String demographicValue;
-
-    @Column(name = "percentage", nullable = false)
+    private String ageRange;
+    private String gender;
+    private String country;
     private BigDecimal percentage;
-
-    @Column(name = "recorded_at", insertable = false, updatable = false)
-    private ZonedDateTime recordedAt;
+    @Builder.Default
+    private LocalDateTime recordedAt = LocalDateTime.now();
 }

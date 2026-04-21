@@ -1,31 +1,28 @@
-'use client';
+"use client";
 import { useEffect, useState } from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export default function Audience() {
-  const [demographics, setDemographics] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch('/api/audience/demographics', { headers: { 'X-Tenant-ID': 'test-tenant' } })
-      .then(res => res.json())
-      .then(data => setDemographics(data))
-      .catch(console.error);
-  }, []);
+  const data = [
+    { name: '18-24', percentage: 40 },
+    { name: '25-34', percentage: 35 },
+    { name: '35-44', percentage: 15 },
+    { name: '45+', percentage: 10 },
+  ];
 
   return (
     <div>
       <h1 className="text-2xl font-bold mb-6">Audience Demographics</h1>
-      <div className="grid grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded shadow">
-          <h2 className="font-semibold mb-4">By Category</h2>
-          <ul>
-            {demographics.map((d, i) => (
-              <li key={i} className="mb-2 flex justify-between">
-                <span>{d.demographicType}: {d.demographicValue}</span>
-                <span className="font-bold">{d.percentage}%</span>
-              </li>
-            ))}
-          </ul>
-        </div>
+      <div className="bg-white p-6 rounded shadow">
+        <h3 className="text-lg font-bold mb-4">Age Distribution</h3>
+        <BarChart width={600} height={300} data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="percentage" fill="#8884d8" />
+        </BarChart>
       </div>
     </div>
   );

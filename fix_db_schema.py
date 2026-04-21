@@ -1,6 +1,13 @@
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+import os
+import re
 
-CREATE TABLE platform_accounts (
+file_path = 'socialintelligence/backend/src/main/resources/db/migration/V1__init.sql'
+
+with open(file_path, 'r') as f:
+    content = f.read()
+
+# Update PlatformAccount
+content = re.sub(r'CREATE TABLE platform_accounts \([\s\S]*?\);', '''CREATE TABLE platform_accounts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
     platform VARCHAR(50) CHECK (platform IN ('INSTAGRAM','TIKTOK','YOUTUBE','TWITTER','LINKEDIN')) NOT NULL,
@@ -12,9 +19,10 @@ CREATE TABLE platform_accounts (
     is_active BOOLEAN DEFAULT TRUE,
     connected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(tenant_id, platform, account_id_external)
-);
+);''', content)
 
-CREATE TABLE engagement_metrics (
+# Update EngagementMetric
+content = re.sub(r'CREATE TABLE engagement_metrics \([\s\S]*?\);', '''CREATE TABLE engagement_metrics (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
     account_id UUID REFERENCES platform_accounts(id) ON DELETE CASCADE,
@@ -28,20 +36,10 @@ CREATE TABLE engagement_metrics (
     engagement_rate DECIMAL(6,4) DEFAULT 0.0000,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     UNIQUE(account_id, metric_date)
-);
+);''', content)
 
-CREATE TABLE audience_demographics (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    tenant_id UUID NOT NULL,
-    account_id UUID REFERENCES platform_accounts(id) ON DELETE CASCADE,
-    age_range VARCHAR(50),
-    gender VARCHAR(50),
-    country VARCHAR(100),
-    percentage DECIMAL(5,2) NOT NULL,
-    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE content_posts (
+# Replace ContentAnalyses with ContentPost
+content = re.sub(r'CREATE TABLE content_analyses \([\s\S]*?\);', '''CREATE TABLE content_posts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
     account_id UUID REFERENCES platform_accounts(id) ON DELETE CASCADE,
@@ -55,9 +53,22 @@ CREATE TABLE content_posts (
     views BIGINT DEFAULT 0,
     engagement_rate DECIMAL(6,4) DEFAULT 0.0000,
     UNIQUE(account_id, external_post_id)
-);
+);''', content)
 
-CREATE TABLE growth_recommendations (
+# Update AudienceDemographic
+content = re.sub(r'CREATE TABLE audience_demographics \([\s\S]*?\);', '''CREATE TABLE audience_demographics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    tenant_id UUID NOT NULL,
+    account_id UUID REFERENCES platform_accounts(id) ON DELETE CASCADE,
+    age_range VARCHAR(50),
+    gender VARCHAR(50),
+    country VARCHAR(100),
+    percentage DECIMAL(5,2) NOT NULL,
+    recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);''', content)
+
+# Update GrowthRecommendation
+content = re.sub(r'CREATE TABLE growth_recommendations \([\s\S]*?\);', '''CREATE TABLE growth_recommendations (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     tenant_id UUID NOT NULL,
     recommendation_text TEXT NOT NULL,
@@ -66,9 +77,9 @@ CREATE TABLE growth_recommendations (
     priority INT,
     generated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_actioned BOOLEAN DEFAULT FALSE
-);
+);''', content)
 
-CREATE INDEX idx_platform_accounts_tenant ON platform_accounts(tenant_id);
-CREATE INDEX idx_engagement_metrics_account_date ON engagement_metrics(account_id, metric_date);
-CREATE INDEX idx_content_posts_account ON content_posts(account_id);
-CREATE INDEX idx_growth_recommendations_tenant ON growth_recommendations(tenant_id);
+content = re.sub(r'CREATE INDEX idx_content_analyses_account ON content_analyses\(account_id\);', 'CREATE INDEX idx_content_posts_account ON content_posts(account_id);', content)
+
+with open(file_path, 'w') as f:
+    f.write(content)
