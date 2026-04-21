@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8130:8130"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
