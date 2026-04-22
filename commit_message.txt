@@ -1,0 +1,11 @@
+feat(policyforge): Implement complete backend and frontend spec
+
+- Implemented AI policy domain entities (PolicyDraft, PolicyGap, UpdateSummary, PolicyCategory, IncidentReference).
+- Updated Flyway migration (V1__init.sql) with new tables.
+- Implemented AiPolicyService leveraging com.crosscutting.starter.ai.LiteLlmClient (AiService) pattern.
+- Updated PolicyController and created PolicyGapController, PolicyCategoryController.
+- Emitted webhook events (policy.published, policy.acknowledged, policy.updated) via WebhookService.
+- Added backend Dockerfile and docker-compose.yml.
+- Updated frontend scaffolding: cleaned up dangling/stub components, created App Router pages (/, /policies, /gaps, /categories), fixed React testing via Vitest and jsdom.
+- Verified backend (Mockito + Surefire) and frontend (Vitest) tests passing.
+- Updated integration-manifest.json to 100% reflect implementation capabilities and hooks.
