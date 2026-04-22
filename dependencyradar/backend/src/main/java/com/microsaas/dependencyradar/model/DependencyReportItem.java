@@ -8,11 +8,11 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "dependencies")
+@Table(name = "dependency_report_items")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Dependency {
+public class DependencyReportItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -26,14 +26,14 @@ public class Dependency {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "report_id")
+    private UUID reportId;
 
-    @Column(name = "version")
-    private String version;
+    @Column(name = "dependency_id")
+    private UUID dependencyId;
 
-    @Column(name = "ecosystem")
-    private String ecosystem;
+    @Column(name = "vulnerability_id")
+    private UUID vulnerabilityId;
 
     @PrePersist
     protected void onCreate() {
