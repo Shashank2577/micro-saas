@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.5</version>
-        <relativePath/>
+        <groupId>com.crosscutting</groupId>
+        <artifactId>cross-cutting</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+        <relativePath>../../cross-cutting/pom.xml</relativePath>
     </parent>
 
     <groupId>com.microsaas</groupId>
@@ -24,6 +24,11 @@
 
     <dependencies>
         <!-- cc-starter: provides tenancy, auth, RBAC, audit, search, AI, webhooks, etc. -->
+        <dependency>
+            <groupId>com.crosscutting</groupId>
+            <artifactId>cc-starter</artifactId>
+            <version>0.1.0-SNAPSHOT</version>
+        </dependency>
         
 
         <!-- Web -->
