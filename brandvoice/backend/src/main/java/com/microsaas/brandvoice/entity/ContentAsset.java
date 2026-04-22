@@ -9,19 +9,22 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "brand_profiles")
+@Table(name = "content_assets")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BrandProfile {
+public class ContentAsset {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID tenantId;
-    private String name;
-    private String description;
-    private String industry;
+    private String title;
+    @Column(columnDefinition="TEXT")
+    private String content;
+    private String type;
+    private String status;
+    private Double aiAnalysisScore;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

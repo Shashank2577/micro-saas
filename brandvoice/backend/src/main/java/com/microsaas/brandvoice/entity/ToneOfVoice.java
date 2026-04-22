@@ -5,23 +5,21 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "brand_profiles")
+@Table(name = "tone_of_voices")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BrandProfile {
+public class ToneOfVoice {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private UUID tenantId;
-    private String name;
-    private String description;
-    private String industry;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private UUID brandProfileId;
+    private String adjective;
+    private String definition;
+    private String usageExample;
 }

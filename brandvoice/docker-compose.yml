@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  brandvoice-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_DB: cc
+      POSTGRES_USER: cc
+      POSTGRES_PASSWORD: cc
+    ports:
+      - "5432:5432"
+    volumes:
+      - brandvoice-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cc"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  brandvoice-backend:
+    build:
+      context: ..
+      dockerfile: brandvoice/backend/Dockerfile
+    ports:
+      - "8131:8131"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://brandvoice-db:5432/cc
+      - SPRING_DATASOURCE_USERNAME=cc
+      - SPRING_DATASOURCE_PASSWORD=cc
+    depends_on:
+      brandvoice-db:
+        condition: service_healthy
+
+volumes:
+  brandvoice-data:
