@@ -1,0 +1,10 @@
+
+> observabilityai-frontend@0.0.1 start
+> next start
+
+  ▲ Next.js 14.2.0
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ⚠ "next start" does not work with "output: standalone" configuration. Use "node .next/standalone/server.js" instead.
+ ✓ Ready in 419ms

@@ -24,6 +24,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 })
 class ObservabilityControllerTest {
 
+    @MockBean
+    private org.springframework.security.oauth2.jwt.JwtDecoder jwtDecoder;
+
+    @MockBean
+    private com.crosscutting.starter.tenancy.TenantRepository tenantRepository;
+
+    @MockBean
+    private com.crosscutting.starter.tenancy.TenantMembershipRepository tenantMembershipRepository;
+
+    @MockBean
+    private com.crosscutting.starter.webhooks.WebhookService webhookService;
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -36,6 +48,8 @@ class ObservabilityControllerTest {
     @BeforeEach
     void setUp() {
         TenantContext.set(UUID.randomUUID());
+        org.mockito.Mockito.when(tenantRepository.existsById(org.mockito.ArgumentMatchers.any())).thenReturn(true);
+        org.mockito.Mockito.when(tenantMembershipRepository.existsByUserIdAndTenantId(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any())).thenReturn(true);
     }
 
     @Test
