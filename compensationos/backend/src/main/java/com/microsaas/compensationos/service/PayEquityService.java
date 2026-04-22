@@ -1,10 +1,14 @@
 package com.microsaas.compensationos.service;
 
+import com.crosscutting.starter.ai.AiService;
+import com.crosscutting.starter.ai.ChatMessage;
+import com.crosscutting.starter.ai.ChatRequest;
 import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.compensationos.dto.PayEquityAnalysisResponse;
 import com.microsaas.compensationos.entity.EmployeeCompensation;
 import com.microsaas.compensationos.repository.EmployeeCompensationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,6 +25,9 @@ public class PayEquityService {
 
     private final EmployeeCompensationRepository employeeCompensationRepository;
     private final AiService aiService;
+
+    @Value("${cc.ai.default-model:claude-sonnet-4-6}")
+    private String defaultModel;
 
     public PayEquityAnalysisResponse analyzePayEquity(String role) {
         UUID tenantId = TenantContext.require();
@@ -44,7 +51,7 @@ public class PayEquityService {
                 "Provide a brief compliance report and insight on potential pay gaps.";
         
         try {
-            String insight = aiService.generateInsight(prompt);
+            String insight = aiService.chat(new ChatRequest(defaultModel, List.of(new ChatMessage("user", prompt)), null, null)).content();
             response.setAiInsight(insight);
         } catch (Exception e) {
             response.setAiInsight("AI analysis currently unavailable.");
