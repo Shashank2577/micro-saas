@@ -1,26 +1,51 @@
 {
-  "appId": "ghostwriter",
-  "displayName": "GhostWriter",
-  "description": "AI-powered content writing assistant for multi-format generation and editing.",
-  "emits": [
-    {
-      "eventType": "ContentGeneratedEvent",
-      "description": "Emitted when a new piece of content is generated via AI.",
-      "payloadSchema": {
-        "documentId": "uuid",
-        "format": "string"
+  "appName": "ghostwriter",
+  "version": "1.0.0",
+  "api": {
+    "endpoints": [
+      {
+        "path": "/api/documents",
+        "method": "GET",
+        "description": "Get all documents"
+      },
+      {
+        "path": "/api/documents/{id}",
+        "method": "GET",
+        "description": "Get document by id"
+      },
+      {
+        "path": "/api/documents",
+        "method": "POST",
+        "description": "Create document"
+      },
+      {
+        "path": "/api/projects",
+        "method": "GET",
+        "description": "Get all projects"
+      },
+      {
+        "path": "/api/templates",
+        "method": "GET",
+        "description": "Get all templates"
+      },
+      {
+        "path": "/api/personas",
+        "method": "GET",
+        "description": "Get all personas"
+      },
+      {
+        "path": "/api/generate",
+        "method": "POST",
+        "description": "Generate AI content"
       }
-    }
-  ],
-  "consumes": [
-    {
-      "eventType": "BrandVoiceUpdatedEvent",
-      "description": "Listens for updates to the global brand voice to apply as context for AI generation."
-    }
-  ],
-  "capabilities": [
-    "AI content generation",
-    "Multi-format document export",
-    "Brand voice consistency"
-  ]
+    ]
+  },
+  "webhooks": {
+    "emitted": [
+      "document.created",
+      "document.updated",
+      "content_request.completed"
+    ],
+    "consumed": []
+  }
 }
