@@ -28,4 +28,20 @@ export const api = {
     body: JSON.stringify({ status })
   }),
   getAlertRules: () => fetchWithTenant('/alerts/rules'),
+  createAlertRule: (rule: any) => fetchWithTenant('/alerts/rules', {
+    method: 'POST',
+    body: JSON.stringify(rule)
+  }),
+  updateAlertRule: (id: string, rule: any) => fetchWithTenant(`/alerts/rules/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(rule)
+  }),
+  getCustomRules: () => fetchWithTenant('/discovery/rules'),
+  createCustomRule: (rule: any) => fetchWithTenant('/discovery/rules', {
+    method: 'POST',
+    body: JSON.stringify(rule)
+  }),
+  deleteCustomRule: (id: string) => fetchWithTenant(`/discovery/rules/${id}`, {
+    method: 'DELETE'
+  }),
 };

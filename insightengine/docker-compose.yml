@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  insightengine-postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ecosystem
+    ports:
+      - "5432:5432"
+    volumes:
+      - insightengine_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ecosystem"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  insightengine-backend:
+    build:
+      context: ..
+      dockerfile: insightengine/backend/Dockerfile
+    ports:
+      - "8171:8171"
+    environment:
+      - DB_HOST=insightengine-postgres
+      - DB_PORT=5432
+      - DB_NAME=ecosystem
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      insightengine-postgres:
+        condition: service_healthy
+
+  insightengine-frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8171/api
+    command: sh -c "npm install && npm run dev"
+
+volumes:
+  insightengine_pg_data:
