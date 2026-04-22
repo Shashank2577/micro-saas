@@ -3,7 +3,22 @@
   "displayName": "JobCraftAI",
   "version": "0.0.1",
   "baseUrl": "https://api-jobcraftai.YOURDOMAIN.com",
-  "emits": [],
+  "emits": [
+    {
+      "name": "jobcraftai.posting.published",
+      "description": "Emitted when a job description is finalized and published",
+      "payloadSchema": {
+        "type": "object",
+        "properties": {
+          "event_id": { "type": "string" },
+          "tenant_id": { "type": "string" },
+          "job_id": { "type": "string" },
+          "title": { "type": "string" },
+          "timestamp": { "type": "string" }
+        }
+      }
+    }
+  ],
   "consumes": [],
   "capabilities": [],
   "healthEndpoint": "/actuator/health"

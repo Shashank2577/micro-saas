@@ -21,7 +21,7 @@ spring:
       port: 6379
 
 server:
-  port: 8090
+  port: 8126
 
 cc:
   tenancy:
