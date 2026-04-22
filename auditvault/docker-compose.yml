@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  auditvault-db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: cc
+      POSTGRES_PASSWORD: cc
+      POSTGRES_DB: cc
+    ports:
+      - "5432:5432"
+
+  auditvault-redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  auditvault-backend:
+    build:
+      context: ..
+      dockerfile: auditvault/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://auditvault-db:5432/cc
+      - SPRING_DATA_REDIS_HOST=auditvault-redis
+    depends_on:
+      - auditvault-db
+      - auditvault-redis
+
+  auditvault-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080

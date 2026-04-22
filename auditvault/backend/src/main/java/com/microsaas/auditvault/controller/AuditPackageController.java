@@ -2,7 +2,7 @@ package com.microsaas.auditvault.controller;
 
 import com.microsaas.auditvault.dto.PackageGenerateRequest;
 import com.microsaas.auditvault.model.AuditPackage;
-import com.microsaas.auditvault.service.AuditVaultService;
+import com.microsaas.auditvault.service.AuditPackageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,20 +14,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class AuditPackageController {
 
-    private final AuditVaultService auditVaultService;
+    private final AuditPackageService packageService;
 
     @PostMapping
     public AuditPackage generatePackage(@RequestBody PackageGenerateRequest request) {
-        return auditVaultService.generatePackage(request);
+        return packageService.generatePackage(request);
     }
 
     @GetMapping
     public List<AuditPackage> listPackages() {
-        return auditVaultService.listPackages();
+        return packageService.listPackages();
     }
 
     @GetMapping("/{id}")
     public AuditPackage getPackage(@PathVariable UUID id) {
-        return auditVaultService.getPackage(id);
+        return packageService.getPackage(id);
     }
 }

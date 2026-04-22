@@ -5,7 +5,9 @@
   "baseUrl": "https://api-auditvault.YOURDOMAIN.com",
   "emits": [
     "audit_package.generated",
-    "evidence.mapped"
+    "evidence.mapped",
+    "compliance_finding.created",
+    "evidence_request.created"
   ],
   "consumes": [
     "deploy.completed",
@@ -15,7 +17,8 @@
   "capabilities": [
     "evidence_aggregation",
     "compliance_mapping",
-    "audit_export"
+    "audit_export",
+    "compliance_monitoring"
   ],
   "healthEndpoint": "/actuator/health"
 }
