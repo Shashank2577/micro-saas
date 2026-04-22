@@ -1,6 +1,6 @@
 package com.microsaas.ghostwriter.repository;
 
-import com.microsaas.ghostwriter.model.Document;
+import com.microsaas.ghostwriter.model.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface DocumentRepository extends JpaRepository<Document, UUID> {
-    List<Document> findByTenantId(String tenantId);
-    Optional<Document> findByIdAndTenantId(UUID id, String tenantId);
+public interface ProjectRepository extends JpaRepository<Project, UUID> {
+    List<Project> findByTenantId(String tenantId);
+    Optional<Project> findByIdAndTenantId(UUID id, String tenantId);
 }

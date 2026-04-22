@@ -1,7 +1,7 @@
 package com.microsaas.ghostwriter.controller;
 
-import com.microsaas.ghostwriter.model.Document;
-import com.microsaas.ghostwriter.service.DocumentService;
+import com.microsaas.ghostwriter.model.Persona;
+import com.microsaas.ghostwriter.service.PersonaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,32 +10,32 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/documents")
+@RequestMapping("/api/personas")
 @RequiredArgsConstructor
-public class DocumentController {
-    private final DocumentService service;
+public class PersonaController {
+    private final PersonaService service;
 
     @GetMapping
-    public ResponseEntity<List<Document>> getAll(@RequestHeader("X-Tenant-ID") String tenantId) {
+    public ResponseEntity<List<Persona>> getAll(@RequestHeader("X-Tenant-ID") String tenantId) {
         return ResponseEntity.ok(service.getAll(tenantId));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Document> getById(@PathVariable UUID id, @RequestHeader("X-Tenant-ID") String tenantId) {
+    public ResponseEntity<Persona> getById(@PathVariable UUID id, @RequestHeader("X-Tenant-ID") String tenantId) {
         return service.getById(id, tenantId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<Document> create(@RequestBody Document document, @RequestHeader("X-Tenant-ID") String tenantId) {
-        return ResponseEntity.ok(service.create(document, tenantId));
+    public ResponseEntity<Persona> create(@RequestBody Persona persona, @RequestHeader("X-Tenant-ID") String tenantId) {
+        return ResponseEntity.ok(service.create(persona, tenantId));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Document> update(@PathVariable UUID id, @RequestBody Document document, @RequestHeader("X-Tenant-ID") String tenantId) {
+    public ResponseEntity<Persona> update(@PathVariable UUID id, @RequestBody Persona persona, @RequestHeader("X-Tenant-ID") String tenantId) {
         try {
-            return ResponseEntity.ok(service.update(id, document, tenantId));
+            return ResponseEntity.ok(service.update(id, persona, tenantId));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

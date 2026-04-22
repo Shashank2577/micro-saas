@@ -7,4 +7,12 @@ const api = axios.create({
     }
 });
 
+export interface EcosystemApp {
+    name: string;
+    displayName: string;
+    status: string;
+    baseUrl: string;
+    lastHeartbeatAt?: string;
+}
+
 export default api;
