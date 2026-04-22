@@ -2,13 +2,29 @@
   "app": "licenseguard",
   "displayName": "LicenseGuard",
   "version": "0.0.1",
-  "emits": ["license.violation-detected", "sbom.generated"],
-  "consumes": ["code.pushed", "pr.merged"],
+  "emits": [
+    "license.violation-detected",
+    "sbom.generated"
+  ],
+  "consumes": [
+    "code.pushed",
+    "pr.merged"
+  ],
   "capabilities": [
     {
-      "name": "scan-repo",
-      "input": "repoUrl",
+      "name": "analyze-license-compliance",
+      "input": "repositoryId",
       "output": "violationReport"
     }
+  ],
+  "entities": [
+    "Repository",
+    "Dependency",
+    "License",
+    "LicenseObligation",
+    "LicenseViolation",
+    "SbomReport",
+    "ScanJob",
+    "CompliancePolicy"
   ]
 }
