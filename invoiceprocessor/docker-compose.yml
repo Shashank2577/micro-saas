@@ -1,0 +1,38 @@
+services:
+  invoiceprocessor-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: cc
+      POSTGRES_USER: cc
+      POSTGRES_PASSWORD: cc
+    ports:
+      - "5432:5432"
+    volumes:
+      - invoiceprocessor_db_data:/var/lib/postgresql/data
+
+  invoiceprocessor-backend:
+    build:
+      context: ..
+      dockerfile: invoiceprocessor/backend/Dockerfile
+    ports:
+      - "8114:8114"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://invoiceprocessor-db:5432/cc
+      SPRING_DATASOURCE_USERNAME: cc
+      SPRING_DATASOURCE_PASSWORD: cc
+      CC_AI_GATEWAY_URL: http://litellm:4000
+    depends_on:
+      - invoiceprocessor-db
+
+  invoiceprocessor-frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8114
+    depends_on:
+      - invoiceprocessor-backend
+
+volumes:
+  invoiceprocessor_db_data:
