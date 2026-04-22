@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import api from '@/lib/api';
+import { api } from '@/lib/api';
 
 export default function ReportsPage() {
   const downloadPdf = async () => {

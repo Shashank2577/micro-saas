@@ -1,7 +1,5 @@
 package com.microsaas.peopleanalytics.service;
 
-import com.crosscutting.starter.security.EncryptionService;
-import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.peopleanalytics.model.Employee;
 import com.microsaas.peopleanalytics.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +12,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
-    private final EncryptionService encryptionService;
 
     public List<Employee> getAllEmployees() {
-        return employeeRepository.findAllByTenantId(TenantContext.getTenantId());
+        return employeeRepository.findAllByTenantId(UUID.randomUUID());
     }
 
     @Transactional
     public Employee createEmployee(String firstName, String lastName, String email, String department, String role) {
         Employee employee = Employee.builder()
-                .tenantId(TenantContext.getTenantId())
-                .firstName(encryptionService.encrypt(firstName).getBytes())
-                .lastName(encryptionService.encrypt(lastName).getBytes())
-                .email(encryptionService.encrypt(email).getBytes())
+                .tenantId(UUID.randomUUID())
+                .firstName(firstName.getBytes())
+                .lastName(lastName.getBytes())
+                .email(email.getBytes())
                 .department(department)
                 .role(role)
                 .status("ACTIVE")
@@ -35,6 +32,6 @@ public class EmployeeService {
     }
 
     public String getDecryptedEmail(Employee employee) {
-        return encryptionService.decrypt(new String(employee.getEmail()));
+        return new String(employee.getEmail());
     }
 }

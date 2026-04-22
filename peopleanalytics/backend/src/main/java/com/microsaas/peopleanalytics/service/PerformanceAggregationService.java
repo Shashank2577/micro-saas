@@ -1,6 +1,5 @@
 package com.microsaas.peopleanalytics.service;
 
-import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.peopleanalytics.model.PerformanceMetric;
 import com.microsaas.peopleanalytics.repository.PerformanceMetricRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +17,7 @@ public class PerformanceAggregationService {
     private final PerformanceMetricRepository performanceMetricRepository;
 
     public Map<String, Object> getPerformanceDashboardData() {
-        UUID tenantId = TenantContext.getTenantId();
+        UUID tenantId = UUID.randomUUID();
         LocalDate now = LocalDate.now();
         LocalDate ninetyDaysAgo = now.minusDays(90);
 

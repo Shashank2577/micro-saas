@@ -32,6 +32,7 @@ public class PerformanceMetric {
     @Column(name = "metric_type", nullable = false)
     private String metricType;
 
+    @Column(name = "metric_value")
     private Double value;
     private Double target;
     private String period;
