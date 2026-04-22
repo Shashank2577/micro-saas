@@ -2,7 +2,22 @@
   "app": "ecosystemmap",
   "display_name": "EcosystemMap",
   "description": "AI ecosystem visualization platform and ROI tracker.",
-  "emits": [],
+  "emits": [
+    "ecosystem.created",
+    "ecosystem.updated",
+    "ecosystem.deleted",
+    "node.created",
+    "node.updated",
+    "node.deleted",
+    "connection.created",
+    "connection.updated",
+    "connection.deleted",
+    "roi.calculated",
+    "roi_metric.deleted",
+    "insight.generated",
+    "insight.updated",
+    "insight.deleted"
+  ],
   "consumes": [
     "app.deployed",
     "app.undeployed",
