@@ -6,6 +6,7 @@
   "capabilities":[
     {"name":"assign","input":"unitId+experimentId","output":"variant"},
     {"name":"track-event","input":"event","output":"ack"},
-    {"name":"get-results","input":"experimentId","output":"analysis"}
+    {"name":"get-results","input":"experimentId","output":"analysis"},
+    {"name":"generate-hypothesis","input":"problem+solution","output":"hypothesis"}
   ]
 }

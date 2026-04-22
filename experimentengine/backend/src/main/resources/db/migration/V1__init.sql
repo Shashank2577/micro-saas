@@ -71,3 +71,25 @@ CREATE TABLE IF NOT EXISTS analysis_result (
     updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 CREATE INDEX idx_analysis_result_exp_metric ON analysis_result(experiment_id, metric_id);
+
+CREATE TABLE IF NOT EXISTS feature_flag (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    flag_key VARCHAR(255) NOT NULL,
+    description TEXT,
+    enabled BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_feature_flag_tenant ON feature_flag(tenant_id);
+
+CREATE TABLE IF NOT EXISTS goal (
+    id UUID PRIMARY KEY,
+    tenant_id UUID NOT NULL,
+    experiment_id UUID NOT NULL REFERENCES experiment(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
+);
+CREATE INDEX idx_goal_tenant_exp ON goal(tenant_id, experiment_id);
