@@ -33,7 +33,8 @@ describe('DashboardPage', () => {
       expect(screen.getByText('Acme Corp Deal')).toBeInTheDocument();
     });
 
-    expect(screen.getByText('$50000 • NEGOTIATION')).toBeInTheDocument();
+    expect(screen.getByText('$50,000')).toBeInTheDocument();
+    expect(screen.getByText(/NEGOTIATION/)).toBeInTheDocument();
   });
 
   it('renders empty state when no deals exist', async () => {
