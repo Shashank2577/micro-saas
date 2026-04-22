@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  insuranceai-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8090"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/cc
+      - SPRING_DATASOURCE_USERNAME=cc
+      - SPRING_DATASOURCE_PASSWORD=cc
+      - CC_AUTH_KEYCLOAK_URL=http://keycloak:8080
+      - CC_AI_GATEWAY_URL=http://litellm:4000
+    depends_on:
+      - postgres
+      - redis
+
+  insuranceai-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080/api
+
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=cc
+      - POSTGRES_USER=cc
+      - POSTGRES_PASSWORD=cc
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
