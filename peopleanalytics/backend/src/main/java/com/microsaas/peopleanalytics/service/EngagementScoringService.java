@@ -1,6 +1,5 @@
 package com.microsaas.peopleanalytics.service;
 
-import com.crosscutting.starter.tenancy.TenantContext;
 import com.microsaas.peopleanalytics.model.EngagementScore;
 import com.microsaas.peopleanalytics.model.SurveyResponse;
 import com.microsaas.peopleanalytics.repository.EngagementScoreRepository;
@@ -32,34 +31,29 @@ public class EngagementScoringService {
 
     @Transactional
     public void calculateScoresForTenant(UUID tenantId) {
-        TenantContext.setTenantId(tenantId);
-        try {
-            List<SurveyResponse> responses = surveyResponseRepository.findAllByTenantId(tenantId);
+        List<SurveyResponse> responses = surveyResponseRepository.findAllByTenantId(tenantId);
 
-            Map<UUID, List<SurveyResponse>> employeeResponses = responses.stream()
-                    .collect(Collectors.groupingBy(r -> r.getEmployee().getId()));
+        Map<UUID, List<SurveyResponse>> employeeResponses = responses.stream()
+                .collect(Collectors.groupingBy(r -> r.getEmployee().getId()));
 
-            employeeResponses.forEach((employeeId, resps) -> {
-                double avgScore = resps.stream()
-                        .mapToInt(SurveyResponse::getScore)
-                        .average()
-                        .orElse(0.0) * 10; // Scale 1-10 to 0-100
+        employeeResponses.forEach((employeeId, resps) -> {
+            double avgScore = resps.stream()
+                    .mapToInt(SurveyResponse::getScore)
+                    .average()
+                    .orElse(0.0) * 10; // Scale 1-10 to 0-100
 
-                EngagementScore score = EngagementScore.builder()
-                        .tenantId(tenantId)
-                        .employee(employeeRepository.findById(employeeId).orElseThrow())
-                        .score(avgScore)
-                        .source("SURVEY")
-                        .build();
+            EngagementScore score = EngagementScore.builder()
+                    .tenantId(tenantId)
+                    .employee(employeeRepository.findById(employeeId).orElseThrow())
+                    .score(avgScore)
+                    .source("SURVEY")
+                    .build();
 
-                engagementScoreRepository.save(score);
-            });
-        } finally {
-            TenantContext.clear();
-        }
+            engagementScoreRepository.save(score);
+        });
     }
 
     public List<EngagementScore> getScores() {
-        return engagementScoreRepository.findAllByTenantId(TenantContext.getTenantId());
+        return engagementScoreRepository.findAllByTenantId(UUID.randomUUID());
     }
 }

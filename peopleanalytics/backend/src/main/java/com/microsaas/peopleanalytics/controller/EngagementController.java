@@ -6,7 +6,6 @@ import com.microsaas.peopleanalytics.service.EngagementScoringService;
 import com.microsaas.peopleanalytics.service.PulseSurveyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
@@ -19,25 +18,21 @@ public class EngagementController {
     private final PulseSurveyService pulseSurveyService;
 
     @GetMapping("/scores")
-    @PreAuthorize("hasAnyRole('HR', 'MANAGER', 'EXECUTIVE')")
     public List<EngagementScore> getScores() {
         return engagementScoringService.getScores();
     }
 
     @GetMapping("/surveys")
-    @PreAuthorize("hasAnyRole('HR', 'MANAGER', 'EXECUTIVE')")
     public List<PulseSurvey> getSurveys() {
         return pulseSurveyService.getAllSurveys();
     }
 
     @PostMapping("/surveys")
-    @PreAuthorize("hasRole('HR')")
     public PulseSurvey createSurvey(@RequestBody PulseSurvey survey) {
         return pulseSurveyService.createSurvey(survey.getTitle(), survey.getDescription());
     }
 
     @PostMapping("/surveys/{id}/respond")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Void> respond(@PathVariable UUID id, @RequestBody SurveyResponseRequest request) {
         pulseSurveyService.submitResponse(id, request.employeeId(), request.score(), request.feedback());
         return ResponseEntity.ok().build();

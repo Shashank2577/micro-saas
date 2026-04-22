@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import api from '@/lib/api';
+import { api } from '@/lib/api';
 
 export default function RetentionPage() {
   const { data: risks, isLoading } = useQuery({
