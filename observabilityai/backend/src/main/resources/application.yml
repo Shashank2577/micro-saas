@@ -22,6 +22,12 @@ springdoc:
     path: /swagger-ui.html
 
 cc:
+  tenancy:
+    enabled: false
+  security:
+    enabled: false
+  auth:
+    enabled: false
   ai:
     gateway-url: ${AI_GATEWAY_URL:http://localhost:4000/v1/chat/completions}
     api-key: ${AI_API_KEY:mock-key}
