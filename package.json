@@ -1,0 +1,27 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "> **Vision:** 100 AI-native SaaS applications, each a standalone product, all integrated through a shared hub-and-spoke platform. Built on `cc-starter` (Spring Boot) + Next.js, deployed via `freestack`, orchestrated by Jules AI.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shashank2577/micro-saas.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Shashank2577/micro-saas/issues"
+  },
+  "homepage": "https://github.com/Shashank2577/micro-saas#readme",
+  "dependencies": {
+    "playwright": "^1.59.1"
+  }
+}
